@@ -26,11 +26,20 @@
 - **카테고리**는 `categories` 배열에서 관리한다. 새 카테고리를 쓰려면 배열에 먼저 추가.
 - `description` 이 있으면 카드 클릭 시 **상세 페이지**로, 없으면 **쿠팡으로 바로 이동**한다.
 
-## ⚠️ 링크는 반드시 쿠팡 파트너스 딥링크로
+## 링크 — 쿠팡 파트너스 딥링크
 
-현재 샘플 데이터의 `link` 는 임시로 **쿠팡 검색 URL**(`coupang.com/np/search`)이 들어가 있다.
-수익이 잡히려면 `link.coupang.com/a/...` 형태의 **파트너스 딥링크**로 교체해야 한다.
-(Claude Code `coupang-deeplink` 스킬로 일반 쿠팡 URL → 딥링크 변환 가능)
+현재 모든 `link` 는 **파트너스 딥링크**(`link.coupang.com/a/...`)로 들어가 있어 수익이 추적된다.
+다만 초기 샘플은 **검색 결과 페이지** 기반 딥링크라 특정 상품 페이지로 바로 가지 않는다.
+정확한 상품 페이지로 연결하려면 실제 쿠팡 상품 URL(`coupang.com/vp/products/...`)을 딥링크로 변환해 교체한다.
+
+새 상품 추가 시 링크 변환은 Claude Code `coupang-deeplink` 스킬을 쓰면 된다:
+```bash
+# 실제 상품 검색(로켓 여부·모델명 확인) → 상품 URL 딥링크 변환
+python3 scripts/search.py "상품명" --rocket-only
+python3 scripts/deeplink.py "https://www.coupang.com/vp/products/<id>"
+# 또는 검색형 딥링크(폴백)
+python3 scripts/deeplink.py --search "상품명 모델명"
+```
 
 ## 제휴 고지
 
