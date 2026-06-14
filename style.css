@@ -114,6 +114,15 @@ img { display: block; max-width: 100%; }
   text-align: center; font-size: 1.05rem; font-weight: 700; color: var(--text);
   margin: 8px 0 26px;
 }
+.ai-row { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 14px 0 2px; }
+.ai-toggle {
+  padding: 7px 16px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--accent); background: #fff; color: var(--accent);
+  font-size: .85rem; font-weight: 700; transition: all .15s;
+}
+.ai-toggle:hover { background: rgba(31,111,235,.08); }
+.ai-toggle.on { background: var(--accent); color: #fff; }
+.ai-status { font-size: .82rem; color: var(--muted); }
 
 /* ---------- 나를 위한 추천 ---------- */
 .picks { padding-bottom: 8px; }

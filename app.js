@@ -142,8 +142,8 @@ const INTENTS = [
   { label: '샤브샤브엔', keys: ['샤브', '샤부', '전골'], ids: ['shabu-mealkit-freshmeal', 'shabu-beef-au-1kg', 'shabu-broth-gomgom', 'samsung-induction-1burner'] },
   { label: '조명이 깜빡일 땐', keys: ['전구', '조명', '형광등', '깜빡', '어두', '안정기', '불빛', '등이', '불이', '등기구'], ids: ['ballast-fpl-36w', 'ballast-dooyoung-fpl-55w'] },
   { label: '읽을거리로', keys: ['책', '도서', '읽', '소설', '독서', '읽을', 'sf', '헤일메리'], cats: ['도서'] },
-  { label: '청소엔', keys: ['청소', '물때', '때가', '찌든', '세척', '닦', '화장실', '수전'], ids: ['karcher-mini-pressure-washer'] },
-  { label: '양치엔', keys: ['양치', '치아', '이닦', '치약', '칫솔', '구강', '이가'], ids: ['median-toothpaste-120-12', 'oralb-vitality-flossaction'] },
+  { label: '청소엔', keys: ['청소', '물때', '때가', '찌든', '세척', '화장실', '수전', '걸레'], ids: ['karcher-mini-pressure-washer'] },
+  { label: '양치엔', keys: ['양치', '치아', '이닦', '이 닦', '이를 닦', '양치질', '치약', '칫솔', '구강', '이가', '이빨'], ids: ['median-toothpaste-120-12', 'oralb-vitality-flossaction'] },
   { label: '머리 감을 땐', keys: ['머리', '샴푸', '두피', '감을', '감기'], ids: ['organist-cherryblossom-shampoo'] },
   { label: '휴지 떨어졌을 땐', keys: ['휴지', '화장지', '롤화장'], ids: ['comet-roll-tissue-30'] },
   { label: '출력·인쇄엔', keys: ['종이', '프린트', '출력', '복사', '용지', '인쇄', 'a4'], ids: ['paperone-a4-80g-2500'] },
@@ -158,9 +158,8 @@ const INTENTS = [
   { label: '습기·보관엔', keys: ['제습', '습기', '필라멘트', '방습', '실리카겔', '곰팡', '3d'], ids: ['homeplanet-silicagel-20'] },
 ];
 
-function suggest(query, limit) {
-  const q = String(query || '').toLowerCase().trim();
-  if (!q) return { message: '', products: [] };
+/* 규칙(의도 사전 + 키워드) 점수 — suggest와 aiSuggest가 공유 */
+function ruleScores(q) {
   const score = {};
   const add = (id, s) => { if (byId(id)) score[id] = (score[id] || 0) + s; };
   let label = null;
@@ -177,6 +176,13 @@ function suggest(query, limit) {
     const hay = [p.name, p.note, p.description, p.category].join(' ').toLowerCase();
     toks.forEach((t) => { if (hay.includes(t)) add(p.id, 2); });
   });
+  return { score, label };
+}
+
+function suggest(query, limit) {
+  const q = String(query || '').toLowerCase().trim();
+  if (!q) return { message: '', products: [] };
+  const { score, label } = ruleScores(q);
   const d = loadInterest();
   const ranked = Object.keys(score)
     .map((id) => ({ p: byId(id), s: score[id] + interestScore(byId(id), d) * 0.1 }))
@@ -184,9 +190,87 @@ function suggest(query, limit) {
     .map((x) => x.p);
   const products = ranked.slice(0, limit || 6);
   const message = products.length
-    ? (label ? `${label} 이런 건 어때요?` : '이런 상품을 추천해요')
-    : '딱 맞는 상품을 못 찾았어요. "주말에 먹을 거", "전구가 깜빡거릴 때"처럼 말해보세요.';
+    ? (label ? `✨ ${label} 이런 건 어때요?` : '✨ 이런 상품을 추천해요')
+    : '✨ 딱 맞는 상품을 못 찾았어요. "주말에 먹을 거", "전구가 깜빡거릴 때"처럼 말해보세요.';
   return { message, products };
+}
+
+/* ---------- 브라우저 내 임베딩 AI (Transformers.js · 키/서버 불필요) ---------- */
+const AI_MODEL = 'Xenova/multilingual-e5-small';
+const AI_FLAG = 'jumeong_ai_on';
+let aiState = 'off';      // off | loading | ready | error
+let aiExtractor = null;
+let aiProductEmb = null;  // [{id, vec}]
+let aiReqSeq = 0;
+let aiOnReady = null;     // 뷰가 등록하는 갱신 콜백
+
+function setAiUI() {
+  const btn = document.getElementById('aiToggle');
+  if (btn) {
+    btn.classList.toggle('on', aiState === 'ready');
+    btn.textContent = aiState === 'ready' ? '🧠 AI 의미검색 켜짐'
+      : aiState === 'loading' ? '🧠 AI 로딩 중…'
+      : aiState === 'error' ? '🧠 AI 다시 시도'
+      : '🧠 AI 의미검색 켜기';
+  }
+}
+function setAiStatus(msg) {
+  const el = document.getElementById('aiStatus');
+  if (el) el.textContent = msg || '';
+  setAiUI();
+}
+
+async function loadAI() {
+  if (aiState === 'ready' || aiState === 'loading') return aiState === 'ready';
+  aiState = 'loading';
+  setAiStatus('AI 모델 다운로드 중… (최초 1회, 다운로드 후엔 캐시됩니다)');
+  try {
+    const TF = await import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2');
+    TF.env.allowLocalModels = false;
+    aiExtractor = await TF.pipeline('feature-extraction', AI_MODEL, {
+      quantized: true,
+      progress_callback: (d) => {
+        if (d && d.status === 'progress' && d.total) {
+          setAiStatus(`AI 모델 다운로드 중… ${Math.round((d.loaded / d.total) * 100)}%`);
+        }
+      },
+    });
+    setAiStatus('상품을 분석하는 중…');
+    aiProductEmb = [];
+    for (const p of DATA.products) {
+      const text = 'passage: ' + [p.name, p.note, p.description, p.category].filter(Boolean).join('. ');
+      const out = await aiExtractor(text, { pooling: 'mean', normalize: true });
+      aiProductEmb.push({ id: p.id, vec: out.data });
+    }
+    aiState = 'ready';
+    try { localStorage.setItem(AI_FLAG, '1'); } catch (e) {}
+    setAiStatus('🧠 의미 기반 추천이 켜졌어요. 검색해 보세요!');
+    if (typeof aiOnReady === 'function') aiOnReady();
+    return true;
+  } catch (e) {
+    aiState = 'error';
+    setAiStatus('AI 로드에 실패했어요. 네트워크 확인 후 다시 시도해 주세요.');
+    return false;
+  }
+}
+
+async function aiSuggest(query, limit) {
+  if (aiState !== 'ready' || !aiProductEmb) return null;
+  const ql = String(query || '').toLowerCase().trim();
+  /* 규칙(의도 사전)이 잡으면 규칙 결과를 그대로 — 한국어는 규칙이 더 정확.
+     규칙이 침묵할 때만 AI 임베딩 의미검색으로 폴백. */
+  const { score } = ruleScores(ql);
+  if (Object.keys(score).length > 0) return suggest(query, limit);
+  const out = await aiExtractor('query: ' + query, { pooling: 'mean', normalize: true });
+  const qv = out.data;
+  const d = loadInterest();
+  const scored = aiProductEmb.map((pe) => {
+    let cos = 0;
+    for (let i = 0; i < qv.length; i++) cos += qv[i] * pe.vec[i];
+    return { id: pe.id, s: cos + interestScore(byId(pe.id), d) * 0.02 };
+  }).sort((a, b) => b.s - a.s);
+  const products = scored.slice(0, limit || 8).map((r) => byId(r.id)).filter(Boolean);
+  return { message: '🧠 AI가 의미로 찾았어요', products };
 }
 
 /* ---------- List view ---------- */
@@ -224,11 +308,21 @@ function renderList(cat) {
         ${['주말에 먹을 거', '전구가 깜빡거릴 때', '추천 도서', '화장실 청소', '간단한 아침'].map((c) =>
           `<button class="chip" data-q="${esc(c)}">${esc(c)}</button>`).join('')}
       </div>
+      <div class="ai-row">
+        <button id="aiToggle" class="ai-toggle"></button>
+        <span id="aiStatus" class="ai-status"></span>
+      </div>
       <div class="filters">${filters}</div>
       <div id="gridWrap"></div>
     </section>`;
 
   const gridWrap = document.getElementById('gridWrap');
+  function renderResults(res) {
+    gridWrap.innerHTML = `<p class="suggest-msg">${esc(res.message)}</p>` +
+      (res.products.length ? `<div class="grid">${res.products.map(card).join('')}</div>` : '');
+    gridWrap.querySelectorAll('[data-id]').forEach((el) =>
+      el.addEventListener('click', () => openProduct(byId(el.dataset.id))));
+  }
   function applyGrid() {
     const q = searchQuery.trim();
     if (!q) {
@@ -236,15 +330,21 @@ function renderList(cat) {
       gridWrap.innerHTML = items.length
         ? `<div class="grid">${items.map(card).join('')}</div>`
         : `<p class="empty">이 카테고리에는 아직 상품이 없어요.</p>`;
-    } else {
-      const { message, products } = suggest(q, 12);
-      gridWrap.innerHTML = `<p class="suggest-msg">✨ ${esc(message)}</p>` +
-        (products.length ? `<div class="grid">${products.map(card).join('')}</div>` : '');
+      gridWrap.querySelectorAll('[data-id]').forEach((el) =>
+        el.addEventListener('click', () => openProduct(byId(el.dataset.id))));
+      return;
     }
-    gridWrap.querySelectorAll('[data-id]').forEach((el) =>
-      el.addEventListener('click', () => openProduct(byId(el.dataset.id))));
+    renderResults(suggest(q, 12));            // 규칙 기반 즉시
+    if (aiState === 'ready') {                 // AI 준비됐으면 의미검색으로 정교화
+      const myId = ++aiReqSeq;
+      aiSuggest(q, 10).then((res) => {
+        if (res && myId === aiReqSeq && searchQuery.trim() === q) renderResults(res);
+      });
+    }
   }
+  aiOnReady = applyGrid;
   applyGrid();
+  setAiUI();
 
   $app.querySelectorAll('.picks [data-id]').forEach((el) =>
     el.addEventListener('click', () => openProduct(byId(el.dataset.id))));
@@ -269,6 +369,12 @@ function renderList(cat) {
       input.focus();
       document.getElementById('products').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }));
+
+  const aiToggle = document.getElementById('aiToggle');
+  aiToggle.addEventListener('click', () => { if (aiState !== 'loading') loadAI(); });
+  let aiFlag = null;
+  try { aiFlag = localStorage.getItem(AI_FLAG); } catch (e) {}
+  if (aiState === 'off' && aiFlag === '1') loadAI();
 
   $app.querySelectorAll('.filters button').forEach((b) =>
     b.addEventListener('click', () => {
