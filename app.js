@@ -295,7 +295,11 @@ function renderList(cat) {
     <section class="section container picks">
       <div class="section-title"><h2>🔖 나를 위한 추천</h2><div class="rule"></div></div>
       <p class="picks-sub">자주 보고 클릭·검색한 상품을 바탕으로 골랐어요</p>
-      <div class="grid">${picks.map(card).join('')}</div>
+      <div class="carousel-wrap">
+        <button class="carousel-btn prev" aria-label="이전 상품" data-dir="-1">‹</button>
+        <div class="carousel" id="picksCarousel">${picks.map(card).join('')}</div>
+        <button class="carousel-btn next" aria-label="다음 상품" data-dir="1">›</button>
+      </div>
     </section>` : ''}
 
     <section class="section container" id="products">
@@ -348,6 +352,23 @@ function renderList(cat) {
 
   $app.querySelectorAll('.picks [data-id]').forEach((el) =>
     el.addEventListener('click', () => openProduct(byId(el.dataset.id))));
+
+  const carousel = document.getElementById('picksCarousel');
+  if (carousel) {
+    const updateArrows = () => {
+      const max = carousel.scrollWidth - carousel.clientWidth - 2;
+      const prev = $app.querySelector('.carousel-btn.prev');
+      const next = $app.querySelector('.carousel-btn.next');
+      if (prev) prev.classList.toggle('hidden', carousel.scrollLeft <= 2);
+      if (next) next.classList.toggle('hidden', carousel.scrollLeft >= max || max <= 0);
+    };
+    $app.querySelectorAll('.carousel-btn').forEach((b) =>
+      b.addEventListener('click', () => {
+        carousel.scrollBy({ left: Number(b.dataset.dir) * carousel.clientWidth * 0.8, behavior: 'smooth' });
+      }));
+    carousel.addEventListener('scroll', updateArrows, { passive: true });
+    updateArrows();
+  }
 
   const input = document.getElementById('searchInput');
   function onQuery() {
