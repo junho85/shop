@@ -18,6 +18,41 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) =>
 const byId = (id) => DATA.products.find((p) => p.id === id);
 const sorted = (list) => [...list].sort((a, b) => String(b.addedAt || '').localeCompare(String(a.addedAt || '')));
 
+/* 가격 변화 인라인 SVG 차트 */
+function priceChart(history) {
+  if (!Array.isArray(history) || !history.length) return '';
+  const W = 600, H = 190, padL = 64, padR = 18, padT = 18, padB = 38;
+  const prices = history.map((h) => h.price);
+  const min = Math.min(...prices), max = Math.max(...prices);
+  const span = (max - min) || 1;
+  const n = history.length;
+  const x = (i) => (n === 1 ? padL + (W - padL - padR) / 2 : padL + (W - padL - padR) * i / (n - 1));
+  const y = (p) => padT + (H - padT - padB) * (1 - (p - min) / span);
+  const pts = history.map((h, i) => [x(i), y(h.price)]);
+  const line = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+  const dots = pts.map((p) => `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="4" fill="var(--accent)"/>`).join('');
+  const yLabels = `<text x="${padL - 10}" y="${(y(max) + 4).toFixed(1)}" text-anchor="end" class="axisl">${won(max)}</text>` +
+    (max !== min ? `<text x="${padL - 10}" y="${(y(min) + 4).toFixed(1)}" text-anchor="end" class="axisl">${won(min)}</text>` : '');
+  const first = history[0].date, last = history[n - 1].date;
+  const xLabels = `<text x="${x(0).toFixed(1)}" y="${H - 12}" text-anchor="${n === 1 ? 'middle' : 'start'}" class="axisl">${esc(first)}</text>` +
+    (n > 1 ? `<text x="${x(n - 1).toFixed(1)}" y="${H - 12}" text-anchor="end" class="axisl">${esc(last)}</text>` : '');
+  const cur = history[n - 1].price;
+  const note = n === 1
+    ? '오늘 가격을 기록했습니다. 다음 확인부터 변화가 그려집니다.'
+    : `현재 ${won(cur)} · 최저 ${won(min)} · 최고 ${won(max)} (기록 ${n}회)`;
+  return `
+    <div class="detail-chart">
+      <h3>가격 변화</h3>
+      <svg viewBox="0 0 ${W} ${H}" class="pricechart" role="img" aria-label="가격 변화 차트">
+        <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H - padB}" class="axis"/>
+        <line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" class="axis"/>
+        ${n > 1 ? `<path d="${line}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>` : ''}
+        ${dots}${yLabels}${xLabels}
+      </svg>
+      <p class="chart-note">${note}</p>
+    </div>`;
+}
+
 /* ---------- Routing ---------- */
 function parseHash() {
   const h = (location.hash || '#/').replace(/^#/, '');
@@ -137,6 +172,7 @@ function renderDetail(p) {
           <p class="detail-cat">카테고리: ${esc(p.category)}</p>
         </div>
       </div>
+      ${priceChart(p.priceHistory)}
       ${p.description ? `
       <div class="detail-desc">
         <h3>설명</h3>

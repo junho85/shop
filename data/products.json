@@ -25,20 +25,74 @@
       "blog": "https://junho85.pe.kr/1685",
       "blogLabel": "블로그 후기: 지난 주말 연어 요리 — 사케동, 연어스테이크",
       "link": "https://link.coupang.com/a/ezW7TNKJC8",
-      "addedAt": "2026-06-14"
+      "addedAt": "2026-06-14",
+      "priceHistory": [
+        { "date": "2026-06-14", "price": 41490 }
+      ]
     },
     {
       "id": "milk-1a-easy-digest",
-      "name": "편안하게 소화되는 신선한 1A 우유",
+      "name": "편안하게 소화되는 신선한 1A 우유 (900ml, 8개)",
       "category": "식품",
       "image": "https://image13.coupangcdn.com/image/retail/images/100029205791655-f1047688-2ce4-4680-ac2a-31d995abf586.jpg",
       "priceOriginal": null,
-      "price": 4990,
+      "price": 18400,
       "sale": false,
       "note": "유당 때문에 속 불편할 때 애용하는 우유",
-      "description": "언젠가부터 우유를 먹고 나면 속이 불편하곤 했는데, 유당 분해 우유로 바꾸고는 속이 편안해서 애용하고 있습니다. 제가 가장 자주 주문하는 항목 중 하나예요.",
+      "description": "언젠가부터 우유를 먹고 나면 속이 불편하곤 했는데, 유당 분해 우유로 바꾸고는 속이 편안해서 애용하고 있습니다. 제가 가장 자주 주문하는 항목 중 하나예요. 저는 주로 8개입으로 사 먹습니다.",
       "link": "https://link.coupang.com/a/ez0acIdP8m",
-      "addedAt": "2026-06-14"
+      "addedAt": "2026-06-14",
+      "priceHistory": [
+        { "date": "2026-06-14", "price": 18400 }
+      ]
+    },
+    {
+      "id": "fivestar-black-tiger-shrimp",
+      "name": "FIVESTAR 말레이시아산 블랙타이거 얼룩 새우 (냉동) 500g(10미)",
+      "category": "식품",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/66495774051878-703bd76b-7a67-47fa-a351-68637f1ee4c6.jpg",
+      "priceOriginal": null,
+      "price": 19990,
+      "sale": false,
+      "note": "순두부·된장찌개에 넣어 먹는 냉동 새우",
+      "description": "집에서 순두부찌개, 된장찌개 할 때 넣어 먹고 있습니다. 구입하고 나면 바로 소분해서 냉동실에 보관하면 요리할 때 편리합니다.",
+      "link": "https://link.coupang.com/a/ez0qW70qtw",
+      "addedAt": "2026-06-14",
+      "priceHistory": [
+        { "date": "2026-06-14", "price": 19990 }
+      ]
+    },
+    {
+      "id": "kelloggs-frost-darkchoco",
+      "name": "콘푸로스트 다크초코 550g 6개",
+      "category": "식품",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/269639410366475-4dae363b-3630-428b-a955-b6e12b262d60.jpg",
+      "priceOriginal": null,
+      "price": 31290,
+      "sale": false,
+      "note": "아침에 우유랑 같이 먹는 시리얼 (아이들도 잘 먹음)",
+      "description": "아침식사로 자주 애용하는 콘푸로스트 다크초코입니다. 아이들도 잘 먹고, 우유랑 같이 먹습니다.",
+      "link": "https://link.coupang.com/a/ez0MLPFifY",
+      "addedAt": "2026-06-14",
+      "priceHistory": [
+        { "date": "2026-06-14", "price": 31290 }
+      ]
+    },
+    {
+      "id": "gomgom-salad-lunchbox",
+      "name": "곰곰 샐러드 도시락 6개",
+      "category": "식품",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/901098071678513-c36e4cce-5fdb-4feb-ac82-6f633b9e66fa.jpg",
+      "priceOriginal": null,
+      "price": 21550,
+      "sale": false,
+      "note": "전자레인지 3분 30초 간단 아침",
+      "description": "아침식사로 종종 먹는 곰곰 샐러드 도시락입니다. 전자레인지에 3분 30초 돌려 간단히 먹을 수 있어 좋습니다. 여러 샐러드 도시락을 먹어봤지만 가성비와 맛이 가장 적당했습니다.",
+      "link": "https://link.coupang.com/a/ez0QRna6HQ",
+      "addedAt": "2026-06-14",
+      "priceHistory": [
+        { "date": "2026-06-14", "price": 21550 }
+      ]
     }
   ]
 }

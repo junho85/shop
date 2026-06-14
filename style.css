@@ -157,6 +157,12 @@ img { display: block; max-width: 100%; }
 .detail-desc { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--line); }
 .detail-desc h3 { font-size: 1.1rem; margin: 0 0 16px; }
 .detail-desc p { white-space: pre-wrap; color: #444; }
+.detail-chart { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--line); }
+.detail-chart h3 { font-size: 1.1rem; margin: 0 0 16px; }
+.pricechart { width: 100%; max-width: 600px; height: auto; display: block; }
+.pricechart .axis { stroke: var(--line); stroke-width: 1; }
+.pricechart .axisl { fill: var(--muted); font-size: 13px; font-family: var(--font); }
+.chart-note { font-size: .9rem; color: var(--muted); margin: 10px 0 0; }
 .detail-blog { margin-top: 20px; font-weight: 600; }
 .detail-blog a { color: var(--accent); text-decoration: underline; }
 .detail-blog a:hover { color: var(--accent-dark); }
