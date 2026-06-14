@@ -9,6 +9,7 @@
     "가구",
     "미용",
     "식품",
+    "가전",
     "기타"
   ],
   "products": [
@@ -92,6 +93,70 @@
       "addedAt": "2026-06-14",
       "priceHistory": [
         { "date": "2026-06-14", "price": 21550 }
+      ]
+    },
+    {
+      "id": "shabu-beef-au-1kg",
+      "name": "호주산 샤브샤브용 소고기 (냉동) 1kg",
+      "category": "식품",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/240995526656979-896891ba-1093-480d-b1a1-05eb2700be02.jpg",
+      "priceOriginal": null,
+      "price": 22690,
+      "sale": false,
+      "note": "샤브샤브용 호주산 소고기",
+      "description": "샤브샤브 해 먹을 때 쓰는 호주산 소고기(목심)입니다. 냉동이라 보관도 편합니다.",
+      "link": "https://link.coupang.com/a/ez1HE1gDZs",
+      "addedAt": "2026-06-15",
+      "priceHistory": [
+        { "date": "2026-06-15", "price": 22690 }
+      ]
+    },
+    {
+      "id": "shabu-mealkit-freshmeal",
+      "name": "프레시밀 샤브샤브재료 밀키트 2~3인분 880g",
+      "category": "식품",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/1309275966145-f2dc948e-01b5-49f5-a115-e845d946d432.jpg",
+      "priceOriginal": null,
+      "price": 12700,
+      "sale": false,
+      "note": "소스·육수가 다 들어 있는 샤브샤브 밀키트",
+      "description": "샤브샤브 밀키트입니다. 소스와 육수가 다 들어 있어 이것만 있으면 간편하게 샤브샤브를 해 먹을 수 있습니다.",
+      "link": "https://link.coupang.com/a/ez27J8cd1o",
+      "addedAt": "2026-06-15",
+      "priceHistory": [
+        { "date": "2026-06-15", "price": 12700 }
+      ]
+    },
+    {
+      "id": "shabu-broth-gomgom",
+      "name": "곰곰 담백한 샤브샤브육수 (육수 1 : 물 10) 200g",
+      "category": "식품",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/74262306115814-34f55b7f-fffc-4bd6-a353-cd407823da0e.jpg",
+      "priceOriginal": null,
+      "price": 1990,
+      "sale": false,
+      "note": "육수가 따로 필요할 때 쓰는 샤브샤브 육수",
+      "description": "밀키트에는 육수가 들어 있지만, 육수가 따로 필요할 때 씁니다. 이마트 트레이더스에서 샤브샤브 야채 세트를 샀을 때 육수가 없어서 이 육수를 사용했습니다. 육수 1 : 물 10 비율이라 한 봉으로 넉넉합니다.",
+      "link": "https://link.coupang.com/a/ez1GPy38KW",
+      "addedAt": "2026-06-15",
+      "priceHistory": [
+        { "date": "2026-06-15", "price": 1990 }
+      ]
+    },
+    {
+      "id": "samsung-induction-1burner",
+      "name": "삼성전자 인덕션 1구 (NZ31DG200CFH)",
+      "category": "가전",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/1272972074487923-38973cc9-5415-4c65-a6e2-e28d95dac53e.jpg",
+      "priceOriginal": null,
+      "price": 127000,
+      "sale": false,
+      "note": "샤브샤브 등 식탁 조리에 편리한 1구 인덕션",
+      "description": "샤브샤브처럼 식탁에서 끓여 먹는 요리를 할 때 여기에 조리하면 편리합니다. 1구라 자리도 많이 안 차지합니다.",
+      "link": "https://link.coupang.com/a/ez3eC06dci",
+      "addedAt": "2026-06-15",
+      "priceHistory": [
+        { "date": "2026-06-15", "price": 127000 }
       ]
     }
   ]
