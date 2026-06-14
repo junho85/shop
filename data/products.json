@@ -158,6 +158,54 @@
       "priceHistory": [
         { "date": "2026-06-15", "price": 127000 }
       ]
+    },
+    {
+      "id": "comet-roll-tissue-30",
+      "name": "코멧 순백 3겹 라벤더 바닐라 롤화장지 (30m x 30롤)",
+      "category": "생필품",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/66150481879369-ec52c797-db15-4a1a-b1fd-c711046a8cc0.jpg",
+      "priceOriginal": null,
+      "price": 11990,
+      "sale": false,
+      "note": "휴지 떨어지면 사는 롤화장지",
+      "description": "휴지가 다 떨어지면 사는 롤화장지입니다. 3겹 30롤이라 한참 씁니다.",
+      "link": "https://link.coupang.com/a/ez36dFHdEO",
+      "addedAt": "2026-06-15",
+      "priceHistory": [
+        { "date": "2026-06-15", "price": 11990 }
+      ]
+    },
+    {
+      "id": "median-toothpaste-120-12",
+      "name": "메디안 치석케어 오리지널 치약 120g 12개",
+      "category": "생필품",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/266049003734393-db6916d7-86b4-45c4-91a7-95edbc8899b0.jpg",
+      "priceOriginal": null,
+      "price": 19900,
+      "sale": false,
+      "note": "몇 년째 계속 쓰는 치약",
+      "description": "몇 년째 계속 사용 중인 치약입니다. 12개입으로 사두면 오래 갑니다.",
+      "link": "https://link.coupang.com/a/ez383c9XfU",
+      "addedAt": "2026-06-15",
+      "priceHistory": [
+        { "date": "2026-06-15", "price": 19900 }
+      ]
+    },
+    {
+      "id": "oralb-vitality-flossaction",
+      "name": "오랄비 바이탈리티 플로스액션 전동칫솔",
+      "category": "가전",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/3de6/647165d1ce220e2aa39209d640e8119b939ae8598818a04361860b76520c.jpg",
+      "priceOriginal": null,
+      "price": 28070,
+      "sale": false,
+      "note": "사용 중인 오랄비 전동칫솔",
+      "description": "사용 중인 오랄비 바이탈리티 플로스액션 전동칫솔입니다.",
+      "link": "https://link.coupang.com/a/ez4flLbRYq",
+      "addedAt": "2026-06-15",
+      "priceHistory": [
+        { "date": "2026-06-15", "price": 28070 }
+      ]
     }
   ]
 }
