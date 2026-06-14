@@ -137,7 +137,7 @@ function personalizedPicks(limit) {
 
 /* ---------- 스마트 서제스트 (의도 사전 기반) ---------- */
 const INTENTS = [
-  { label: '주말·식사로', keys: ['먹', '식사', '밥', '간식', '요리', '저녁', '점심', '아침', '주말', '한끼', '안주', '반찬', '식재료', '먹을', '배고', '야식'], cats: ['식품'] },
+  { label: '주말·식사로', keys: ['먹', '식사', '밥', '간식', '요리', '저녁', '점심', '아침', '주말', '한끼', '안주', '반찬', '식재료', '먹을', '배고', '야식', '맛있', '먹거리', '군것질', '출출', '입이 심심', '맛난', '식료품', '장보'], cats: ['식품'] },
   { label: '손님 대접엔', keys: ['손님', '대접', '집들이', '파티', '모임', '한상'], ids: ['shabu-mealkit-freshmeal', 'shabu-beef-au-1kg', 'mowi-salmon-sashimi'] },
   { label: '샤브샤브엔', keys: ['샤브', '샤부', '전골'], ids: ['shabu-mealkit-freshmeal', 'shabu-beef-au-1kg', 'shabu-broth-gomgom', 'samsung-induction-1burner'] },
   { label: '조명이 깜빡일 땐', keys: ['전구', '조명', '형광등', '깜빡', '어두', '안정기', '불빛', '등이', '불이', '등기구'], ids: ['ballast-fpl-36w', 'ballast-dooyoung-fpl-55w'] },
