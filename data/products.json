@@ -240,6 +240,74 @@
       "priceHistory": [
         { "date": "2026-06-15", "price": 3240 }
       ]
+    },
+    {
+      "id": "ballast-fpl-36w",
+      "name": "FPL 1등용 전자식 안정기 36W",
+      "category": "가전",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/5a8c/8d9a2f3cd445ad9b8c3e0a21ccdd666917b5367407fb3ba0430e6542171f.jpg",
+      "priceOriginal": null,
+      "price": 8900,
+      "sale": false,
+      "note": "형광등 안정기 (36W) — 슬슬 교체 시기",
+      "description": "아파트 입주하고 5년 정도 지나 고장 나서 교체했었고, 교체한 지 또 5년 정도 지났으니 슬슬 다시 교체할 때가 되지 않았나 싶습니다.",
+      "blog": "https://junho85.pe.kr/1787",
+      "blogLabel": "블로그 글: 형광등 안정기 교체 (LED호환등 사용중)",
+      "link": "https://link.coupang.com/a/ez4vCXB0fc",
+      "addedAt": "2026-06-15",
+      "priceHistory": [
+        { "date": "2026-06-15", "price": 8900 }
+      ]
+    },
+    {
+      "id": "ballast-dooyoung-fpl-55w",
+      "name": "두영 안정기 FPL 55W 1등용",
+      "category": "가전",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/5138/ee19abff8a34adf8eb4a0a13c74495a1fe84a29892c0ceab640096d966b9.jpg",
+      "priceOriginal": null,
+      "price": 9070,
+      "sale": false,
+      "note": "부엌등 안정기 (55W) — 슬슬 교체 시기",
+      "description": "아파트 입주하고 5년 정도 지나 고장 나서 교체했었고, 교체한 지 또 5년 정도 지났으니 슬슬 다시 교체할 때가 되지 않았나 싶습니다.",
+      "blog": "https://junho85.pe.kr/1996",
+      "blogLabel": "블로그 글: 부엌등 안정기 교체 (FPL55W 1등용)",
+      "link": "https://link.coupang.com/a/ez4wxEheN2",
+      "addedAt": "2026-06-15",
+      "priceHistory": [
+        { "date": "2026-06-15", "price": 9070 }
+      ]
+    },
+    {
+      "id": "dji-osmo-pocket-4",
+      "name": "DJI Osmo Pocket 4 크리에이터 콤보 액션캠",
+      "category": "디지털",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/76449736532643-7915fec3-50e6-4496-bea5-7ca4d4e730e9.jpg",
+      "priceOriginal": null,
+      "price": 835000,
+      "sale": false,
+      "note": "동호회용으로 산 DJI 액션캠",
+      "description": "동호회에서 쓰려고 구입했습니다. 다른 곳에서는 안 팔았는데 쿠팡에서 가장 먼저 팔고 있어서 신기했습니다.",
+      "link": "https://link.coupang.com/a/ez4Gis4Y5k",
+      "addedAt": "2026-06-15",
+      "priceHistory": [
+        { "date": "2026-06-15", "price": 835000 }
+      ]
+    },
+    {
+      "id": "paperone-a4-80g-2500",
+      "name": "페이퍼원 디지털 복사용지 80g A4 2500매",
+      "category": "생필품",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/36842218554648-5a5124e0-08f0-4766-bd20-fa21f6b19534.png",
+      "priceOriginal": null,
+      "price": 19000,
+      "sale": false,
+      "note": "집에 A4 떨어지면 주문하는 복사용지",
+      "description": "2026년 4월 18일, 집에 A4 용지가 다 떨어져서 주문했습니다. 2500매라 한참 씁니다.",
+      "link": "https://link.coupang.com/a/ez4KqNZPRA",
+      "addedAt": "2026-06-15",
+      "priceHistory": [
+        { "date": "2026-06-15", "price": 19000 }
+      ]
     }
   ]
 }
