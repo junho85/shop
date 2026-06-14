@@ -93,7 +93,7 @@ function card(p) {
     <article class="card" data-id="${esc(p.id)}">
       <div class="card-thumb">
         ${p.sale ? '<span class="badge-sale">세일!</span>' : ''}
-        <img src="${esc(p.image || PLACEHOLDER)}" alt="${esc(p.name)}" loading="lazy"
+        <img src="${esc(p.image || PLACEHOLDER)}" alt="${esc(p.name)}" referrerpolicy="no-referrer"
              onerror="this.onerror=null;this.src='${PLACEHOLDER}'">
       </div>
       <div class="card-body">
@@ -127,7 +127,7 @@ function renderDetail(p) {
       </nav>
       <div class="detail-grid">
         <div class="detail-img">
-          <img src="${esc(p.image || PLACEHOLDER)}" alt="${esc(p.name)}"
+          <img src="${esc(p.image || PLACEHOLDER)}" alt="${esc(p.name)}" referrerpolicy="no-referrer"
                onerror="this.onerror=null;this.src='${PLACEHOLDER}'">
         </div>
         <div class="detail-info">
