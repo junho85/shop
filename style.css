@@ -103,6 +103,17 @@ img { display: block; max-width: 100%; }
   box-shadow: 0 0 0 3px rgba(31,111,235,.12);
 }
 .search-bar input::placeholder { color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 12px 0 4px; }
+.chip {
+  padding: 7px 14px; border-radius: 999px; cursor: pointer;
+  border: 1px dashed var(--accent); background: rgba(31,111,235,.06); color: var(--accent);
+  font-size: .85rem; font-weight: 600; transition: background .15s;
+}
+.chip:hover { background: rgba(31,111,235,.14); }
+.suggest-msg {
+  text-align: center; font-size: 1.05rem; font-weight: 700; color: var(--text);
+  margin: 8px 0 26px;
+}
 
 /* ---------- 나를 위한 추천 ---------- */
 .picks { padding-bottom: 8px; }

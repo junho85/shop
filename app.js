@@ -135,6 +135,60 @@ function personalizedPicks(limit) {
   return scored.slice(0, limit).map((x) => x.p);
 }
 
+/* ---------- 스마트 서제스트 (의도 사전 기반) ---------- */
+const INTENTS = [
+  { label: '주말·식사로', keys: ['먹', '식사', '밥', '간식', '요리', '저녁', '점심', '아침', '주말', '한끼', '안주', '반찬', '식재료', '먹을', '배고', '야식'], cats: ['식품'] },
+  { label: '손님 대접엔', keys: ['손님', '대접', '집들이', '파티', '모임', '한상'], ids: ['shabu-mealkit-freshmeal', 'shabu-beef-au-1kg', 'mowi-salmon-sashimi'] },
+  { label: '샤브샤브엔', keys: ['샤브', '샤부', '전골'], ids: ['shabu-mealkit-freshmeal', 'shabu-beef-au-1kg', 'shabu-broth-gomgom', 'samsung-induction-1burner'] },
+  { label: '조명이 깜빡일 땐', keys: ['전구', '조명', '형광등', '깜빡', '어두', '안정기', '불빛', '등이', '불이', '등기구'], ids: ['ballast-fpl-36w', 'ballast-dooyoung-fpl-55w'] },
+  { label: '읽을거리로', keys: ['책', '도서', '읽', '소설', '독서', '읽을', 'sf', '헤일메리'], cats: ['도서'] },
+  { label: '청소엔', keys: ['청소', '물때', '때가', '찌든', '세척', '닦', '화장실', '수전'], ids: ['karcher-mini-pressure-washer'] },
+  { label: '양치엔', keys: ['양치', '치아', '이닦', '치약', '칫솔', '구강', '이가'], ids: ['median-toothpaste-120-12', 'oralb-vitality-flossaction'] },
+  { label: '머리 감을 땐', keys: ['머리', '샴푸', '두피', '감을', '감기'], ids: ['organist-cherryblossom-shampoo'] },
+  { label: '휴지 떨어졌을 땐', keys: ['휴지', '화장지', '롤화장'], ids: ['comet-roll-tissue-30'] },
+  { label: '출력·인쇄엔', keys: ['종이', '프린트', '출력', '복사', '용지', '인쇄', 'a4'], ids: ['paperone-a4-80g-2500'] },
+  { label: '속 편한 우유', keys: ['우유', '유당', '속편', '속이'], ids: ['milk-1a-easy-digest'] },
+  { label: '간단한 아침엔', keys: ['시리얼', '콘푸로스트', '초코', '간단', '아침거리'], ids: ['kelloggs-frost-darkchoco', 'gomgom-salad-lunchbox'] },
+  { label: '가벼운 한 끼', keys: ['샐러드', '다이어트', '가벼운', '야채', '채소'], ids: ['gomgom-salad-lunchbox'] },
+  { label: '두부 요리엔', keys: ['두부', '순두부', '된장'], ids: ['gomgom-tofu-500-2', 'shabu-broth-gomgom', 'fivestar-black-tiger-shrimp'] },
+  { label: '해산물로', keys: ['새우', '해산물', '조개'], ids: ['fivestar-black-tiger-shrimp'] },
+  { label: '회·사케동엔', keys: ['연어', '사케동', '초밥', '회덮밥', '회'], ids: ['mowi-salmon-sashimi'] },
+  { label: '식탁 조리엔', keys: ['인덕션', '버너', '끓여', '식탁', '조리'], ids: ['samsung-induction-1burner'] },
+  { label: '촬영·기록엔', keys: ['카메라', '영상', '촬영', '액션캠', '브이로그', '동호회', '기록'], ids: ['dji-osmo-pocket-4'] },
+  { label: '습기·보관엔', keys: ['제습', '습기', '필라멘트', '방습', '실리카겔', '곰팡', '3d'], ids: ['homeplanet-silicagel-20'] },
+];
+
+function suggest(query, limit) {
+  const q = String(query || '').toLowerCase().trim();
+  if (!q) return { message: '', products: [] };
+  const score = {};
+  const add = (id, s) => { if (byId(id)) score[id] = (score[id] || 0) + s; };
+  let label = null;
+  INTENTS.forEach((rule) => {
+    if (rule.keys.some((k) => q.includes(k))) {
+      label = label || rule.label;
+      (rule.ids || []).forEach((id) => add(id, 5));
+      (rule.cats || []).forEach((cat) =>
+        DATA.products.filter((p) => p.category === cat).forEach((p) => add(p.id, 3)));
+    }
+  });
+  const toks = q.split(/\s+/).filter((t) => t.length >= 2);
+  DATA.products.forEach((p) => {
+    const hay = [p.name, p.note, p.description, p.category].join(' ').toLowerCase();
+    toks.forEach((t) => { if (hay.includes(t)) add(p.id, 2); });
+  });
+  const d = loadInterest();
+  const ranked = Object.keys(score)
+    .map((id) => ({ p: byId(id), s: score[id] + interestScore(byId(id), d) * 0.1 }))
+    .sort((a, b) => b.s - a.s)
+    .map((x) => x.p);
+  const products = ranked.slice(0, limit || 6);
+  const message = products.length
+    ? (label ? `${label} 이런 건 어때요?` : '이런 상품을 추천해요')
+    : '딱 맞는 상품을 못 찾았어요. "주말에 먹을 거", "전구가 깜빡거릴 때"처럼 말해보세요.';
+  return { message, products };
+}
+
 /* ---------- List view ---------- */
 function renderList(cat) {
   const filters = DATA.categories
@@ -163,26 +217,30 @@ function renderList(cat) {
     <section class="section container" id="products">
       <div class="section-title"><h2>추천 상품</h2><div class="rule"></div></div>
       <div class="search-bar">
-        <input id="searchInput" type="search" placeholder="상품 검색 (이름·카테고리·메모)"
-               value="${esc(searchQuery)}" autocomplete="off" aria-label="상품 검색">
+        <input id="searchInput" type="search" placeholder="검색하거나 필요한 걸 말해보세요 (예: 주말에 먹을 거, 전구가 깜빡)"
+               value="${esc(searchQuery)}" autocomplete="off" aria-label="상품 검색 및 추천">
+      </div>
+      <div class="chips">
+        ${['주말에 먹을 거', '전구가 깜빡거릴 때', '추천 도서', '화장실 청소', '간단한 아침'].map((c) =>
+          `<button class="chip" data-q="${esc(c)}">${esc(c)}</button>`).join('')}
       </div>
       <div class="filters">${filters}</div>
       <div id="gridWrap"></div>
     </section>`;
 
   const gridWrap = document.getElementById('gridWrap');
-  function computeItems() {
-    let list = cat === '전체' ? DATA.products : DATA.products.filter((p) => p.category === cat);
-    const q = searchQuery.trim().toLowerCase();
-    if (q) list = list.filter((p) =>
-      [p.name, p.note, p.category, p.description].some((f) => String(f || '').toLowerCase().includes(q)));
-    return sorted(list);
-  }
   function applyGrid() {
-    const items = computeItems();
-    gridWrap.innerHTML = items.length
-      ? `<div class="grid">${items.map(card).join('')}</div>`
-      : `<p class="empty">${searchQuery.trim() ? '검색 결과가 없어요.' : '이 카테고리에는 아직 상품이 없어요.'}</p>`;
+    const q = searchQuery.trim();
+    if (!q) {
+      const items = sorted(cat === '전체' ? DATA.products : DATA.products.filter((p) => p.category === cat));
+      gridWrap.innerHTML = items.length
+        ? `<div class="grid">${items.map(card).join('')}</div>`
+        : `<p class="empty">이 카테고리에는 아직 상품이 없어요.</p>`;
+    } else {
+      const { message, products } = suggest(q, 12);
+      gridWrap.innerHTML = `<p class="suggest-msg">✨ ${esc(message)}</p>` +
+        (products.length ? `<div class="grid">${products.map(card).join('')}</div>` : '');
+    }
     gridWrap.querySelectorAll('[data-id]').forEach((el) =>
       el.addEventListener('click', () => openProduct(byId(el.dataset.id))));
   }
@@ -192,16 +250,25 @@ function renderList(cat) {
     el.addEventListener('click', () => openProduct(byId(el.dataset.id))));
 
   const input = document.getElementById('searchInput');
-  input.addEventListener('input', (e) => {
-    searchQuery = e.target.value;
+  function onQuery() {
     applyGrid();
     clearTimeout(searchTimer);
     const q = searchQuery.trim();
     if (q.length >= 2) searchTimer = setTimeout(() => {
-      const cats = [...new Set(computeItems().map((p) => p.category))];
+      const cats = [...new Set(suggest(q, 12).products.map((p) => p.category))];
       track('search', { q, cats });
     }, 1200);
-  });
+  }
+  input.addEventListener('input', (e) => { searchQuery = e.target.value; onQuery(); });
+
+  $app.querySelectorAll('.chip').forEach((b) =>
+    b.addEventListener('click', () => {
+      searchQuery = b.dataset.q;
+      input.value = searchQuery;
+      onQuery();
+      input.focus();
+      document.getElementById('products').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }));
 
   $app.querySelectorAll('.filters button').forEach((b) =>
     b.addEventListener('click', () => {
