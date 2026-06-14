@@ -206,6 +206,40 @@
       "priceHistory": [
         { "date": "2026-06-15", "price": 28070 }
       ]
+    },
+    {
+      "id": "karcher-mini-pressure-washer",
+      "name": "카처 미니 고압세척기 무선 휴대용 (접이식 Knb2)",
+      "category": "가전",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/ca1f/f1e5439d24cf4c5e4ade5dd5f750d0cfa4a37e08e4be5af5bed6ccc8900e.jpeg",
+      "priceOriginal": null,
+      "price": 138900,
+      "sale": false,
+      "note": "수전 때가 줄줄 나오는 미니 고압 세척기",
+      "description": "얼마 전 에어컨을 바꿨는데, 나중에 청소할 때 쓰려고 샀습니다. 화장실 청소할 때 써봤는데 수전 같은 곳에 끼여 있던 때가 줄줄 나왔습니다.",
+      "blog": "https://www.youtube.com/watch?v=q7I2Ez2mPo4",
+      "blogLabel": "▶ 이 영상 보고 샀어요 (유튜브)",
+      "link": "https://link.coupang.com/a/ez4hR6d1Qy",
+      "addedAt": "2026-06-15",
+      "priceHistory": [
+        { "date": "2026-06-15", "price": 138900 }
+      ]
+    },
+    {
+      "id": "gomgom-tofu-500-2",
+      "name": "곰곰 콩두부 500g 2개",
+      "category": "식품",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/4971315816352281-71f145eb-a22c-476b-9948-9ed834e96796.jpg",
+      "priceOriginal": null,
+      "price": 3240,
+      "sale": false,
+      "note": "마트 가기 어려울 때 주문하는 두부",
+      "description": "보통은 이마트 트레이더스나 마트킹 같은 데서 사는 편인데, 마트 가기 어려울 때는 이걸로 주문합니다.",
+      "link": "https://link.coupang.com/a/ez4po6VNIa",
+      "addedAt": "2026-06-15",
+      "priceHistory": [
+        { "date": "2026-06-15", "price": 3240 }
+      ]
     }
   ]
 }
