@@ -90,6 +90,24 @@ img { display: block; max-width: 100%; }
 .section-title h2 { margin: 0; font-size: 1.9rem; font-weight: 800; letter-spacing: -.01em; }
 .section-title .rule { width: 56px; height: 3px; background: var(--text); margin: 14px auto 0; border-radius: 2px; }
 
+/* ---------- Search bar ---------- */
+.search-bar { display: flex; justify-content: center; margin: 28px 0 4px; }
+.search-bar input {
+  width: 100%; max-width: 440px; padding: 12px 18px;
+  border: 1px solid var(--line); border-radius: 999px; background: #fff;
+  font-size: .98rem; font-family: var(--font); color: var(--text);
+  transition: border-color .15s, box-shadow .15s;
+}
+.search-bar input:focus {
+  outline: none; border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(31,111,235,.12);
+}
+.search-bar input::placeholder { color: var(--muted); }
+
+/* ---------- 나를 위한 추천 ---------- */
+.picks { padding-bottom: 8px; }
+.picks-sub { text-align: center; color: var(--muted); font-size: .92rem; margin: 10px 0 26px; }
+
 /* ---------- Filter tabs ---------- */
 .filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 28px 0 36px; }
 .filters button {

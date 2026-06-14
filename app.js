@@ -83,12 +83,64 @@ function renderNav(activeCat) {
     .join('');
 }
 
+/* ---------- 개인화 (이 브라우저 기준, localStorage) ---------- */
+const LS_KEY = 'jumeong_interest_v1';
+let searchQuery = '';
+let searchTimer = null;
+
+function loadInterest() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch (e) { return {}; }
+}
+function saveInterest(d) { try { localStorage.setItem(LS_KEY, JSON.stringify(d)); } catch (e) {} }
+
+/* kind: 'view'(상세 열람) | 'cta'(쿠팡 이동=구매의사) | 'search' */
+function track(kind, data) {
+  const d = loadInterest();
+  d.products = d.products || {};
+  d.categories = d.categories || {};
+  d.searches = d.searches || [];
+  if ((kind === 'view' || kind === 'cta') && data.id) {
+    const pr = d.products[data.id] = d.products[data.id] || { views: 0, cta: 0 };
+    if (kind === 'view') pr.views++; else pr.cta++;
+    if (data.cat) d.categories[data.cat] = (d.categories[data.cat] || 0) + (kind === 'cta' ? 2 : 1);
+  } else if (kind === 'search' && data.q) {
+    d.searches.push({ q: data.q });
+    if (d.searches.length > 50) d.searches = d.searches.slice(-50);
+    (data.cats || []).forEach((c) => { d.categories[c] = (d.categories[c] || 0) + 1; });
+  }
+  saveInterest(d);
+}
+
+function interestScore(p, d) {
+  const pr = (d.products || {})[p.id] || { views: 0, cta: 0 };
+  const catAff = (d.categories || {})[p.category] || 0;
+  return pr.views * 3 + pr.cta * 8 + catAff;
+}
+function isEngaged(p, d) {
+  const pr = (d.products || {})[p.id];
+  return !!(pr && (pr.views || pr.cta));
+}
+
+/* 직접 클릭/열람한 상품 + 관심 카테고리 기반 추천을 섞어 상위 N개 */
+function personalizedPicks(limit) {
+  const d = loadInterest();
+  const hasHistory = (d.products && Object.keys(d.products).length) ||
+    (d.categories && Object.keys(d.categories).length);
+  if (!hasHistory) return [];
+  const scored = DATA.products
+    .map((p) => ({ p, s: interestScore(p, d), eng: isEngaged(p, d) }))
+    .filter((x) => x.s > 0)
+    .sort((a, b) => (b.eng - a.eng) || (b.s - a.s) ||
+      String(b.p.addedAt || '').localeCompare(String(a.p.addedAt || '')));
+  return scored.slice(0, limit).map((x) => x.p);
+}
+
 /* ---------- List view ---------- */
 function renderList(cat) {
-  const items = sorted(cat === '전체' ? DATA.products : DATA.products.filter((p) => p.category === cat));
   const filters = DATA.categories
     .map((c) => `<button data-cat="${esc(c)}" class="${c === cat ? 'active' : ''}">${esc(c)}</button>`)
     .join('');
+  const picks = personalizedPicks(8);
 
   $app.innerHTML = `
     <section class="hero" style="background-image:url('${esc(HERO.image)}')">
@@ -101,22 +153,61 @@ function renderList(cat) {
       </div>
     </section>
 
+    ${picks.length ? `
+    <section class="section container picks">
+      <div class="section-title"><h2>🔖 나를 위한 추천</h2><div class="rule"></div></div>
+      <p class="picks-sub">자주 보고 클릭·검색한 상품을 바탕으로 골랐어요</p>
+      <div class="grid">${picks.map(card).join('')}</div>
+    </section>` : ''}
+
     <section class="section container" id="products">
       <div class="section-title"><h2>추천 상품</h2><div class="rule"></div></div>
+      <div class="search-bar">
+        <input id="searchInput" type="search" placeholder="상품 검색 (이름·카테고리·메모)"
+               value="${esc(searchQuery)}" autocomplete="off" aria-label="상품 검색">
+      </div>
       <div class="filters">${filters}</div>
-      ${items.length
-        ? `<div class="grid">${items.map(card).join('')}</div>`
-        : `<p class="empty">이 카테고리에는 아직 상품이 없어요.</p>`}
+      <div id="gridWrap"></div>
     </section>`;
+
+  const gridWrap = document.getElementById('gridWrap');
+  function computeItems() {
+    let list = cat === '전체' ? DATA.products : DATA.products.filter((p) => p.category === cat);
+    const q = searchQuery.trim().toLowerCase();
+    if (q) list = list.filter((p) =>
+      [p.name, p.note, p.category, p.description].some((f) => String(f || '').toLowerCase().includes(q)));
+    return sorted(list);
+  }
+  function applyGrid() {
+    const items = computeItems();
+    gridWrap.innerHTML = items.length
+      ? `<div class="grid">${items.map(card).join('')}</div>`
+      : `<p class="empty">${searchQuery.trim() ? '검색 결과가 없어요.' : '이 카테고리에는 아직 상품이 없어요.'}</p>`;
+    gridWrap.querySelectorAll('[data-id]').forEach((el) =>
+      el.addEventListener('click', () => openProduct(byId(el.dataset.id))));
+  }
+  applyGrid();
+
+  $app.querySelectorAll('.picks [data-id]').forEach((el) =>
+    el.addEventListener('click', () => openProduct(byId(el.dataset.id))));
+
+  const input = document.getElementById('searchInput');
+  input.addEventListener('input', (e) => {
+    searchQuery = e.target.value;
+    applyGrid();
+    clearTimeout(searchTimer);
+    const q = searchQuery.trim();
+    if (q.length >= 2) searchTimer = setTimeout(() => {
+      const cats = [...new Set(computeItems().map((p) => p.category))];
+      track('search', { q, cats });
+    }, 1200);
+  });
 
   $app.querySelectorAll('.filters button').forEach((b) =>
     b.addEventListener('click', () => {
       const c = b.dataset.cat;
       location.hash = c === '전체' ? '#/' : `#/c/${encodeURIComponent(c)}`;
     }));
-
-  $app.querySelectorAll('[data-id]').forEach((el) =>
-    el.addEventListener('click', () => openProduct(byId(el.dataset.id))));
 }
 
 function card(p) {
@@ -145,6 +236,7 @@ function openProduct(p) {
   if (p.description && p.description.trim()) {
     location.hash = `#/p/${encodeURIComponent(p.id)}`;
   } else {
+    track('cta', { id: p.id, cat: p.category });
     window.open(p.link, '_blank', 'noopener');
   }
 }
@@ -179,6 +271,9 @@ function renderDetail(p) {
         ${p.blog ? `<p class="detail-blog">📝 <a href="${esc(p.blog)}" target="_blank" rel="noopener">${esc(p.blogLabel || '관련 블로그 글 보기')}</a></p>` : ''}
       </div>` : ''}
     </div>`;
+  track('view', { id: p.id, cat: p.category });
+  const cta = $app.querySelector('.cta');
+  if (cta) cta.addEventListener('click', () => track('cta', { id: p.id, cat: p.category }));
   window.scrollTo({ top: 0 });
 }
 
