@@ -308,6 +308,38 @@
       "priceHistory": [
         { "date": "2026-06-15", "price": 19000 }
       ]
+    },
+    {
+      "id": "project-hailmary-ko",
+      "name": "프로젝트 헤일메리 (한글판, 앤디 위어)",
+      "category": "도서",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/98620137908222-98cff80e-1060-475b-acc6-abbbefec8285.jpg",
+      "priceOriginal": null,
+      "price": 19800,
+      "sale": false,
+      "note": "영화 보고 산 한글판 (앤디 위어)",
+      "description": "라이언 고슬링 주연 영화 〈프로젝트 헤일메리〉를 재미있게 보고 나서 책(한글판)도 구입했습니다.",
+      "link": "https://link.coupang.com/a/ez448yBbpY",
+      "addedAt": "2026-06-15",
+      "priceHistory": [
+        { "date": "2026-06-15", "price": 19800 }
+      ]
+    },
+    {
+      "id": "project-hailmary-en",
+      "name": "Project Hail Mary (영어 원서, Andy Weir)",
+      "category": "도서",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2025/08/29/15/8/b0bfd0f2-676b-4a25-afb1-1338cb7ca644.jpg",
+      "priceOriginal": null,
+      "price": 14500,
+      "sale": false,
+      "note": "영화 보고 산 영어 원서",
+      "description": "영화 〈프로젝트 헤일메리〉를 재미있게 보고 나서 영어 원서(Penguin UK)도 함께 구입했습니다.",
+      "link": "https://link.coupang.com/a/ez45DbypW0",
+      "addedAt": "2026-06-15",
+      "priceHistory": [
+        { "date": "2026-06-15", "price": 14500 }
+      ]
     }
   ]
 }
