@@ -97,7 +97,6 @@ function renderList(cat) {
         <p>${esc(HERO.subtitle)}</p>
         <div class="hero-actions">
           <a class="btn btn-solid" href="#products">SHOP NOW</a>
-          <a class="btn btn-ghost" href="https://world.junho85.pe.kr" rel="noopener">FIND MORE</a>
         </div>
       </div>
     </section>
