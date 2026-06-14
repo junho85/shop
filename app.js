@@ -141,6 +141,7 @@ function renderDetail(p) {
       <div class="detail-desc">
         <h3>설명</h3>
         <p>${esc(p.description)}</p>
+        ${p.blog ? `<p class="detail-blog">📝 <a href="${esc(p.blog)}" target="_blank" rel="noopener">${esc(p.blogLabel || '관련 블로그 글 보기')}</a></p>` : ''}
       </div>` : ''}
     </div>`;
   window.scrollTo({ top: 0 });
