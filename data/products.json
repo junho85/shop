@@ -340,6 +340,22 @@
       "priceHistory": [
         { "date": "2026-06-15", "price": 14500 }
       ]
+    },
+    {
+      "id": "homeplanet-silicagel-20",
+      "name": "홈플래닛 실리카겔 제습제 20g 20개",
+      "category": "생필품",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/1386776136251158-c858e576-679c-4797-a262-a613504a3093.jpg",
+      "priceOriginal": null,
+      "price": 8540,
+      "sale": false,
+      "note": "3D 프린터 필라멘트 제습용 실리카겔",
+      "description": "3D 프린터 필라멘트 제습을 위해 2026년 4월 12일에 주문했습니다. 필라멘트 보관함에 같이 넣어 두면 습기 관리에 좋습니다.",
+      "link": "https://link.coupang.com/a/ez5E0cZuBE",
+      "addedAt": "2026-06-15",
+      "priceHistory": [
+        { "date": "2026-06-15", "price": 8540 }
+      ]
     }
   ]
 }
