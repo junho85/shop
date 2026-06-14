@@ -8,9 +8,23 @@
     "게임",
     "가구",
     "미용",
+    "식품",
     "기타"
   ],
   "products": [
+    {
+      "id": "mowi-salmon-sashimi",
+      "name": "[로켓프레시] 모위 노르웨이산 프리미엄 생연어 횟감용 (냉장)",
+      "category": "식품",
+      "image": "https://ads-partners.coupang.com/image1/Qn-3WPFpjl22AaB8QsyIX3fLjZRieXGWUNCZoralxCowiCkUmgdfCOq4-WmX3q6sIo_9AFsbR_UlNEwHrmsANnYwdiExqNKDXDun1c2eKF1fUQWHZj47wB8EDo89lS6Ww2EpjRrnP0sQKvZj_FY-uLbM5lDw2WMg5Ji7RUFw9V0Z2CTutLEo_eWwopyeBuDmvbtAO4-F9a9vapjuY0tOokY8V6AM2iIYaRjLNKUXjLqeIbiDJLZao2o0jeaDtEKz8fhm3LjIjcMuqclsKI__ZAmwGV7MjcW46ZHZCrxLnrXYZ6JU",
+      "priceOriginal": null,
+      "price": 41490,
+      "sale": false,
+      "note": "요즘 종종 시켜 먹는 횟감용 생연어",
+      "description": "요즘 종종 시켜 먹는 횟감용 생연어입니다. 로켓프레시라 주문하면 신선하게 빨리 옵니다.",
+      "link": "https://link.coupang.com/a/ezW7TNKJC8",
+      "addedAt": "2026-06-14"
+    },
     {
       "id": "joytron-ex-jtpf210",
       "name": "조이트론 EX 레볼루션 조이스틱 JTPF-210",
