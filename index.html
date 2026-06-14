@@ -3,10 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>shop.junho85.pe.kr</title>
+  <title>주멍가게 — 직접 써본 추천템</title>
+  <meta name="description" content="주멍가게 — 직접 써보고 좋았던 제품만 엄선해 추천합니다.">
+  <meta property="og:title" content="주멍가게 — 직접 써본 추천템">
+  <meta property="og:description" content="직접 써보고 좋았던 제품만 엄선해 추천합니다.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>shop.junho85.pe.kr</h1>
-  <p>GitHub Pages 준비 중입니다.</p>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#/" class="logo">주멍가게</a>
+      <nav class="nav" id="nav"><!-- 카테고리 메뉴 (JS) --></nav>
+      <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <main id="app">
+    <div class="loading container">불러오는 중…</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p class="disclosure">이 사이트의 상품 링크는 쿠팡 파트너스 활동의 일환으로, 이를 통해 일정액의 수수료를 제공받습니다.</p>
+      <p class="copyright">© <span id="year"></span> 주멍가게 · <a href="https://world.junho85.pe.kr" rel="noopener">junho85</a></p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>
