@@ -201,6 +201,11 @@ img { display: block; max-width: 100%; }
   background: #ff4747; color: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.2);
 }
 .detail-img { position: relative; }
+.badge-wish {
+  position: absolute; top: 10px; right: 10px; z-index: 2;
+  padding: 5px 11px; border-radius: 999px; font-size: .75rem; font-weight: 800;
+  background: #6b4ee6; color: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.2);
+}
 .stars { color: var(--star); font-size: .85rem; letter-spacing: 1px; margin-top: 6px; opacity: .85; }
 
 /* ---------- Empty ---------- */

@@ -330,7 +330,10 @@ function renderList(cat) {
   function applyGrid() {
     const q = searchQuery.trim();
     if (!q) {
-      const items = sorted(cat === '전체' ? DATA.products : DATA.products.filter((p) => p.category === cat));
+      const items = sorted(
+        cat === '전체' ? DATA.products
+          : cat === '구매 희망' ? DATA.products.filter((p) => p.wish)
+            : DATA.products.filter((p) => p.category === cat));
       gridWrap.innerHTML = items.length
         ? `<div class="grid">${items.map(card).join('')}</div>`
         : `<p class="empty">이 카테고리에는 아직 상품이 없어요.</p>`;
@@ -419,7 +422,7 @@ function card(p) {
     <article class="card" data-id="${esc(p.id)}">
       <div class="card-thumb">
         ${p.platform === 'aliexpress' ? '<span class="badge-platform">AliExpress</span>' : ''}
-        ${p.sale ? '<span class="badge-sale">세일!</span>' : ''}
+        ${p.wish ? '<span class="badge-wish">🛒 구매 희망</span>' : (p.sale ? '<span class="badge-sale">세일!</span>' : '')}
         <img src="${esc(p.image || PLACEHOLDER)}" alt="${esc(p.name)}" referrerpolicy="no-referrer"
              onerror="this.onerror=null;this.src='${PLACEHOLDER}'">
       </div>
@@ -453,6 +456,7 @@ function renderDetail(p) {
       <div class="detail-grid">
         <div class="detail-img">
           ${p.platform === 'aliexpress' ? '<span class="badge-platform">AliExpress</span>' : ''}
+          ${p.wish ? '<span class="badge-wish">🛒 구매 희망</span>' : ''}
           <img src="${esc(p.image || PLACEHOLDER)}" alt="${esc(p.name)}" referrerpolicy="no-referrer"
                onerror="this.onerror=null;this.src='${PLACEHOLDER}'">
         </div>

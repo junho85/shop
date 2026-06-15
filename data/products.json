@@ -10,7 +10,8 @@
     "미용",
     "식품",
     "가전",
-    "기타"
+    "기타",
+    "구매 희망"
   ],
   "products": [
     {
@@ -444,13 +445,29 @@
       "name": "Garmin Vivoactive HR 충전 크래들 (USB 충전 케이블)",
       "category": "디지털",
       "platform": "aliexpress",
+      "wish": true,
       "image": "https://ae01.alicdn.com/kf/S9f43814715574dce9c0d2a8614e1b637g.jpg",
       "priceOriginal": null,
       "price": null,
       "sale": false,
-      "note": "가민 비보액티브 HR 충전 케이블 (알리)",
-      "description": "가민 비보액티브 HR용 충전 크래들(USB 케이블)입니다. 정품 충전기 분실·추가용으로 알리에서 저렴하게 구할 수 있습니다. 해외직구(AliExpress) 상품이라 배송에는 시간이 걸릴 수 있습니다.",
+      "note": "구매 희망 — 가민 비보액티브 HR 충전 케이블",
+      "description": "아직 써보진 않았고, 구매를 고려 중인 제품입니다. 가민 비보액티브 HR용 충전 크래들(USB 케이블)로, 정품 충전기 분실·추가용으로 알리에서 저렴하게 구할 수 있을 것 같습니다. 해외직구(AliExpress) 상품이라 배송에는 시간이 걸릴 수 있습니다.",
       "link": "https://s.click.aliexpress.com/e/_c2va2Ii5",
+      "addedAt": "2026-06-15",
+      "priceHistory": []
+    },
+    {
+      "id": "usb4-thunderbolt-240w-cable",
+      "name": "USB4 썬더볼트 3/4 240W C타입 고속충전 케이블 (40Gbps · 8K60Hz)",
+      "category": "디지털",
+      "platform": "aliexpress",
+      "image": "https://ae01.alicdn.com/kf/S73fba3b7884142baaa0955bc1dfa714bs.jpg",
+      "priceOriginal": null,
+      "price": null,
+      "sale": false,
+      "note": "쓰고 있는 USB4/썬더볼트 240W C타입 케이블",
+      "description": "구입해서 쓰고 있는 USB4/썬더볼트 3·4 호환 케이블입니다. 240W 고속충전 + 40Gbps 데이터 전송 + 8K60Hz를 지원합니다. 해외직구(AliExpress) 상품이라 배송에는 시간이 걸릴 수 있습니다.",
+      "link": "https://s.click.aliexpress.com/e/_c2w80TDR",
       "addedAt": "2026-06-15",
       "priceHistory": []
     }
