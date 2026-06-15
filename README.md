@@ -32,14 +32,16 @@
 다만 초기 샘플은 **검색 결과 페이지** 기반 딥링크라 특정 상품 페이지로 바로 가지 않는다.
 정확한 상품 페이지로 연결하려면 실제 쿠팡 상품 URL(`coupang.com/vp/products/...`)을 딥링크로 변환해 교체한다.
 
-새 상품 추가 시 링크 변환은 Claude Code `coupang-deeplink` 스킬을 쓰면 된다:
+새 상품 추가 시 링크 변환은 Claude Code `coupang-deeplink` 스킬을 쓰면 된다.
+**채널 구분을 위해 항상 `--sub-id shopshop`을 붙인다** (파트너스 수익 채널 = `shopshop`):
 ```bash
 # 실제 상품 검색(로켓 여부·모델명 확인) → 상품 URL 딥링크 변환
 python3 scripts/search.py "상품명" --rocket-only
-python3 scripts/deeplink.py "https://www.coupang.com/vp/products/<id>"
+python3 scripts/deeplink.py "https://www.coupang.com/vp/products/<id>" --sub-id shopshop
 # 또는 검색형 딥링크(폴백)
-python3 scripts/deeplink.py --search "상품명 모델명"
+python3 scripts/deeplink.py --search "상품명 모델명" --sub-id shopshop
 ```
+모든 상품 링크는 `link.coupang.com/a/...` 형태이며 클릭 시 `subid=shopshop`으로 추적된다.
 
 ## 제휴 고지
 
