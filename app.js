@@ -404,13 +404,21 @@ function renderList(cat) {
     }));
 }
 
+/* 가격 표시 — price가 null이면(알리 등 변동가) "가격 확인" */
+function priceLabel(p) {
+  if (p.price == null) return '<span class="now muted">가격 확인 ›</span>';
+  if (p.sale && p.priceOriginal) return `<span class="orig">${won(p.priceOriginal)}</span><span class="now">${won(p.price)}</span>`;
+  return `<span class="now">${won(p.price)}</span>`;
+}
+function ctaLabel(p) {
+  return p.platform === 'aliexpress' ? '알리익스프레스에서 보기' : '쿠팡 최저가 확인하기!';
+}
+
 function card(p) {
-  const price = p.sale && p.priceOriginal
-    ? `<span class="orig">${won(p.priceOriginal)}</span><span class="now">${won(p.price)}</span>`
-    : `<span class="now">${won(p.price)}</span>`;
   return `
     <article class="card" data-id="${esc(p.id)}">
       <div class="card-thumb">
+        ${p.platform === 'aliexpress' ? '<span class="badge-platform">AliExpress</span>' : ''}
         ${p.sale ? '<span class="badge-sale">세일!</span>' : ''}
         <img src="${esc(p.image || PLACEHOLDER)}" alt="${esc(p.name)}" referrerpolicy="no-referrer"
              onerror="this.onerror=null;this.src='${PLACEHOLDER}'">
@@ -418,7 +426,7 @@ function card(p) {
       <div class="card-body">
         <h3 class="card-name">${esc(p.name)}</h3>
         <p class="card-cat">${esc(p.category || '')}</p>
-        <p class="card-price">${price}</p>
+        <p class="card-price">${priceLabel(p)}</p>
         <div class="stars">★★★★★</div>
       </div>
     </article>`;
@@ -437,9 +445,6 @@ function openProduct(p) {
 
 /* ---------- Detail view ---------- */
 function renderDetail(p) {
-  const price = p.sale && p.priceOriginal
-    ? `<span class="orig">${won(p.priceOriginal)}</span><span class="now">${won(p.price)}</span>`
-    : `<span class="now">${won(p.price)}</span>`;
   $app.innerHTML = `
     <div class="detail container">
       <nav class="breadcrumb">
@@ -447,14 +452,15 @@ function renderDetail(p) {
       </nav>
       <div class="detail-grid">
         <div class="detail-img">
+          ${p.platform === 'aliexpress' ? '<span class="badge-platform">AliExpress</span>' : ''}
           <img src="${esc(p.image || PLACEHOLDER)}" alt="${esc(p.name)}" referrerpolicy="no-referrer"
                onerror="this.onerror=null;this.src='${PLACEHOLDER}'">
         </div>
         <div class="detail-info">
           <h1>${esc(p.name)}</h1>
-          <div class="detail-price">${price}</div>
-          <a class="cta" href="${esc(p.link)}" target="_blank" rel="nofollow sponsored noopener">쿠팡 최저가 확인하기!</a>
-          <p class="detail-cat">카테고리: ${esc(p.category)}</p>
+          <div class="detail-price">${priceLabel(p)}</div>
+          <a class="cta" href="${esc(p.link)}" target="_blank" rel="nofollow sponsored noopener">${esc(ctaLabel(p))}</a>
+          <p class="detail-cat">카테고리: ${esc(p.category)}${p.platform === 'aliexpress' ? ' · 해외직구(AliExpress)' : ''}</p>
         </div>
       </div>
       ${priceChart(p.priceHistory)}

@@ -438,6 +438,21 @@
           "price": 20850
         }
       ]
+    },
+    {
+      "id": "garmin-vivoactive-hr-charger",
+      "name": "Garmin Vivoactive HR 충전 크래들 (USB 충전 케이블)",
+      "category": "디지털",
+      "platform": "aliexpress",
+      "image": "https://ae01.alicdn.com/kf/S9f43814715574dce9c0d2a8614e1b637g.jpg",
+      "priceOriginal": null,
+      "price": null,
+      "sale": false,
+      "note": "가민 비보액티브 HR 충전 케이블 (알리)",
+      "description": "가민 비보액티브 HR용 충전 크래들(USB 케이블)입니다. 정품 충전기 분실·추가용으로 알리에서 저렴하게 구할 수 있습니다. 해외직구(AliExpress) 상품이라 배송에는 시간이 걸릴 수 있습니다.",
+      "link": "https://s.click.aliexpress.com/e/_c2va2Ii5",
+      "addedAt": "2026-06-15",
+      "priceHistory": []
     }
   ]
 }
