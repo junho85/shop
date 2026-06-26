@@ -463,7 +463,7 @@ function renderDetail(p) {
         </div>
         <div class="detail-info">
           <h1>${esc(p.name)}</h1>
-          ${p.note ? `<p class="detail-summary">💬 한줄 요약 · ${esc(p.note)}</p>` : ''}
+          ${p.note ? `<p class="detail-summary">💬 한줄 요약: ${esc(p.note)}</p>` : ''}
           <div class="detail-price">${priceLabel(p)}</div>
           <a class="cta" href="${esc(p.link)}" target="_blank" rel="nofollow sponsored noopener">${esc(ctaLabel(p))}</a>
           <p class="detail-cat">카테고리: ${esc(p.category)}${p.platform === 'aliexpress' ? ' · 해외직구(AliExpress)' : ''}</p>
