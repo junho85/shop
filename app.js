@@ -428,6 +428,7 @@ function card(p) {
       </div>
       <div class="card-body">
         <h3 class="card-name">${esc(p.name)}</h3>
+        ${p.note ? `<p class="card-note">${esc(p.note)}</p>` : ''}
         <p class="card-cat">${esc(p.category || '')}</p>
         <p class="card-price">${priceLabel(p)}</p>
         <div class="stars">★★★★★</div>
@@ -462,6 +463,7 @@ function renderDetail(p) {
         </div>
         <div class="detail-info">
           <h1>${esc(p.name)}</h1>
+          ${p.note ? `<p class="detail-summary">💬 한줄 요약 · ${esc(p.note)}</p>` : ''}
           <div class="detail-price">${priceLabel(p)}</div>
           <a class="cta" href="${esc(p.link)}" target="_blank" rel="nofollow sponsored noopener">${esc(ctaLabel(p))}</a>
           <p class="detail-cat">카테고리: ${esc(p.category)}${p.platform === 'aliexpress' ? ' · 해외직구(AliExpress)' : ''}</p>
@@ -470,7 +472,7 @@ function renderDetail(p) {
       ${priceChart(p.priceHistory)}
       ${p.description ? `
       <div class="detail-desc">
-        <h3>설명</h3>
+        <h3>상세리뷰</h3>
         <p>${esc(p.description)}</p>
         ${p.blog ? `<p class="detail-blog">📝 <a href="${esc(p.blog)}" target="_blank" rel="noopener">${esc(p.blogLabel || '관련 블로그 글 보기')}</a></p>` : ''}
       </div>` : ''}
