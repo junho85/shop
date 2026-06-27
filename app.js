@@ -467,9 +467,9 @@ function renderDetail(p) {
           <div class="detail-price">${priceLabel(p)}</div>
           <a class="cta" href="${esc(p.link)}" target="_blank" rel="nofollow sponsored noopener">${esc(ctaLabel(p))}</a>
           <p class="detail-cat">카테고리: ${esc(p.category)}${p.platform === 'aliexpress' ? ' · 해외직구(AliExpress)' : ''}</p>
+          ${priceChart(p.priceHistory)}
         </div>
       </div>
-      ${priceChart(p.priceHistory)}
       ${p.description ? `
       <div class="detail-desc">
         <h3>상세리뷰</h3>
