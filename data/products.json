@@ -504,6 +504,25 @@
           "price": 10600
         }
       ]
+    },
+    {
+      "id": "haneul-bori-15l-12",
+      "name": "하늘보리 1.5L 12개",
+      "category": "식품",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/179655188983118-0309ea98-746f-4277-9820-c2f86ed7ad14.jpg",
+      "priceOriginal": 26400,
+      "price": 15600,
+      "sale": true,
+      "note": "회사 냉장고에서 맛 들려 집에서도 사 먹는 무가당 보리차 음료. 보관·휴대 편해요.",
+      "description": "회사 음료 냉장고에 들어와서 먹다 보니 맛있어서 집에서도 사 먹고 있는 하늘보리입니다. 집에서 보리차를 직접 달여 먹으면 번거롭고 금방 쉬어서 아쉬웠는데, 하늘보리는 맛도 좋고 보관하기도 좋고 꺼내 먹기도 편리해서 즐겨 마십니다. 1.5L 12개 구성이라 한 번 사두면 한참 마실 수 있습니다.",
+      "link": "https://link.coupang.com/a/eYUvK95FxQ",
+      "addedAt": "2026-06-29",
+      "priceHistory": [
+        {
+          "date": "2026-06-29",
+          "price": 15600
+        }
+      ]
     }
   ]
 }
