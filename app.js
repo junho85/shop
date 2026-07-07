@@ -8,6 +8,7 @@ const HERO = {
 };
 
 let DATA = { categories: ['전체'], products: [] };
+let DEALS = { fetchedAt: '', deals: [] };
 
 const $app = document.getElementById('app');
 const $nav = document.getElementById('nav');
@@ -318,7 +319,9 @@ function renderList(cat) {
       </div>
       <div class="filters">${filters}</div>
       <div id="gridWrap"></div>
-    </section>`;
+    </section>
+
+    ${cat === '전체' ? dealsSection() : ''}`;
 
   const gridWrap = document.getElementById('gridWrap');
   function renderResults(res) {
@@ -356,22 +359,8 @@ function renderList(cat) {
   $app.querySelectorAll('.picks [data-id]').forEach((el) =>
     el.addEventListener('click', () => openProduct(byId(el.dataset.id))));
 
-  const carousel = document.getElementById('picksCarousel');
-  if (carousel) {
-    const updateArrows = () => {
-      const max = carousel.scrollWidth - carousel.clientWidth - 2;
-      const prev = $app.querySelector('.carousel-btn.prev');
-      const next = $app.querySelector('.carousel-btn.next');
-      if (prev) prev.classList.toggle('hidden', carousel.scrollLeft <= 2);
-      if (next) next.classList.toggle('hidden', carousel.scrollLeft >= max || max <= 0);
-    };
-    $app.querySelectorAll('.carousel-btn').forEach((b) =>
-      b.addEventListener('click', () => {
-        carousel.scrollBy({ left: Number(b.dataset.dir) * carousel.clientWidth * 0.8, behavior: 'smooth' });
-      }));
-    carousel.addEventListener('scroll', updateArrows, { passive: true });
-    updateArrows();
-  }
+  wireCarousel(document.getElementById('picksCarousel'));
+  wireCarousel(document.getElementById('dealsCarousel'));
 
   const input = document.getElementById('searchInput');
   function onQuery() {
@@ -405,6 +394,62 @@ function renderList(cat) {
       const c = b.dataset.cat;
       location.hash = c === '전체' ? '#/' : `#/c/${encodeURIComponent(c)}`;
     }));
+}
+
+/* ---------- 🔥 오늘의 핫딜 (쿠팡 골드박스, 자동 수집) ---------- */
+/* 직접 써본 추천 상품과 분리된 섹션. 카드는 상세 없이 쿠팡으로 바로 이동. */
+function dealCard(d) {
+  const tags = [d.isRocket ? '🚀 로켓' : '', d.isFreeShipping ? '무료배송' : '']
+    .filter(Boolean).join(' · ');
+  return `
+    <a class="deal-card" href="${esc(d.url)}" target="_blank" rel="nofollow sponsored noopener">
+      <div class="deal-thumb">
+        <img src="${esc(d.image || PLACEHOLDER)}" alt="${esc(d.name)}" referrerpolicy="no-referrer"
+             loading="lazy" onerror="this.onerror=null;this.src='${PLACEHOLDER}'">
+      </div>
+      <div class="deal-body">
+        <p class="deal-name">${esc(d.name)}</p>
+        <p class="deal-price">${won(d.price)}</p>
+        ${tags ? `<p class="deal-tags">${esc(tags)}</p>` : ''}
+      </div>
+    </a>`;
+}
+
+function dealsSection() {
+  const list = (DEALS.deals || []);
+  if (!list.length) return '';
+  return `
+    <section class="deals-band">
+      <div class="container">
+        <div class="section-title"><h2>🔥 오늘의 핫딜</h2><div class="rule"></div></div>
+        <p class="deals-sub">쿠팡 골드박스 실시간 특가예요. <strong>직접 써보고 고른 추천 상품이 아니라</strong>, 쿠팡이 매일 갱신하는 인기 특가 목록입니다.${DEALS.fetchedAt ? ` <span class="deals-time">(${esc(DEALS.fetchedAt)} 기준)</span>` : ''}</p>
+        <div class="carousel-wrap">
+          <button class="carousel-btn prev" aria-label="이전 특가" data-dir="-1">‹</button>
+          <div class="carousel" id="dealsCarousel">${list.map(dealCard).join('')}</div>
+          <button class="carousel-btn next" aria-label="다음 특가" data-dir="1">›</button>
+        </div>
+      </div>
+    </section>`;
+}
+
+/* 캐러셀 좌우 버튼 배선 (picks·deals 공용) */
+function wireCarousel(carousel) {
+  if (!carousel) return;
+  const wrap = carousel.closest('.carousel-wrap');
+  if (!wrap) return;
+  const prev = wrap.querySelector('.carousel-btn.prev');
+  const next = wrap.querySelector('.carousel-btn.next');
+  const updateArrows = () => {
+    const max = carousel.scrollWidth - carousel.clientWidth - 2;
+    if (prev) prev.classList.toggle('hidden', carousel.scrollLeft <= 2);
+    if (next) next.classList.toggle('hidden', carousel.scrollLeft >= max || max <= 0);
+  };
+  wrap.querySelectorAll('.carousel-btn').forEach((b) =>
+    b.addEventListener('click', () => {
+      carousel.scrollBy({ left: Number(b.dataset.dir) * carousel.clientWidth * 0.8, behavior: 'smooth' });
+    }));
+  carousel.addEventListener('scroll', updateArrows, { passive: true });
+  updateArrows();
 }
 
 /* 가격 표시 — price가 null이면(알리 등 변동가) "가격 확인" */
@@ -496,11 +541,17 @@ $nav.addEventListener('click', (e) => {
 document.getElementById('year').textContent = '2026';
 window.addEventListener('hashchange', render);
 
-fetch('data/products.json', { cache: 'no-cache' })
-  .then((res) => { if (!res.ok) throw new Error('데이터를 불러올 수 없습니다.'); return res.json(); })
-  .then((json) => {
-    DATA = json;
+Promise.all([
+  fetch('data/products.json', { cache: 'no-cache' })
+    .then((res) => { if (!res.ok) throw new Error('데이터를 불러올 수 없습니다.'); return res.json(); }),
+  fetch('data/deals.json', { cache: 'no-cache' })
+    .then((res) => (res.ok ? res.json() : null))
+    .catch(() => null),
+])
+  .then(([products, deals]) => {
+    DATA = products;
     if (!DATA.categories.includes('전체')) DATA.categories.unshift('전체');
+    if (deals && Array.isArray(deals.deals)) DEALS = deals;
     render();
   })
   .catch((err) => {

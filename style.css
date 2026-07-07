@@ -154,6 +154,40 @@ img { display: block; max-width: 100%; }
   .carousel-btn { display: none; }
 }
 
+/* ---------- 🔥 오늘의 핫딜 (골드박스, 자동 수집) ---------- */
+.deals-band {
+  margin-top: 36px;
+  padding: 40px 0 44px;
+  background: linear-gradient(180deg, #fbf5ea, #f7efe0);
+  border-top: 1px solid #efe3cd;
+  border-bottom: 1px solid #efe3cd;
+}
+.deals-sub {
+  text-align: center; color: var(--muted); font-size: .92rem;
+  max-width: 640px; margin: 10px auto 24px; line-height: 1.55;
+}
+.deals-sub strong { color: #a9762e; font-weight: 700; }
+.deals-time { white-space: nowrap; }
+.carousel .deal-card {
+  flex: 0 0 200px; scroll-snap-align: start;
+  display: flex; flex-direction: column; text-decoration: none; color: inherit;
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: hidden; box-shadow: var(--shadow); transition: transform .12s;
+}
+.carousel .deal-card:hover { transform: translateY(-4px); }
+.deal-thumb { aspect-ratio: 1/1; background: var(--bg-soft); }
+.deal-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.deal-body { padding: 12px 13px 14px; }
+.deal-name {
+  margin: 0; font-size: .92rem; font-weight: 600; line-height: 1.35; color: var(--text);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.deal-price { margin: 8px 0 0; font-size: 1.05rem; font-weight: 800; color: #c0392b; }
+.deal-tags { margin: 6px 0 0; font-size: .78rem; color: var(--muted); font-weight: 600; }
+@media (max-width: 760px) {
+  .carousel .deal-card { flex-basis: 150px; }
+}
+
 /* ---------- Filter tabs ---------- */
 .filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 28px 0 36px; }
 .filters button {
