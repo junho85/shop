@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#caa06a"/>
+      <stop offset="0.5" stop-color="#d8b884"/>
+      <stop offset="1" stop-color="#b98a52"/>
+    </linearGradient>
+    <radialGradient id="r" cx="0.72" cy="0.28" r="0.85">
+      <stop offset="0" stop-color="#e6cda0" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#b98a52" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g)"/>
+  <rect width="1200" height="630" fill="url(#r)"/>
+  <g fill="#ffffff" opacity="0.06">
+    <circle cx="960" cy="150" r="200"/>
+    <circle cx="1090" cy="470" r="130"/>
+    <circle cx="160" cy="520" r="170"/>
+  </g>
+  <g font-family="-apple-system, 'Apple SD Gothic Neo', 'Pretendard', sans-serif" text-anchor="middle">
+    <text x="600" y="300" font-size="128" font-weight="800" fill="#ffffff" letter-spacing="2">주멍가게</text>
+    <text x="600" y="382" font-size="42" font-weight="600" fill="#ffffff" opacity="0.95">직접 써보고 좋았던 제품만 엄선해 추천합니다</text>
+    <rect x="524" y="428" width="152" height="4" rx="2" fill="#ffffff" opacity="0.85"/>
+    <text x="600" y="486" font-size="30" font-weight="500" fill="#ffffff" opacity="0.8">shop.junho85.pe.kr</text>
+  </g>
+</svg>
