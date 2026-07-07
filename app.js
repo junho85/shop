@@ -303,25 +303,31 @@ function renderList(cat) {
       </div>
     </section>` : ''}
 
-    <section class="section container" id="products">
-      <div class="section-title"><h2>추천 상품</h2><div class="rule"></div></div>
-      <div class="search-bar">
-        <input id="searchInput" type="search" placeholder="검색하거나 필요한 걸 말해보세요 (예: 주말에 먹을 거, 전구가 깜빡)"
-               value="${esc(searchQuery)}" autocomplete="off" aria-label="상품 검색 및 추천">
+    <div class="layout container">
+      <div class="main-col">
+        <section class="products-section" id="products">
+          <div class="section-title"><h2>추천 상품</h2><div class="rule"></div></div>
+          <div class="search-bar">
+            <input id="searchInput" type="search" placeholder="검색하거나 필요한 걸 말해보세요 (예: 주말에 먹을 거, 전구가 깜빡)"
+                   value="${esc(searchQuery)}" autocomplete="off" aria-label="상품 검색 및 추천">
+          </div>
+          <div class="chips">
+            ${['주말에 먹을 거', '전구가 깜빡거릴 때', '추천 도서', '화장실 청소', '간단한 아침'].map((c) =>
+              `<button class="chip" data-q="${esc(c)}">${esc(c)}</button>`).join('')}
+          </div>
+          <div class="ai-row">
+            <button id="aiToggle" class="ai-toggle"></button>
+            <span id="aiStatus" class="ai-status"></span>
+          </div>
+          <div class="filters">${filters}</div>
+          <div id="gridWrap"></div>
+        </section>
       </div>
-      <div class="chips">
-        ${['주말에 먹을 거', '전구가 깜빡거릴 때', '추천 도서', '화장실 청소', '간단한 아침'].map((c) =>
-          `<button class="chip" data-q="${esc(c)}">${esc(c)}</button>`).join('')}
-      </div>
-      <div class="ai-row">
-        <button id="aiToggle" class="ai-toggle"></button>
-        <span id="aiStatus" class="ai-status"></span>
-      </div>
-      <div class="filters">${filters}</div>
-      <div id="gridWrap"></div>
-    </section>
-
-    ${cat === '전체' ? dealsSection() : ''}`;
+      <aside class="side-col">
+        ${dealsBox()}
+        ${searchBox()}
+      </aside>
+    </div>`;
 
   const gridWrap = document.getElementById('gridWrap');
   function renderResults(res) {
@@ -360,7 +366,6 @@ function renderList(cat) {
     el.addEventListener('click', () => openProduct(byId(el.dataset.id))));
 
   wireCarousel(document.getElementById('picksCarousel'));
-  wireCarousel(document.getElementById('dealsCarousel'));
 
   const input = document.getElementById('searchInput');
   function onQuery() {
@@ -397,42 +402,46 @@ function renderList(cat) {
 }
 
 /* ---------- 🔥 오늘의 핫딜 (쿠팡 골드박스, 자동 수집) ---------- */
-/* 직접 써본 추천 상품과 분리된 섹션. 카드는 상세 없이 쿠팡으로 바로 이동. */
-function dealCard(d) {
-  const tags = [d.isRocket ? '🚀 로켓' : '', d.isFreeShipping ? '무료배송' : '']
-    .filter(Boolean).join(' · ');
+/* 사이드바에 세로 리스트로 표시. 직접 써본 추천과 분리, 쿠팡으로 바로 이동. */
+const SIDE_DEAL_LIMIT = 6;
+
+function sideDealItem(d) {
   return `
-    <a class="deal-card" href="${esc(d.url)}" target="_blank" rel="nofollow sponsored noopener">
-      <div class="deal-thumb">
+    <a class="side-deal" href="${esc(d.url)}" target="_blank" rel="nofollow sponsored noopener">
+      <div class="side-deal-thumb">
         <img src="${esc(d.image || PLACEHOLDER)}" alt="${esc(d.name)}" referrerpolicy="no-referrer"
              loading="lazy" onerror="this.onerror=null;this.src='${PLACEHOLDER}'">
       </div>
-      <div class="deal-body">
-        <p class="deal-name">${esc(d.name)}</p>
-        <p class="deal-price">${won(d.price)}</p>
-        ${tags ? `<p class="deal-tags">${esc(tags)}</p>` : ''}
+      <div class="side-deal-info">
+        <p class="side-deal-name">${esc(d.name)}</p>
+        <p class="side-deal-price">${won(d.price)}${d.isRocket ? ' <span class="side-deal-rocket">🚀</span>' : ''}</p>
       </div>
     </a>`;
 }
 
-function dealsSection() {
-  const list = (DEALS.deals || []);
+function dealsBox() {
+  const list = (DEALS.deals || []).slice(0, SIDE_DEAL_LIMIT);
   if (!list.length) return '';
   return `
-    <section class="deals-band">
-      <div class="container">
-        <div class="section-title"><h2>🔥 오늘의 핫딜</h2><div class="rule"></div></div>
-        <p class="deals-sub">쿠팡 골드박스 실시간 특가예요. <strong>직접 써보고 고른 추천 상품이 아니라</strong>, 쿠팡이 매일 갱신하는 인기 특가 목록입니다.${DEALS.fetchedAt ? ` <span class="deals-time">(${esc(DEALS.fetchedAt)} 기준)</span>` : ''}</p>
-        <div class="carousel-wrap">
-          <button class="carousel-btn prev" aria-label="이전 특가" data-dir="-1">‹</button>
-          <div class="carousel" id="dealsCarousel">${list.map(dealCard).join('')}</div>
-          <button class="carousel-btn next" aria-label="다음 특가" data-dir="1">›</button>
-        </div>
-      </div>
+    <section class="side-box side-deals">
+      <h3>🔥 오늘의 핫딜</h3>
+      <p class="side-note">쿠팡 골드박스 실시간 특가예요. <strong>직접 써본 추천이 아니라</strong> 쿠팡이 매일 갱신하는 인기 특가입니다.</p>
+      <div class="side-deal-list">${list.map(sideDealItem).join('')}</div>
+      ${DEALS.fetchedAt ? `<p class="side-time">${esc(DEALS.fetchedAt)} 기준</p>` : ''}
     </section>`;
 }
 
-/* 캐러셀 좌우 버튼 배선 (picks·deals 공용) */
+function searchBox() {
+  return `
+    <section class="side-box side-search">
+      <h3>🔎 쿠팡에서 검색</h3>
+      <p>주멍가게에 없는 상품도 쿠팡에서 바로 찾아보세요.</p>
+      <iframe src="https://ads-partners.coupang.com/iframe/search-bar?id=1905271823563450211004594-f2&type=f2&trackingCode=AF7634218"
+              width="100%" height="36" frameborder="0" scrolling="no" title="쿠팡 검색"></iframe>
+    </section>`;
+}
+
+/* 캐러셀 좌우 버튼 배선 (picks 전용) */
 function wireCarousel(carousel) {
   if (!carousel) return;
   const wrap = carousel.closest('.carousel-wrap');
