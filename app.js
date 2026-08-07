@@ -66,6 +66,7 @@ function parseHash() {
 function render() {
   const r = parseHash();
   renderNav(r.view === 'list' ? r.cat : null);
+  renderRail();
   if (r.view === 'detail') {
     const p = byId(r.id);
     if (p) return renderDetail(p);
@@ -303,31 +304,23 @@ function renderList(cat) {
       </div>
     </section>` : ''}
 
-    <div class="layout container">
-      <div class="main-col">
-        <section class="products-section" id="products">
-          <div class="section-title"><h2>추천 상품</h2><div class="rule"></div></div>
-          <div class="search-bar">
-            <input id="searchInput" type="search" placeholder="검색하거나 필요한 걸 말해보세요 (예: 주말에 먹을 거, 전구가 깜빡)"
-                   value="${esc(searchQuery)}" autocomplete="off" aria-label="상품 검색 및 추천">
-          </div>
-          <div class="chips">
-            ${['주말에 먹을 거', '전구가 깜빡거릴 때', '추천 도서', '화장실 청소', '간단한 아침'].map((c) =>
-              `<button class="chip" data-q="${esc(c)}">${esc(c)}</button>`).join('')}
-          </div>
-          <div class="ai-row">
-            <button id="aiToggle" class="ai-toggle"></button>
-            <span id="aiStatus" class="ai-status"></span>
-          </div>
-          <div class="filters">${filters}</div>
-          <div id="gridWrap"></div>
-        </section>
+    <section class="section products-section" id="products">
+      <div class="section-title"><h2>추천 상품</h2><div class="rule"></div></div>
+      <div class="search-bar">
+        <input id="searchInput" type="search" placeholder="검색하거나 필요한 걸 말해보세요 (예: 주말에 먹을 거, 전구가 깜빡)"
+               value="${esc(searchQuery)}" autocomplete="off" aria-label="상품 검색 및 추천">
       </div>
-      <aside class="side-col">
-        ${dealsBox()}
-        ${searchBox()}
-      </aside>
-    </div>`;
+      <div class="chips">
+        ${['주말에 먹을 거', '전구가 깜빡거릴 때', '추천 도서', '화장실 청소', '간단한 아침'].map((c) =>
+          `<button class="chip" data-q="${esc(c)}">${esc(c)}</button>`).join('')}
+      </div>
+      <div class="ai-row">
+        <button id="aiToggle" class="ai-toggle"></button>
+        <span id="aiStatus" class="ai-status"></span>
+      </div>
+      <div class="filters">${filters}</div>
+      <div id="gridWrap"></div>
+    </section>`;
 
   const gridWrap = document.getElementById('gridWrap');
   function renderResults(res) {
@@ -439,6 +432,13 @@ function searchBox() {
       <iframe src="https://ads-partners.coupang.com/iframe/search-bar?id=1905271823563450211004594-f2&type=f2&trackingCode=AF7634218"
               width="100%" height="36" frameborder="0" scrolling="no" title="쿠팡 검색"></iframe>
     </section>`;
+}
+
+/* 우측 레일(핫딜 + 쿠팡 검색) — 페이지 레벨, 모든 뷰 공통 */
+function renderRail() {
+  const rail = document.getElementById('rail');
+  if (!rail) return;
+  rail.innerHTML = dealsBox() + searchBox();
 }
 
 /* 캐러셀 좌우 버튼 배선 (picks 전용) */

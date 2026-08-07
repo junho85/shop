@@ -154,11 +154,17 @@ img { display: block; max-width: 100%; }
   .carousel-btn { display: none; }
 }
 
-/* ---------- 본문 + 사이드바 2단 레이아웃 ---------- */
-.layout { display: flex; gap: 34px; align-items: flex-start; }
-.main-col { flex: 1 1 auto; min-width: 0; }
+/* ---------- 페이지 전체 2단 (본문 + 우측 레일) ---------- */
+.page { display: flex; gap: 34px; align-items: flex-start; }
+#app { flex: 1 1 auto; min-width: 0; }
+/* 본문 섹션은 이미 .page가 컨테이너 역할을 하므로 중첩 .container를 무력화 */
+#app .container { max-width: none; padding: 0; }
+/* 히어로는 좌측 컬럼 안에서 라운드 카드로 */
+#app .hero { border-radius: var(--radius); overflow: hidden; min-height: 300px; }
+#app .hero::before { border-radius: var(--radius); }
 .products-section { padding: 44px 0 64px; }
-.side-col { flex: 0 0 296px; padding-top: 44px; position: sticky; top: 84px; }
+
+.rail { flex: 0 0 296px; padding-top: 44px; position: sticky; top: 84px; }
 
 .side-box {
   background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
@@ -195,8 +201,8 @@ img { display: block; max-width: 100%; }
 .side-search iframe { max-width: 100%; }
 
 @media (max-width: 900px) {
-  .layout { flex-direction: column; gap: 0; }
-  .side-col { position: static; flex-basis: auto; width: 100%; padding-top: 0; padding-bottom: 40px; }
+  .page { flex-direction: column; gap: 0; }
+  .rail { position: static; flex-basis: auto; width: 100%; padding-top: 0; padding-bottom: 40px; }
   .products-section { padding-bottom: 40px; }
 }
 
