@@ -523,6 +523,22 @@
           "price": 15600
         }
       ]
+    },
+    {
+      "id": "bambulab-cyberbrick-kit",
+      "name": "밤부랩 사이버브릭 하드웨어 키트 (ZK003 / ZK004 얼티밋) ESP32-C3 프로그래밍 로봇 키트",
+      "category": "디지털",
+      "platform": "aliexpress",
+      "wish": true,
+      "image": "https://ae01.alicdn.com/kf/S87ea1022449a4e7783d975a87ff7f5f6c.png",
+      "priceOriginal": null,
+      "price": null,
+      "sale": false,
+      "note": "구매 희망 — 밤부랩 사이버브릭 RC 키트 (아직 안 써봄).",
+      "description": "아직 써보진 않았고, 구매를 고려 중인 제품입니다. 밤부랩(Bambu Lab) 사이버브릭(CyberBrick)은 ESP32-C3 기반의 컨트롤러·모터·배터리 모듈 세트로, 3D 프린터로 뽑은 바디에 끼워 RC카·로봇 같은 걸 만들 수 있는 키트입니다. 스타터 격인 ZK003과 모듈이 더 들어간 ZK004 얼티밋 두 가지 옵션이 있습니다. 3D 프린터를 놀리지 않고 아이랑 같이 뭔가 굴러가는 걸 만들어 보고 싶어서 위시리스트에 담아 뒀습니다. 해외직구(AliExpress) 상품이라 배송에는 시간이 걸릴 수 있습니다.",
+      "link": "https://s.click.aliexpress.com/e/_c3q8TqcX",
+      "addedAt": "2026-08-28",
+      "priceHistory": []
     }
   ]
 }
