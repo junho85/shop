@@ -596,6 +596,25 @@
           "price": 19640
         }
       ]
+    },
+    {
+      "id": "chamsauce-570g-6",
+      "name": "참 고기엔 참소스 (570g, 6개)",
+      "category": "식품",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/153342641985415-c5678bec-e9a6-447d-a92a-29f7457726ca.jpg",
+      "priceOriginal": null,
+      "price": 16490,
+      "sale": false,
+      "note": "고기 먹을 때 쓰는 참소스. 양파 얇게 썰어 같이 먹으면 맛있어요.",
+      "description": "고기 먹을 때 쓰는 참소스입니다. 저희 집에서 먹는 방법은 간단합니다 — 양파를 얇게 썰어 참소스에 담가 두었다가 구운 고기와 같이 집어 먹습니다. 소스만 찍어 먹는 것보다 양파의 아삭함과 매콤함이 더해져 훨씬 맛있고, 고기가 느끼해질 때쯤 입가심도 됩니다.\n\n570g 6개 묶음이라 16,490원, 100g당 482원 꼴입니다. 1개씩 사면 3,500원이니 묶음이 확실히 쌉니다. 로켓배송이라 주문하면 다음날 옵니다. 소스 한 병이 꽤 오래 가긴 하지만, 고기 자주 구워 먹는 집이면 쟁여 둘 만합니다.",
+      "link": "https://link.coupang.com/a/gC4O4uBILA",
+      "addedAt": "2026-08-30",
+      "priceHistory": [
+        {
+          "date": "2026-08-30",
+          "price": 16490
+        }
+      ]
     }
   ]
 }
