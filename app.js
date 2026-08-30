@@ -1,12 +1,6 @@
 'use strict';
 
 const PLACEHOLDER = 'assets/placeholder.svg';
-const HERO = {
-  title: '우리집 추천 생필품!',
-  subtitle: '직접 써본 좋은 제품만 엄선했습니다!',
-  image: 'assets/hero.svg',
-};
-
 let DATA = { categories: ['전체'], products: [] };
 let DEALS = { fetchedAt: '', deals: [] };
 
@@ -63,6 +57,17 @@ function parseHash() {
   return { view: 'list', cat: '전체' };
 }
 
+const SCROLL_OFFSET = 76;   // sticky 헤더(65px) + 여백
+
+/* innerHTML 교체 후 레이아웃이 확정된 뒤 실행.
+   rAF는 창이 비활성이면 초당 몇 번까지 throttle되므로 타이머와 경합시켜 먼저 오는 쪽을 쓴다 */
+function afterLayout(fn) {
+  let done = false;
+  const once = () => { if (!done) { done = true; fn(); } };
+  requestAnimationFrame(() => requestAnimationFrame(once));
+  setTimeout(once, 50);
+}
+
 function render() {
   const r = parseHash();
   renderNav(r.view === 'list' ? r.cat : null);
@@ -74,12 +79,33 @@ function render() {
     return;
   }
   renderList(r.cat || '전체');
-  window.scrollTo({ top: 0 });
+  /* 카테고리를 고르면 위쪽 추천 캐러셀을 지나 상품 리스트로 내려간다.
+     innerHTML 직후엔 레이아웃이 확정되기 전이라 스크롤이 씹힌다 → 다음 프레임에 실행 */
+  /* 카테고리를 고르면 상품 리스트로, 홈이면 맨 위로.
+     innerHTML 교체 직후엔 레이아웃이 확정되기 전이라 다음 프레임에 실행한다 */
+  afterLayout(() => {
+    let top = 0;
+    if (r.cat && r.cat !== '전체') {
+      const el = document.getElementById('products');
+      if (el) top = el.getBoundingClientRect().top + window.scrollY - SCROLL_OFFSET;
+    }
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+  });
 }
 
 /* ---------- Nav ---------- */
+/* 상품이 하나도 없는 카테고리는 메뉴·필터에 노출하지 않는다 */
+function categoryCount(c) {
+  if (c === '전체') return DATA.products.length;
+  if (c === '구매 희망') return DATA.products.filter((p) => p.wish).length;
+  return DATA.products.filter((p) => p.category === c).length;
+}
+function visibleCategories() {
+  return DATA.categories.filter((c) => categoryCount(c) > 0);
+}
+
 function renderNav(activeCat) {
-  $nav.innerHTML = DATA.categories
+  $nav.innerHTML = visibleCategories()
     .filter((c) => c !== '전체')
     .map((c) => `<a href="#/c/${encodeURIComponent(c)}" class="${c === activeCat ? 'active' : ''}">${esc(c)}</a>`)
     .join('');
@@ -277,22 +303,12 @@ async function aiSuggest(query, limit) {
 
 /* ---------- List view ---------- */
 function renderList(cat) {
-  const filters = DATA.categories
+  const filters = visibleCategories()
     .map((c) => `<button data-cat="${esc(c)}" class="${c === cat ? 'active' : ''}">${esc(c)}</button>`)
     .join('');
   const picks = personalizedPicks(8);
 
   $app.innerHTML = `
-    <section class="hero" style="background-image:url('${esc(HERO.image)}')">
-      <div class="container hero-inner">
-        <h1>${esc(HERO.title)}</h1>
-        <p>${esc(HERO.subtitle)}</p>
-        <div class="hero-actions">
-          <a class="btn btn-solid" href="#products">SHOP NOW</a>
-        </div>
-      </div>
-    </section>
-
     ${picks.length ? `
     <section class="section container picks">
       <div class="section-title"><h2>🔖 나를 위한 추천</h2><div class="rule"></div></div>
@@ -502,6 +518,21 @@ function openProduct(p) {
 }
 
 /* ---------- Detail view ---------- */
+/* 직접 찍은 설명 사진 — 상세 본문 하단.
+   loading="lazy"는 쓰지 않는다 (동적 삽입 + 뷰포트 내에서 Chrome이 영구 pending 됨) */
+function photoFigures(photos) {
+  if (!Array.isArray(photos) || !photos.length) return '';
+  return `
+    <div class="detail-photos">
+      ${photos.map((ph) => `
+        <figure class="detail-photo">
+          <img src="${esc(ph.src)}" alt="${esc(ph.caption || '')}"
+               onerror="this.onerror=null;this.closest('figure').remove()">
+          ${ph.caption ? `<figcaption>${esc(ph.caption)}</figcaption>` : ''}
+        </figure>`).join('')}
+    </div>`;
+}
+
 function renderDetail(p) {
   $app.innerHTML = `
     <div class="detail container">
@@ -528,6 +559,7 @@ function renderDetail(p) {
       <div class="detail-desc">
         <h3>상세리뷰</h3>
         <p>${esc(p.description)}</p>
+        ${photoFigures(p.photos)}
         ${p.blog ? `<p class="detail-blog">📝 <a href="${esc(p.blog)}" target="_blank" rel="noopener">${esc(p.blogLabel || '관련 블로그 글 보기')}</a></p>` : ''}
       </div>` : ''}
     </div>`;
@@ -536,6 +568,18 @@ function renderDetail(p) {
   if (cta) cta.addEventListener('click', () => track('cta', { id: p.id, cat: p.category }));
   window.scrollTo({ top: 0 });
 }
+
+/* ---------- 내부 라우팅 링크 ---------- */
+/* <a href="#/...">를 그냥 두면 브라우저가 자체 해시 스크롤(대상 없으면 최상단)을 수행해
+   render()의 스크롤을 덮어쓴다. 기본 동작을 막고 해시만 바꿔 hashchange로 넘긴다. */
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a[href^="#/"]');
+  if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+  e.preventDefault();
+  const href = a.getAttribute('href');
+  if (location.hash === href || (href === '#/' && !location.hash)) render();
+  else location.hash = href;
+});
 
 /* ---------- Mobile nav toggle ---------- */
 document.getElementById('navToggle').addEventListener('click', (e) => {

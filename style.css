@@ -22,6 +22,8 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
+  /* 렌더 직후 브라우저가 이전 스크롤 위치를 복원해 라우팅 스크롤을 덮어쓰는 것을 막는다 */
+  overflow-anchor: none;
   margin: 0;
   font-family: var(--font);
   color: var(--text);
@@ -51,6 +53,14 @@ img { display: block; max-width: 100%; }
 }
 .logo {
   font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em;
+  white-space: nowrap;
+}
+/* 헤더가 좁아지면 태그라인부터 접는다 (로고·카테고리 줄바꿈 방지) */
+@media (max-width: 1120px) { .tagline { display: none; } }
+/* 히어로를 걷어내고 헤더에 흡수한 태그라인 */
+.brand { display: flex; align-items: baseline; gap: 12px; flex: 0 0 auto; }
+.tagline {
+  font-size: .88rem; color: var(--muted); font-weight: 600; white-space: nowrap;
 }
 .nav { display: flex; gap: 4px; flex-wrap: wrap; }
 .nav a {
@@ -65,22 +75,6 @@ img { display: block; max-width: 100%; }
 }
 
 /* ---------- Hero ---------- */
-.hero {
-  position: relative; color: #fff;
-  background: #3a3a3a center/cover no-repeat;
-  min-height: 340px; display: flex; align-items: center;
-}
-.hero::before {
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(90deg, rgba(0,0,0,.55), rgba(0,0,0,.15));
-}
-.hero-inner { position: relative; padding: 56px 0; }
-.hero h1 {
-  margin: 0 0 14px; font-size: clamp(2rem, 5vw, 3.2rem);
-  font-weight: 800; letter-spacing: -.02em; text-shadow: 0 2px 12px rgba(0,0,0,.3);
-}
-.hero p { margin: 0 0 28px; font-size: clamp(1rem, 2.2vw, 1.3rem); opacity: .95; }
-.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 .btn {
   display: inline-block; padding: 13px 26px; border-radius: 4px;
   font-weight: 700; font-size: .95rem; cursor: pointer; border: 2px solid transparent;
@@ -133,8 +127,12 @@ img { display: block; max-width: 100%; }
 .ai-status { font-size: .82rem; color: var(--muted); }
 
 /* ---------- 나를 위한 추천 ---------- */
-.picks { padding-bottom: 8px; }
-.picks-sub { text-align: center; color: var(--muted); font-size: .92rem; margin: 10px 0 26px; }
+/* "나를 위한 추천"은 메인 상품 리스트를 받쳐주는 보조 섹션 — 작게 */
+.picks { padding: 30px 0 10px; }
+.picks .section-title h2 { font-size: 1.25rem; }
+.picks .section-title .rule { width: 36px; height: 2px; margin-top: 10px; }
+.picks-sub { text-align: center; color: var(--muted); font-size: .84rem; margin: 8px 0 16px; }
+.picks .carousel .card { flex-basis: 168px; }
 
 /* 가로 캐러셀 */
 .carousel-wrap { position: relative; }
@@ -158,7 +156,7 @@ img { display: block; max-width: 100%; }
 .carousel-btn.next { right: -8px; }
 .carousel-btn.hidden { opacity: 0; pointer-events: none; }
 @media (max-width: 760px) {
-  .carousel .card { flex-basis: 150px; }
+  .carousel .card, .picks .carousel .card { flex-basis: 150px; }
   .carousel-btn { display: none; }
 }
 
@@ -168,13 +166,14 @@ img { display: block; max-width: 100%; }
   /* 본문(--maxw)은 그대로 두고 레일은 그 바깥 오른쪽에 붙는다 */
   max-width: var(--page-maxw);
 }
-#app { flex: 1 1 var(--maxw); min-width: 0; max-width: var(--maxw); }
+#app { flex: 1 1 var(--maxw); min-width: 0; max-width: var(--maxw); overflow-anchor: none; }
 /* 본문 섹션은 이미 .page가 컨테이너 역할을 하므로 중첩 .container를 무력화 */
 #app .container { max-width: none; padding: 0; }
-/* 히어로는 좌측 컬럼 안에서 라운드 카드로 */
-#app .hero { border-radius: var(--radius); overflow: hidden; min-height: 300px; }
-#app .hero::before { border-radius: var(--radius); }
 .products-section { padding: 44px 0 64px; }
+/* 히어로가 없어졌으니 본문 첫 섹션이 헤더에 붙지 않게 */
+#app > .section:first-child { padding-top: 30px; }
+/* sticky 헤더에 제목이 가리지 않도록 */
+#products { scroll-margin-top: 76px; }
 
 .rail { flex: 0 0 var(--rail-w); padding-top: 44px; position: sticky; top: 84px; }
 
@@ -216,8 +215,10 @@ img { display: block; max-width: 100%; }
   .page,
   .site-header .container,
   .site-footer .container { max-width: var(--maxw); }
-  .page { flex-direction: column; gap: 0; }
-  #app { max-width: none; }
+  /* column 전환 시 align-items: flex-start가 가로축에 걸려 #app이 콘텐츠 폭만큼
+     부풀면서 가로 스크롤이 생긴다 → stretch + width 100%로 뷰포트에 가둔다 */
+  .page { flex-direction: column; gap: 0; align-items: stretch; }
+  #app { max-width: none; width: 100%; }
   .rail { position: static; flex-basis: auto; width: 100%; padding-top: 0; padding-bottom: 40px; }
   .products-section { padding-bottom: 40px; }
 }
@@ -310,6 +311,18 @@ img { display: block; max-width: 100%; }
 .detail-desc { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--line); }
 .detail-desc h3 { font-size: 1.1rem; margin: 0 0 16px; }
 .detail-desc p { white-space: pre-wrap; color: #444; }
+
+/* 직접 찍은 설명 사진 */
+.detail-photos { margin-top: 28px; display: flex; flex-direction: column; gap: 24px; }
+.detail-photo { margin: 0; }
+.detail-photo img {
+  width: 100%; max-width: 720px; height: auto;
+  border-radius: var(--radius); border: 1px solid var(--line);
+}
+.detail-photo figcaption {
+  margin-top: 9px; max-width: 720px;
+  font-size: .85rem; color: var(--muted); line-height: 1.5;
+}
 .detail-chart { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--line); }
 .detail-chart h3 { font-size: 1.1rem; margin: 0 0 16px; }
 .pricechart { width: 100%; max-width: 600px; height: auto; display: block; }

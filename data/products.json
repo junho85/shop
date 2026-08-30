@@ -615,6 +615,31 @@
           "price": 16490
         }
       ]
+    },
+    {
+      "id": "havit-ucle005-gan-240w",
+      "name": "해빗 UCLE005 6포트 240W 초고속 GaN PD 멀티 충전기",
+      "category": "디지털",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/image_audit/prod/37211f6f-16ef-46ed-9bf6-c8e37d88e44e_fixing_v2.png",
+      "priceOriginal": 128000,
+      "price": 96800,
+      "sale": true,
+      "note": "노트북 2대를 동시에 충전하는 6포트 240W GaN 충전기. 출력이 W로 표시됩니다.",
+      "description": "어제 주문해서 오늘 처음 써보고 있는 6포트 GaN 충전기입니다. 크기와 무게가 묵직한 편이라 들고 다니기 가볍진 않지만, 성능은 그만큼 나옵니다.\n\n지금 맥북 M5 Max를 포함해 노트북 2대를 동시에 충전하면서 쓰고 있습니다. 맥북에서 MiniMax H3를 돌리면 65W급 일반 충전기로는 전력이 모자라서, 충전기를 꽂아 둬도 배터리가 오히려 줄어듭니다. 이 충전기는 그 상황에서도 배터리가 줄지 않고 잘 버팁니다.\n\n맥북 정품 충전기도 물론 잘 되지만 포트가 하나뿐이라 여러 기기를 같이 충전하기엔 한계가 있습니다. 이건 USB-C 4개(C1은 140W PD3.1, 나머지 100W)에 USB-A 2개(각 30W)까지 있어서 노트북 여러 대와 주변기기를 한 번에 물릴 수 있습니다.\n\n앞면 디스플레이에 현재 출력이 W로 표시되는 것도 실용적입니다. 맥북에서 MiniMax H3를 돌리고 다른 노트북에서도 작업을 돌릴 때 237W까지 올라가는 걸 확인했습니다. 숫자가 보이니 실제로 충전이 제대로 되고 있는지 바로 알 수 있습니다.",
+      "photos": [
+        {
+          "src": "assets/photos/havit-ucle005-gan-240w-1.jpg",
+          "caption": "맥북에서 MiniMax H3를 돌리고 다른 노트북에서도 작업을 돌릴 때의 출력. 237W까지 올라갑니다."
+        }
+      ],
+      "link": "https://link.coupang.com/a/gDdN8hbqkS",
+      "addedAt": "2026-08-30",
+      "priceHistory": [
+        {
+          "date": "2026-08-30",
+          "price": 96800
+        }
+      ]
     }
   ]
 }
