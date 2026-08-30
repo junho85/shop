@@ -9,6 +9,10 @@
   --badge: #3a3f47;         /* 세일! 뱃지 */
   --star: #f4b400;
   --maxw: 1180px;
+  --rail-w: 296px;
+  --rail-gap: 34px;
+  /* 본문 + 우측 레일을 함께 감싸는 폭. 헤더·푸터도 여기에 맞춘다 */
+  --page-maxw: calc(1180px + 296px + 34px);
   --radius: 10px;
   --shadow: 0 1px 3px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.05);
   --font: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard",
@@ -29,6 +33,10 @@ a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 
 .container { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+
+/* 헤더·푸터는 본문+레일 전체 폭에 맞춘다 (본문 좌측 가장자리와 정렬) */
+.site-header .container,
+.site-footer .container { max-width: var(--page-maxw); }
 
 /* ---------- Header ---------- */
 .site-header {
@@ -155,8 +163,12 @@ img { display: block; max-width: 100%; }
 }
 
 /* ---------- 페이지 전체 2단 (본문 + 우측 레일) ---------- */
-.page { display: flex; gap: 34px; align-items: flex-start; }
-#app { flex: 1 1 auto; min-width: 0; }
+.page {
+  display: flex; gap: var(--rail-gap); align-items: flex-start;
+  /* 본문(--maxw)은 그대로 두고 레일은 그 바깥 오른쪽에 붙는다 */
+  max-width: var(--page-maxw);
+}
+#app { flex: 1 1 var(--maxw); min-width: 0; max-width: var(--maxw); }
 /* 본문 섹션은 이미 .page가 컨테이너 역할을 하므로 중첩 .container를 무력화 */
 #app .container { max-width: none; padding: 0; }
 /* 히어로는 좌측 컬럼 안에서 라운드 카드로 */
@@ -164,7 +176,7 @@ img { display: block; max-width: 100%; }
 #app .hero::before { border-radius: var(--radius); }
 .products-section { padding: 44px 0 64px; }
 
-.rail { flex: 0 0 296px; padding-top: 44px; position: sticky; top: 84px; }
+.rail { flex: 0 0 var(--rail-w); padding-top: 44px; position: sticky; top: 84px; }
 
 .side-box {
   background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
@@ -201,7 +213,11 @@ img { display: block; max-width: 100%; }
 .side-search iframe { max-width: 100%; }
 
 @media (max-width: 900px) {
+  .page,
+  .site-header .container,
+  .site-footer .container { max-width: var(--maxw); }
   .page { flex-direction: column; gap: 0; }
+  #app { max-width: none; }
   .rail { position: static; flex-basis: auto; width: 100%; padding-top: 0; padding-bottom: 40px; }
   .products-section { padding-bottom: 40px; }
 }
