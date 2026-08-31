@@ -57,6 +57,14 @@ img { display: block; max-width: 100%; }
 }
 /* 헤더가 좁아지면 태그라인부터 접는다 (로고·카테고리 줄바꿈 방지) */
 @media (max-width: 1120px) { .tagline { display: none; } }
+@media (max-width: 1000px) {
+  /* 카테고리가 접히므로 로고·검색·AI·토글 한 줄, 검색이 남는 공간을 먹는다 */
+  .header-tools { flex: 1 1 auto; margin: 0 12px; }
+}
+@media (max-width: 560px) {
+  .header-tools { margin: 0 8px; gap: 6px; }
+  .search-kbd { display: none; }
+}
 /* 히어로를 걷어내고 헤더에 흡수한 태그라인 */
 .brand { display: flex; align-items: baseline; gap: 12px; flex: 0 0 auto; }
 .tagline {
@@ -92,74 +100,79 @@ img { display: block; max-width: 100%; }
 .section-title h2 { margin: 0; font-size: 1.9rem; font-weight: 800; letter-spacing: -.01em; }
 .section-title .rule { width: 56px; height: 3px; background: var(--text); margin: 14px auto 0; border-radius: 2px; }
 
-/* ---------- Search bar ---------- */
-.search-bar { display: flex; justify-content: center; margin: 28px 0 4px; }
-.search-bar input {
-  width: 100%; max-width: 440px; padding: 12px 18px;
-  border: 1px solid var(--line); border-radius: 999px; background: #fff;
-  font-size: .98rem; font-family: var(--font); color: var(--text);
-  transition: border-color .15s, box-shadow .15s;
+/* ---------- 헤더 검색 ---------- */
+/* 검색과 AI 토글은 한 묶음 — space-between 이 둘을 갈라놓지 않게 래퍼로 붙인다 */
+.header-tools { display: flex; align-items: center; gap: 8px; flex: 0 1 424px; min-width: 0; margin: 0 20px; }
+.header-search { position: relative; flex: 1 1 auto; min-width: 0; }
+.header-search input {
+  width: 100%; padding: 9px 38px 9px 16px;
+  border: 1px solid var(--line); border-radius: 999px; background: var(--bg-soft);
+  font-size: .92rem; font-family: var(--font); color: var(--text);
+  transition: border-color .15s, box-shadow .15s, background .15s;
 }
-.search-bar input:focus {
-  outline: none; border-color: var(--accent);
+.header-search input:focus {
+  outline: none; border-color: var(--accent); background: #fff;
   box-shadow: 0 0 0 3px rgba(31,111,235,.12);
 }
-.search-bar input::placeholder { color: var(--muted); }
-.chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 12px 0 4px; }
-.chip {
-  padding: 7px 14px; border-radius: 999px; cursor: pointer;
-  border: 1px dashed var(--accent); background: rgba(31,111,235,.06); color: var(--accent);
-  font-size: .85rem; font-weight: 600; transition: background .15s;
+.header-search input::placeholder { color: var(--muted); }
+.header-search input::-webkit-search-cancel-button { cursor: pointer; }
+/* "/" 힌트 — 포커스되면 비켜준다 */
+.search-kbd {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  padding: 1px 7px; border-radius: 5px; pointer-events: none;
+  border: 1px solid var(--line); background: #fff; color: var(--muted);
+  font-family: var(--font); font-size: .75rem; font-weight: 700; line-height: 1.5;
+  transition: opacity .15s;
 }
-.chip:hover { background: rgba(31,111,235,.14); }
+.header-search input:focus ~ .search-kbd { opacity: 0; }
 .suggest-msg {
   text-align: center; font-size: 1.05rem; font-weight: 700; color: var(--text);
   margin: 8px 0 26px;
 }
-.ai-row { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 14px 0 2px; }
+/* AI 의미검색 토글 — 헤더 검색창 옆 아이콘 버튼 */
 .ai-toggle {
-  padding: 7px 16px; border-radius: 999px; cursor: pointer;
-  border: 1px solid var(--accent); background: #fff; color: var(--accent);
-  font-size: .85rem; font-weight: 700; transition: all .15s;
+  /* flex 컨테이너 안에서 절대 늘어나지 않게 상·하한을 함께 고정한다 */
+  flex: 0 0 36px; align-self: center;
+  width: 36px; min-width: 36px; max-width: 36px;
+  height: 36px; min-height: 36px; max-height: 36px;
+  padding: 0; box-sizing: border-box; border-radius: 50%; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line); background: #fff; font-size: 1rem; line-height: 1;
+  filter: grayscale(1); opacity: .55;
+  transition: filter .15s, opacity .15s, border-color .15s, background .15s;
 }
-.ai-toggle:hover { background: rgba(31,111,235,.08); }
+.ai-toggle:hover { opacity: .85; border-color: var(--accent); background: rgba(31,111,235,.06); }
+
+/* 아이콘만으로는 뭔지 모르니 올리는 즉시 설명이 뜬다 */
+.ai-toggle { position: relative; }
+.ai-toggle::after {
+  content: attr(data-tip);
+  position: absolute; top: calc(100% + 9px); right: 0; z-index: 60;
+  padding: 7px 11px; border-radius: 7px; white-space: nowrap;
+  background: #2b2b2b; color: #fff;
+  font-size: .8rem; font-weight: 600; letter-spacing: -.01em;
+  filter: none; opacity: 0; pointer-events: none;
+  transition: opacity .1s ease-out;
+  box-shadow: 0 4px 14px rgba(0,0,0,.18);
+}
+.ai-toggle::before {
+  content: ""; position: absolute; top: calc(100% + 3px); right: 13px; z-index: 60;
+  border: 6px solid transparent; border-bottom-color: #2b2b2b;
+  filter: none; opacity: 0; pointer-events: none;
+  transition: opacity .1s ease-out;
+}
+.ai-toggle:hover::after, .ai-toggle:hover::before,
+.ai-toggle:focus-visible::after, .ai-toggle:focus-visible::before { opacity: 1; }
+@media (hover: none) { .ai-toggle::after, .ai-toggle::before { display: none; } }
+.ai-toggle.on { filter: none; opacity: 1; border-color: var(--accent); background: rgba(31,111,235,.1); }
+.ai-toggle.loading { opacity: .85; animation: ai-pulse 1.2s ease-in-out infinite; }
+@keyframes ai-pulse { 50% { opacity: .45; } }
 .ai-toggle.on { background: var(--accent); color: #fff; }
 .ai-status { font-size: .82rem; color: var(--muted); }
 
 /* ---------- 나를 위한 추천 ---------- */
-/* "나를 위한 추천"은 메인 상품 리스트를 받쳐주는 보조 섹션 — 작게 */
-.picks { padding: 30px 0 10px; }
-.picks .section-title h2 { font-size: 1.25rem; }
-.picks .section-title .rule { width: 36px; height: 2px; margin-top: 10px; }
-.picks-sub { text-align: center; color: var(--muted); font-size: .84rem; margin: 8px 0 16px; }
-.picks .carousel .card { flex-basis: 168px; }
 
 /* 가로 캐러셀 */
-.carousel-wrap { position: relative; }
-.carousel {
-  display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory;
-  padding: 4px 2px 12px; -webkit-overflow-scrolling: touch; scrollbar-width: thin;
-}
-.carousel::-webkit-scrollbar { height: 6px; }
-.carousel::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
-.carousel .card { flex: 0 0 200px; scroll-snap-align: start; }
-.carousel .card:hover { transform: translateY(-4px); }
-.carousel-btn {
-  position: absolute; top: calc(50% - 26px); transform: translateY(-50%); z-index: 5;
-  width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
-  border: 1px solid var(--line); background: rgba(255,255,255,.96); color: var(--text);
-  font-size: 1.4rem; line-height: 1; display: flex; align-items: center; justify-content: center;
-  box-shadow: var(--shadow); transition: opacity .15s, background .15s;
-}
-.carousel-btn:hover { background: #fff; }
-.carousel-btn.prev { left: -8px; }
-.carousel-btn.next { right: -8px; }
-.carousel-btn.hidden { opacity: 0; pointer-events: none; }
-@media (max-width: 760px) {
-  .carousel .card, .picks .carousel .card { flex-basis: 150px; }
-  .carousel-btn { display: none; }
-}
-
 /* ---------- 페이지 전체 2단 (본문 + 우측 레일) ---------- */
 .page {
   display: flex; gap: var(--rail-gap); align-items: flex-start;
@@ -206,6 +219,14 @@ img { display: block; max-width: 100%; }
 .side-deal-price { margin: 3px 0 0; font-size: .92rem; font-weight: 800; color: #c0392b; }
 .side-deal-rocket { font-size: .8rem; }
 .side-time { margin: 14px 0 0; font-size: .72rem; color: var(--muted); text-align: right; }
+
+/* 🔖 나를 위한 추천 사이드박스 */
+.side-picks { background: linear-gradient(180deg, #f2f6fd, #fff 60%); border-color: #dfe7f5; }
+.side-pick-price { margin: 3px 0 0; font-size: .9rem; }
+.side-pick-price .orig { color: var(--muted); text-decoration: line-through; margin-right: 5px; font-size: .78rem; }
+.side-pick-price .now { font-weight: 800; }
+.side-pick-price .now.muted { color: var(--accent); }
+.side-pick:hover { background: rgba(31,111,235,.07); }
 
 /* 쿠팡 검색 사이드박스 */
 .side-search p { margin: 0 0 12px; font-size: .82rem; color: var(--muted); }
@@ -274,12 +295,59 @@ img { display: block; max-width: 100%; }
   background: #ff4747; color: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.2);
 }
 .detail-img { position: relative; }
-.badge-wish {
+.badge-wish,
+.badge-ordered {
   position: absolute; top: 10px; right: 10px; z-index: 2;
   padding: 5px 11px; border-radius: 999px; font-size: .75rem; font-weight: 800;
   background: #6b4ee6; color: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.2);
 }
+/* 주문해두고 도착을 기다리는 상품 */
+.badge-ordered { background: #0f9d58; }
 .stars { color: var(--star); font-size: .85rem; letter-spacing: 1px; margin-top: 6px; opacity: .85; }
+
+/* 상세 페이지 하단 — 같은 할 일에 묶인 상품 */
+.detail-related { margin-top: 52px; padding-top: 32px; border-top: 1px solid var(--line); }
+.detail-related > h3 { font-size: 1.1rem; font-weight: 800; margin: 0 0 6px; }
+.detail-related .task-chips { justify-content: flex-start; margin: 14px 0 22px; }
+
+/* ---------- 할 일별 추천 ---------- */
+.tasks-section { padding: 30px 0 6px; }
+.tasks-section .section-title h2 { font-size: 1.25rem; }
+.tasks-section .section-title .rule { width: 36px; height: 2px; margin-top: 10px; }
+.tasks-sub { text-align: center; color: var(--muted); font-size: .84rem; margin: 8px 0 16px; }
+
+.task-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.task-chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 16px; border-radius: 999px;
+  border: 1px solid var(--line); background: #fff; color: var(--text);
+  font-size: .9rem; font-weight: 600; transition: border-color .15s, background .15s, transform .12s;
+}
+.task-chip:hover { border-color: var(--accent); background: rgba(31,111,235,.06); transform: translateY(-1px); }
+.task-chip.active { background: var(--text); border-color: var(--text); color: #fff; }
+.task-chip-emoji { font-size: 1.05rem; }
+
+.task-view { padding-bottom: 64px; }
+.task-head { text-align: center; margin: 22px 0 20px; }
+.task-head h1 { margin: 0 0 8px; font-size: 1.9rem; font-weight: 800; letter-spacing: -.01em; }
+.task-head p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+.task-groups { margin-top: 52px; }
+.task-group { margin-top: 32px; }
+.task-group > h3 { font-size: 1.05rem; font-weight: 800; margin: 0 0 6px; }
+.task-note { margin: 0 0 16px; color: var(--muted); font-size: .87rem; line-height: 1.55; }
+
+.task-extras { margin-top: 52px; padding-top: 32px; border-top: 1px solid var(--line); }
+.task-extras > h3 { font-size: 1.05rem; font-weight: 800; margin: 0 0 6px; }
+.extra-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+.extra-links a {
+  display: inline-flex; align-items: baseline; gap: 8px;
+  padding: 10px 16px; border-radius: 8px;
+  border: 1px dashed var(--accent); background: rgba(31,111,235,.05);
+  font-size: .92rem; font-weight: 700; color: var(--text); transition: background .15s;
+}
+.extra-links a:hover { background: rgba(31,111,235,.13); }
+.extra-links a span { font-size: .8rem; font-weight: 600; color: var(--accent); }
 
 /* ---------- Empty ---------- */
 .empty { text-align: center; color: var(--muted); padding: 60px 0; }
@@ -349,7 +417,8 @@ img { display: block; max-width: 100%; }
 .loading { padding: 80px 0; text-align: center; color: var(--muted); }
 
 /* ---------- Responsive ---------- */
-@media (max-width: 760px) {
+/* 헤더에 검색창·AI 토글이 들어와 자리가 좁다 — 카테고리는 일찍 접는다 */
+@media (max-width: 1000px) {
   .nav {
     display: none; position: absolute; top: 64px; left: 0; right: 0;
     flex-direction: column; gap: 0; background: #fff;
@@ -358,6 +427,8 @@ img { display: block; max-width: 100%; }
   .nav.open { display: flex; }
   .nav a { padding: 12px; border-radius: 6px; }
   .nav-toggle { display: block; }
+}
+@media (max-width: 760px) {
   .detail-grid { grid-template-columns: 1fr; gap: 28px; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 22px 16px; }
 }

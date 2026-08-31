@@ -1,0 +1,314 @@
+{
+  "tasks": [
+    {
+      "id": "grill-meat",
+      "emoji": "🥩",
+      "title": "고기 구워 먹기",
+      "summary": "통목살·상추·김치에 소스와 인덕션까지, 고기 구울 때 챙기는 것들",
+      "groups": [
+        {
+          "label": "주재료",
+          "note": "통목살은 냉장이라 바로 굽고, 우삼겹은 냉동이라 필요한 만큼만 꺼내 씁니다.",
+          "items": [
+            "moameat-pork-neck-1kg",
+            "daepaeking-woosamgyeop-1kg"
+          ]
+        },
+        {
+          "label": "쌈과 곁들임",
+          "note": "상추에 싸 먹고, 김치는 같이 구워도 좋습니다.",
+          "items": [
+            "gap-lettuce-150g",
+            "jongga-kimchi-23kg"
+          ]
+        },
+        {
+          "label": "고기랑 같이",
+          "note": "양파를 얇게 썰어 참소스에 담갔다가 고기와 같이 먹으면 맛있습니다.",
+          "items": [
+            "chamsauce-570g-6"
+          ]
+        },
+        {
+          "label": "구울 도구",
+          "note": "식탁에서 바로 구우려면 1구 인덕션이 편합니다.",
+          "items": [
+            "samsung-induction-1burner"
+          ]
+        },
+        {
+          "label": "같이 마실 것",
+          "items": [
+            "haneul-bori-15l-12"
+          ]
+        },
+        {
+          "label": "먹고 나서",
+          "note": "고기 먹은 날은 음식물 냄새가 심하니 탈취 필터를 미리 갈아 두면 좋습니다.",
+          "items": [
+            "filterforyou-food-waste-carbon-filter",
+            "comet-roll-tissue-30"
+          ]
+        }
+      ],
+      "extras": [
+        {
+          "name": "양파",
+          "link": "https://link.coupang.com/a/gEy66DuSdM"
+        },
+        {
+          "name": "쌈장",
+          "link": "https://link.coupang.com/a/gEy66JETpQ"
+        }
+      ]
+    },
+    {
+      "id": "shabu-shabu",
+      "emoji": "🍲",
+      "title": "샤브샤브 해 먹기",
+      "summary": "육수부터 고기·두부까지 한 상 차리기",
+      "groups": [
+        {
+          "label": "주재료",
+          "items": [
+            "shabu-beef-au-1kg",
+            "shabu-mealkit-freshmeal",
+            "daepaeking-woosamgyeop-1kg"
+          ]
+        },
+        {
+          "label": "육수와 곁들임",
+          "note": "육수 1 : 물 10 비율로 풀면 됩니다.",
+          "items": [
+            "shabu-broth-gomgom",
+            "gomgom-tofu-500-2"
+          ]
+        },
+        {
+          "label": "끓일 도구",
+          "items": [
+            "samsung-induction-1burner"
+          ]
+        }
+      ],
+      "extras": [
+        {
+          "name": "칼국수 사리",
+          "link": "https://link.coupang.com/a/gEy66NqPL2"
+        },
+        {
+          "name": "알배추",
+          "link": "https://link.coupang.com/a/gEy66QCdG0"
+        }
+      ]
+    },
+    {
+      "id": "salmon-don",
+      "emoji": "🍣",
+      "title": "연어 사케동 만들기",
+      "summary": "횟감용 생연어로 주말 한 끼",
+      "groups": [
+        {
+          "label": "주재료",
+          "note": "상세 페이지에 사케동 소스 레시피를 적어 뒀습니다.",
+          "items": [
+            "mowi-salmon-sashimi"
+          ]
+        },
+        {
+          "label": "곁들임",
+          "items": [
+            "gomgom-tofu-500-2",
+            "haneul-bori-15l-12"
+          ]
+        }
+      ],
+      "extras": [
+        {
+          "name": "진간장",
+          "link": "https://link.coupang.com/a/gEy66TSr6a"
+        },
+        {
+          "name": "맛술",
+          "link": "https://link.coupang.com/a/gEy66XLLz2"
+        }
+      ]
+    },
+    {
+      "id": "simple-breakfast",
+      "emoji": "🥣",
+      "title": "간단한 아침",
+      "summary": "차리는 데 5분 안 걸리는 조합",
+      "groups": [
+        {
+          "label": "시리얼과 우유",
+          "items": [
+            "kelloggs-frost-darkchoco",
+            "milk-1a-easy-digest",
+            "crown-jollypong-138g-12"
+          ]
+        },
+        {
+          "label": "차리기 귀찮은 날",
+          "items": [
+            "gomgom-salad-lunchbox"
+          ]
+        }
+      ],
+      "extras": []
+    },
+    {
+      "id": "desk-setup",
+      "emoji": "💻",
+      "title": "노트북 책상 세팅",
+      "summary": "여러 기기를 한 번에 충전하고 연결하기",
+      "groups": [
+        {
+          "label": "전원",
+          "note": "노트북 두 대를 동시에 물려도 배터리가 줄지 않습니다.",
+          "items": [
+            "havit-ucle005-gan-240w"
+          ]
+        },
+        {
+          "label": "연결",
+          "items": [
+            "usb4-thunderbolt-240w-cable"
+          ]
+        },
+        {
+          "label": "촬영·기록",
+          "items": [
+            "dji-osmo-pocket-4"
+          ]
+        }
+      ],
+      "extras": [
+        {
+          "name": "노트북 스탠드",
+          "link": "https://link.coupang.com/a/gEy660unK0"
+        }
+      ]
+    },
+    {
+      "id": "bathroom-restock",
+      "emoji": "🚿",
+      "title": "욕실 채우기",
+      "summary": "떨어지기 전에 미리 사두는 것들",
+      "groups": [
+        {
+          "label": "씻는 것",
+          "items": [
+            "organist-cherryblossom-shampoo",
+            "paulmedison-bodywash-whitemusk"
+          ]
+        },
+        {
+          "label": "양치",
+          "items": [
+            "median-toothpaste-120-12",
+            "oralb-vitality-flossaction"
+          ]
+        }
+      ],
+      "extras": []
+    },
+    {
+      "id": "home-cleaning",
+      "emoji": "🧽",
+      "title": "집 안팎 청소",
+      "summary": "주말에 몰아서 치울 때",
+      "groups": [
+        {
+          "label": "물청소",
+          "note": "전원 없는 곳에서도 쓸 수 있는 무선 고압세척기입니다.",
+          "items": [
+            "karcher-mini-pressure-washer"
+          ]
+        },
+        {
+          "label": "소모품",
+          "items": [
+            "comet-roll-tissue-30",
+            "homeplanet-silicagel-20"
+          ]
+        },
+        {
+          "label": "문 고정",
+          "note": "짐 들고 드나들 때 문이 닫히지 않게.",
+          "items": [
+            "cheolmul-pedal-door-stopper"
+          ]
+        }
+      ],
+      "extras": [
+        {
+          "name": "키친타월",
+          "link": "https://link.coupang.com/a/gEy667p70e"
+        }
+      ]
+    },
+    {
+      "id": "3d-printing",
+      "emoji": "🖨️",
+      "title": "3D 프린팅 취미",
+      "summary": "필라멘트 보관부터 만들 거리까지",
+      "groups": [
+        {
+          "label": "필라멘트 보관",
+          "note": "보관함에 제습제와 온습도계를 같이 넣어 둡니다.",
+          "items": [
+            "homeplanet-silicagel-20",
+            "round-digital-hygrometer"
+          ]
+        },
+        {
+          "label": "만들 거리",
+          "items": [
+            "bambulab-cyberbrick-kit"
+          ]
+        }
+      ],
+      "extras": [
+        {
+          "name": "3D프린터 필라멘트 PLA",
+          "link": "https://link.coupang.com/a/gEy663OpEq"
+        }
+      ]
+    },
+    {
+      "id": "fix-light",
+      "emoji": "💡",
+      "title": "형광등이 깜빡일 때",
+      "summary": "등은 멀쩡한데 깜빡이면 대개 안정기가 수명을 다한 것",
+      "groups": [
+        {
+          "label": "안정기 교체",
+          "note": "FPL 등기구는 와트수에 맞는 안정기를 골라야 합니다. 등에 적힌 W를 확인하세요.",
+          "items": [
+            "ballast-fpl-36w",
+            "ballast-dooyoung-fpl-55w"
+          ]
+        }
+      ],
+      "extras": []
+    },
+    {
+      "id": "pick-book",
+      "emoji": "📖",
+      "title": "읽을 책 고르기",
+      "summary": "재미있게 읽은 책",
+      "groups": [
+        {
+          "label": "소설",
+          "note": "같은 책의 한글판과 영어 원서입니다. 원서로 읽다 막히면 한글판을 참고하기 좋습니다.",
+          "items": [
+            "project-hailmary-ko",
+            "project-hailmary-en"
+          ]
+        }
+      ],
+      "extras": []
+    }
+  ]
+}

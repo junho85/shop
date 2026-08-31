@@ -529,13 +529,13 @@
       "name": "밤부랩 사이버브릭 하드웨어 키트 (ZK003 / ZK004 얼티밋) ESP32-C3 프로그래밍 로봇 키트",
       "category": "디지털",
       "platform": "aliexpress",
-      "wish": true,
+      "ordered": true,
       "image": "https://ae01.alicdn.com/kf/S87ea1022449a4e7783d975a87ff7f5f6c.png",
       "priceOriginal": null,
       "price": null,
       "sale": false,
-      "note": "구매 희망 — 밤부랩 사이버브릭 RC 키트 (아직 안 써봄).",
-      "description": "아직 써보진 않았고, 구매를 고려 중인 제품입니다. 밤부랩(Bambu Lab) 사이버브릭(CyberBrick)은 ESP32-C3 기반의 컨트롤러·모터·배터리 모듈 세트로, 3D 프린터로 뽑은 바디에 끼워 RC카·로봇 같은 걸 만들 수 있는 키트입니다. 스타터 격인 ZK003과 모듈이 더 들어간 ZK004 얼티밋 두 가지 옵션이 있습니다. 3D 프린터를 놀리지 않고 아이랑 같이 뭔가 굴러가는 걸 만들어 보고 싶어서 위시리스트에 담아 뒀습니다. 해외직구(AliExpress) 상품이라 배송에는 시간이 걸릴 수 있습니다.",
+      "note": "주문함 — 밤부랩 사이버브릭 RC 키트. 도착하면 아이랑 만들어 볼 예정입니다.",
+      "description": "주문해두고 도착을 기다리는 중입니다. 밤부랩(Bambu Lab) 사이버브릭(CyberBrick)은 ESP32-C3 기반의 컨트롤러·모터·배터리 모듈 세트로, 3D 프린터로 뽑은 바디에 끼워 RC카·로봇 같은 걸 만들 수 있는 키트입니다. 스타터 격인 ZK003과 모듈이 더 들어간 ZK004 얼티밋 두 가지 옵션이 있습니다.\n\n3D 프린터를 놀리지 않고 아이랑 같이 뭔가 굴러가는 걸 만들어 보고 싶어서 골랐습니다. 해외직구(AliExpress) 상품이라 배송에 시간이 걸립니다. 받아서 써본 뒤 사용기를 채워 두겠습니다.",
       "link": "https://s.click.aliexpress.com/e/_c3q8TqcX",
       "addedAt": "2026-08-28",
       "priceHistory": []
@@ -638,6 +638,82 @@
         {
           "date": "2026-08-30",
           "price": 96800
+        }
+      ]
+    },
+    {
+      "id": "gap-lettuce-150g",
+      "name": "[로켓프레시] 국내산 GAP 아삭한 상추 150g",
+      "category": "식품",
+      "image": "https://img4a.coupangcdn.com/image/retail/images/6623088428249259-3eb26dcc-d5cb-4479-9f22-7c63da7f07d7.jpg",
+      "priceOriginal": null,
+      "price": 2980,
+      "sale": false,
+      "note": "고기 구울 때 쌈으로 먹는 상추. 150g이면 두세 명이 한 끼 먹을 양이에요.",
+      "description": "집에서 고기 구울 때 쌈으로 먹으려고 시킨 상추입니다. GAP 인증 국내산이고 150g 한 봉이라, 두세 명이 한 끼 먹기에 적당합니다.\n\n로켓프레시라 주문한 다음 날 받았습니다. 채소는 마트에서 직접 고르는 게 낫다고 생각했는데, 고기·김치까지 같이 시키면 장 보러 나갈 일이 없어져서 편합니다.",
+      "link": "https://link.coupang.com/a/gEy8JN4Kzs",
+      "addedAt": "2026-08-31",
+      "priceHistory": [
+        {
+          "date": "2026-08-31",
+          "price": 2980
+        }
+      ]
+    },
+    {
+      "id": "moameat-pork-neck-1kg",
+      "name": "[로켓프레시] 모아미트 캐나다산 보리먹인 암퇘지 통목살 에어프라이어용 (냉장) 1kg",
+      "category": "식품",
+      "image": "https://image11.coupangcdn.com/image/retail/images/7201873213665861-987ffa8d-5c23-46e3-9a6c-2596966866b5.jpg",
+      "priceOriginal": null,
+      "price": 15930,
+      "sale": false,
+      "note": "고기 구워 먹을 때 시키는 통목살 1kg. 냉장이라 바로 구울 수 있어요.",
+      "description": "집에서 고기 구워 먹을 때 시키는 통목살입니다. 캐나다산 보리먹인 암퇘지로, 1kg 한 팩에 15,930원이면 100g당 1,600원 꼴입니다.\n\n냉장이라 해동 없이 바로 구울 수 있고, 에어프라이어용으로 나온 제품이지만 인덕션에 올려 구워도 됩니다. 통목살이라 두께는 직접 썰어 조절합니다. 상추·김치와 같이 주문하면 한 번에 상이 차려집니다.",
+      "link": "https://link.coupang.com/a/gEy8JTwVwW",
+      "addedAt": "2026-08-31",
+      "priceHistory": [
+        {
+          "date": "2026-08-31",
+          "price": 15930
+        }
+      ]
+    },
+    {
+      "id": "jongga-kimchi-23kg",
+      "name": "[로켓프레시] 종가 포기김치 2.3kg",
+      "category": "식품",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/540753836216391-92cdc56f-09f0-48c4-a90d-d4fa754ae279.jpg",
+      "priceOriginal": null,
+      "price": 23900,
+      "sale": false,
+      "note": "고기랑 같이 먹는 포기김치 2.3kg. 김치 담글 일 없을 때 시켜요.",
+      "description": "김치를 따로 담그지 않아서 떨어지면 시켜 먹는 종가 포기김치입니다. 2.3kg이면 한동안 먹습니다.\n\n고기 구울 때 같이 구워 먹어도 좋고, 익으면 찌개나 볶음밥에 씁니다. 로켓프레시라 고기·상추와 함께 주문하면 다음 날 한 번에 받을 수 있습니다.",
+      "link": "https://link.coupang.com/a/gEy90WtfSC",
+      "addedAt": "2026-08-31",
+      "priceHistory": [
+        {
+          "date": "2026-08-31",
+          "price": 23900
+        }
+      ]
+    },
+    {
+      "id": "daepaeking-woosamgyeop-1kg",
+      "name": "[로켓프레시] 대패킹 진짜 미국산 우삼겹 대패구이 (냉동) 1kg",
+      "category": "식품",
+      "image": "https://img2c.coupangcdn.com/image/retail/images/269466558084054-459905d5-90e0-4676-bb34-b4ff2c0c5188.jpg",
+      "priceOriginal": null,
+      "price": 16500,
+      "sale": false,
+      "note": "얇게 썬 우삼겹 1kg. 냉동이라 필요한 만큼만 꺼내 굽기 좋아요.",
+      "description": "얇게 썬 우삼겹(대패고기) 1kg입니다. 미국산 소고기 양지 부위로, 16,500원이면 100g당 1,650원 꼴입니다.\n\n냉동이라 필요한 만큼만 꺼내 쓸 수 있는 게 편합니다. 얇아서 금방 익으니 팬이나 인덕션에 올려 바로 구워 먹고, 숙주·양파와 같이 볶거나 샤브샤브처럼 육수에 살짝 담갔다 먹어도 됩니다.\n\n로켓프레시라 주문하면 다음 날 옵니다.",
+      "link": "https://link.coupang.com/a/gFk1eXtInA",
+      "addedAt": "2026-08-31",
+      "priceHistory": [
+        {
+          "date": "2026-08-31",
+          "price": 16500
         }
       ]
     }

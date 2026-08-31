@@ -3,6 +3,7 @@
 const PLACEHOLDER = 'assets/placeholder.svg';
 let DATA = { categories: ['전체'], products: [] };
 let DEALS = { fetchedAt: '', deals: [] };
+let TASKS = { tasks: [] };
 
 const $app = document.getElementById('app');
 const $nav = document.getElementById('nav');
@@ -54,6 +55,7 @@ function parseHash() {
   const parts = h.split('/').filter(Boolean); // ['c','게임'] | ['p','id'] | []
   if (parts[0] === 'p' && parts[1]) return { view: 'detail', id: decodeURIComponent(parts[1]) };
   if (parts[0] === 'c' && parts[1]) return { view: 'list', cat: decodeURIComponent(parts[1]) };
+  if (parts[0] === 't' && parts[1]) return { view: 'task', id: decodeURIComponent(parts[1]) };
   return { view: 'list', cat: '전체' };
 }
 
@@ -75,6 +77,12 @@ function render() {
   if (r.view === 'detail') {
     const p = byId(r.id);
     if (p) return renderDetail(p);
+    location.hash = '#/';
+    return;
+  }
+  if (r.view === 'task') {
+    const t = taskById(r.id);
+    if (t) return renderTask(t);
     location.hash = '#/';
     return;
   }
@@ -114,6 +122,8 @@ function renderNav(activeCat) {
 /* ---------- 개인화 (이 브라우저 기준, localStorage) ---------- */
 const LS_KEY = 'jumeong_interest_v1';
 let searchQuery = '';
+let onSearchInput = null;                 // renderList 가 자기 onQuery 로 채운다
+const $search = document.getElementById('globalSearch');
 let searchTimer = null;
 
 function loadInterest() {
@@ -226,7 +236,9 @@ function suggest(query, limit) {
 /* ---------- 브라우저 내 임베딩 AI (Transformers.js · 키/서버 불필요) ---------- */
 const AI_MODEL = 'Xenova/multilingual-e5-small';
 const AI_FLAG = 'jumeong_ai_on';
-let aiState = 'off';      // off | loading | ready | error
+let aiState = 'off';      // 엔진 상태: off | loading | ready | error
+/* 사용자가 켜둔 의도는 새로고침해도 유지된다. 무거운 모델 로딩만 검색 시점으로 미룬다 */
+let aiEnabled = (() => { try { return localStorage.getItem('jumeong_ai_on') === '1'; } catch (e) { return false; } })();
 let aiExtractor = null;
 let aiProductEmb = null;  // [{id, vec}]
 let aiReqSeq = 0;
@@ -234,18 +246,69 @@ let aiOnReady = null;     // 뷰가 등록하는 갱신 콜백
 
 function setAiUI() {
   const btn = document.getElementById('aiToggle');
-  if (btn) {
-    btn.classList.toggle('on', aiState === 'ready');
-    btn.textContent = aiState === 'ready' ? '🧠 AI 의미검색 켜짐'
-      : aiState === 'loading' ? '🧠 AI 로딩 중…'
-      : aiState === 'error' ? '🧠 AI 다시 시도'
-      : '🧠 AI 의미검색 켜기';
-  }
+  if (!btn) return;
+  /* 헤더 검색창 옆이라 아이콘만 두고, 상태는 툴팁으로 알린다 */
+  const label = aiState === 'loading' ? (aiMessage || 'AI 로딩 중…')
+    : aiState === 'error' ? 'AI 로딩 실패 — 다시 시도'
+      : aiEnabled ? 'AI 의미검색 켜짐 — 끄려면 클릭'
+        : 'AI 의미검색 켜기 (상품을 뜻으로 찾아줍니다)';
+  btn.classList.toggle('on', aiEnabled && aiState !== 'error');
+  btn.classList.toggle('loading', aiState === 'loading');
+  btn.textContent = '🧠';
+  /* 브라우저 기본 title 툴팁은 1초쯤 늦게 뜬다 → CSS 툴팁으로 즉시 보여준다 */
+  btn.dataset.tip = label;
+  btn.removeAttribute('title');
+  btn.setAttribute('aria-label', label);
+  btn.setAttribute('aria-pressed', String(aiEnabled));
 }
+let aiMessage = '';
 function setAiStatus(msg) {
-  const el = document.getElementById('aiStatus');
-  if (el) el.textContent = msg || '';
+  aiMessage = msg || '';
   setAiUI();
+}
+
+/* 상품 임베딩 캐시.
+   모델 파일은 브라우저가 캐시하지만 상품 37개 추론은 매번 다시 하느라 오래 걸렸다.
+   결과를 Float32 → base64 로 담아 두고 상품 목록이 그대로면 재사용한다. */
+const AI_CACHE = 'jumeong_ai_emb_v1';
+
+function productsSignature() {
+  let h = 5381;
+  for (const p of DATA.products) {
+    const t = p.id + '|' + (p.name || '') + '|' + (p.note || '') + '|' + (p.description || '') + '|' + (p.category || '');
+    for (let i = 0; i < t.length; i++) h = ((h * 33) ^ t.charCodeAt(i)) >>> 0;
+  }
+  return `${AI_MODEL}:${DATA.products.length}:${h}`;
+}
+const vecToB64 = (v) => {
+  const bytes = new Uint8Array(new Float32Array(v).buffer);
+  let s = '';
+  for (let i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+  return btoa(s);
+};
+const b64ToVec = (b) => {
+  const bin = atob(b);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new Float32Array(bytes.buffer);
+};
+
+function loadEmbCache() {
+  try {
+    const raw = localStorage.getItem(AI_CACHE);
+    if (!raw) return null;
+    const d = JSON.parse(raw);
+    if (d.sig !== productsSignature()) return null;
+    return d.items.map((x) => ({ id: x.id, vec: b64ToVec(x.v) }));
+  } catch (e) { return null; }
+}
+function saveEmbCache(emb) {
+  try {
+    localStorage.setItem(AI_CACHE, JSON.stringify({
+      sig: productsSignature(),
+      items: emb.map((x) => ({ id: x.id, v: vecToB64(x.vec) })),
+    }));
+  } catch (e) { /* 용량 초과 등은 그냥 캐시 없이 간다 */ }
 }
 
 async function loadAI() {
@@ -253,6 +316,7 @@ async function loadAI() {
   aiState = 'loading';
   setAiStatus('AI 모델 다운로드 중… (최초 1회, 다운로드 후엔 캐시됩니다)');
   try {
+    const cached = loadEmbCache();
     const TF = await import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2');
     TF.env.allowLocalModels = false;
     aiExtractor = await TF.pipeline('feature-extraction', AI_MODEL, {
@@ -263,14 +327,22 @@ async function loadAI() {
         }
       },
     });
-    setAiStatus('상품을 분석하는 중…');
-    aiProductEmb = [];
-    for (const p of DATA.products) {
-      const text = 'passage: ' + [p.name, p.note, p.description, p.category].filter(Boolean).join('. ');
-      const out = await aiExtractor(text, { pooling: 'mean', normalize: true });
-      aiProductEmb.push({ id: p.id, vec: out.data });
+    if (cached) {
+      aiProductEmb = cached;
+    } else {
+      setAiStatus('상품을 분석하는 중…');
+      aiProductEmb = [];
+      let done = 0;
+      for (const p of DATA.products) {
+        const text = 'passage: ' + [p.name, p.note, p.description, p.category].filter(Boolean).join('. ');
+        const out = await aiExtractor(text, { pooling: 'mean', normalize: true });
+        aiProductEmb.push({ id: p.id, vec: new Float32Array(out.data) });
+        setAiStatus(`상품을 분석하는 중… ${++done}/${DATA.products.length}`);
+      }
+      saveEmbCache(aiProductEmb);
     }
     aiState = 'ready';
+    aiEnabled = true;
     try { localStorage.setItem(AI_FLAG, '1'); } catch (e) {}
     setAiStatus('🧠 의미 기반 추천이 켜졌어요. 검색해 보세요!');
     if (typeof aiOnReady === 'function') aiOnReady();
@@ -301,39 +373,92 @@ async function aiSuggest(query, limit) {
   return { message: '🧠 AI가 의미로 찾았어요', products };
 }
 
+/* ---------- 할 일별 추천 ---------- */
+const taskById = (id) => TASKS.tasks.find((t) => t.id === id);
+
+/* 할 일에 묶인 상품 전체 (중복 제거) — 그룹과 별개로 그리드에도 쓴다 */
+function taskProducts(t) {
+  const seen = new Set();
+  const out = [];
+  (t.groups || []).forEach((g) => (g.items || []).forEach((id) => {
+    if (seen.has(id)) return;
+    const p = byId(id);
+    if (p) { seen.add(id); out.push(p); }
+  }));
+  return out;
+}
+
+function taskChips(activeId) {
+  if (!TASKS.tasks.length) return '';
+  return `
+    <div class="task-chips">
+      ${TASKS.tasks.map((t) => `
+        <a class="task-chip ${t.id === activeId ? 'active' : ''}" href="#/t/${encodeURIComponent(t.id)}">
+          <span class="task-chip-emoji">${esc(t.emoji || '')}</span>${esc(t.title)}
+        </a>`).join('')}
+    </div>`;
+}
+
+function renderTask(t) {
+  const all = taskProducts(t);
+  const groups = (t.groups || []).map((g) => {
+    const items = (g.items || []).map(byId).filter(Boolean);
+    if (!items.length) return '';
+    return `
+      <section class="task-group">
+        <h3>${esc(g.label)}</h3>
+        ${g.note ? `<p class="task-note">${esc(g.note)}</p>` : ''}
+        <div class="grid">${items.map(card).join('')}</div>
+      </section>`;
+  }).join('');
+
+  const extras = (t.extras || []).length ? `
+    <section class="task-extras">
+      <h3>주멍가게에 없는 것</h3>
+      <p class="task-note">직접 써본 추천은 아니지만, 이 할 일에 같이 필요한 것들이에요.</p>
+      <div class="extra-links">
+        ${t.extras.map((x) => `
+          <a href="${esc(x.link)}" target="_blank" rel="nofollow sponsored noopener">${esc(x.name)} <span>쿠팡에서 보기 ›</span></a>`).join('')}
+      </div>
+    </section>` : '';
+
+  $app.innerHTML = `
+    <div class="task-view container">
+      <nav class="breadcrumb"><a href="#/">홈</a> / 할 일 / ${esc(t.title)}</nav>
+      <div class="task-head">
+        <h1>${esc(t.emoji || '')} ${esc(t.title)}</h1>
+        ${t.summary ? `<p>${esc(t.summary)}</p>` : ''}
+      </div>
+      ${taskChips(t.id)}
+      <section class="section products-section" id="products">
+        <div class="section-title"><h2>추천 상품</h2><div class="rule"></div></div>
+        <div class="grid">${all.map(card).join('')}</div>
+      </section>
+      ${groups ? `<div class="task-groups"><div class="section-title"><h2>어디에 쓰는지</h2><div class="rule"></div></div>${groups}</div>` : ''}
+      ${extras}
+    </div>`;
+
+  $app.querySelectorAll('[data-id]').forEach((el) =>
+    el.addEventListener('click', () => openProduct(byId(el.dataset.id))));
+  track('task', { id: t.id });
+  window.scrollTo({ top: 0, behavior: 'auto' });
+}
+
 /* ---------- List view ---------- */
 function renderList(cat) {
   const filters = visibleCategories()
     .map((c) => `<button data-cat="${esc(c)}" class="${c === cat ? 'active' : ''}">${esc(c)}</button>`)
     .join('');
-  const picks = personalizedPicks(8);
-
   $app.innerHTML = `
-    ${picks.length ? `
-    <section class="section container picks">
-      <div class="section-title"><h2>🔖 나를 위한 추천</h2><div class="rule"></div></div>
-      <p class="picks-sub">자주 보고 클릭·검색한 상품을 바탕으로 골랐어요</p>
-      <div class="carousel-wrap">
-        <button class="carousel-btn prev" aria-label="이전 상품" data-dir="-1">‹</button>
-        <div class="carousel" id="picksCarousel">${picks.map(card).join('')}</div>
-        <button class="carousel-btn next" aria-label="다음 상품" data-dir="1">›</button>
-      </div>
+    ${TASKS.tasks.length ? `
+    <section class="section container tasks-section">
+      <div class="section-title"><h2>🍳 이런 거 하시나요?</h2><div class="rule"></div></div>
+      <p class="tasks-sub">하려는 일을 고르면 필요한 것들을 묶어서 보여드려요. 특정 상품은 위 검색창에서 찾으세요.</p>
+      ${taskChips(null)}
     </section>` : ''}
 
     <section class="section products-section" id="products">
       <div class="section-title"><h2>추천 상품</h2><div class="rule"></div></div>
-      <div class="search-bar">
-        <input id="searchInput" type="search" placeholder="검색하거나 필요한 걸 말해보세요 (예: 주말에 먹을 거, 전구가 깜빡)"
-               value="${esc(searchQuery)}" autocomplete="off" aria-label="상품 검색 및 추천">
-      </div>
-      <div class="chips">
-        ${['주말에 먹을 거', '전구가 깜빡거릴 때', '추천 도서', '화장실 청소', '간단한 아침'].map((c) =>
-          `<button class="chip" data-q="${esc(c)}">${esc(c)}</button>`).join('')}
-      </div>
-      <div class="ai-row">
-        <button id="aiToggle" class="ai-toggle"></button>
-        <span id="aiStatus" class="ai-status"></span>
-      </div>
       <div class="filters">${filters}</div>
       <div id="gridWrap"></div>
     </section>`;
@@ -371,12 +496,9 @@ function renderList(cat) {
   applyGrid();
   setAiUI();
 
-  $app.querySelectorAll('.picks [data-id]').forEach((el) =>
-    el.addEventListener('click', () => openProduct(byId(el.dataset.id))));
-
-  wireCarousel(document.getElementById('picksCarousel'));
-
-  const input = document.getElementById('searchInput');
+  /* 검색 입력은 헤더에 있다. 리스트가 다시 그려질 때마다 값만 맞추고 훅을 갱신한다 */
+  const input = $search;
+  if (input && input.value !== searchQuery) input.value = searchQuery;
   function onQuery() {
     applyGrid();
     clearTimeout(searchTimer);
@@ -386,22 +508,7 @@ function renderList(cat) {
       track('search', { q, cats });
     }, 1200);
   }
-  input.addEventListener('input', (e) => { searchQuery = e.target.value; onQuery(); });
-
-  $app.querySelectorAll('.chip').forEach((b) =>
-    b.addEventListener('click', () => {
-      searchQuery = b.dataset.q;
-      input.value = searchQuery;
-      onQuery();
-      input.focus();
-      document.getElementById('products').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }));
-
-  const aiToggle = document.getElementById('aiToggle');
-  aiToggle.addEventListener('click', () => { if (aiState !== 'loading') loadAI(); });
-  let aiFlag = null;
-  try { aiFlag = localStorage.getItem(AI_FLAG); } catch (e) {}
-  if (aiState === 'off' && aiFlag === '1') loadAI();
+  onSearchInput = onQuery;
 
   $app.querySelectorAll('.filters button').forEach((b) =>
     b.addEventListener('click', () => {
@@ -440,6 +547,35 @@ function dealsBox() {
     </section>`;
 }
 
+/* 🔖 나를 위한 추천 — 핫딜과 같은 사이드 리스트 형식 */
+const SIDE_PICK_LIMIT = 6;
+
+function sidePickItem(p) {
+  const badge = p.wish ? '🛒' : (p.ordered ? '📦' : '');
+  return `
+    <a class="side-deal side-pick" href="#/p/${encodeURIComponent(p.id)}" data-id="${esc(p.id)}">
+      <div class="side-deal-thumb">
+        <img src="${esc(p.image || PLACEHOLDER)}" alt="${esc(p.name)}"
+             onerror="this.onerror=null;this.src='${PLACEHOLDER}'">
+      </div>
+      <div class="side-deal-info">
+        <p class="side-deal-name">${badge ? badge + ' ' : ''}${esc(p.name)}</p>
+        <p class="side-pick-price">${priceLabel(p)}</p>
+      </div>
+    </a>`;
+}
+
+function picksBox() {
+  const list = personalizedPicks(SIDE_PICK_LIMIT);
+  if (!list.length) return '';
+  return `
+    <section class="side-box side-picks">
+      <h3>🔖 나를 위한 추천</h3>
+      <p class="side-note">자주 보고 클릭·검색한 상품을 바탕으로 골랐어요.</p>
+      <div class="side-deal-list">${list.map(sidePickItem).join('')}</div>
+    </section>`;
+}
+
 function searchBox() {
   return `
     <section class="side-box side-search">
@@ -454,27 +590,10 @@ function searchBox() {
 function renderRail() {
   const rail = document.getElementById('rail');
   if (!rail) return;
-  rail.innerHTML = dealsBox() + searchBox();
-}
-
-/* 캐러셀 좌우 버튼 배선 (picks 전용) */
-function wireCarousel(carousel) {
-  if (!carousel) return;
-  const wrap = carousel.closest('.carousel-wrap');
-  if (!wrap) return;
-  const prev = wrap.querySelector('.carousel-btn.prev');
-  const next = wrap.querySelector('.carousel-btn.next');
-  const updateArrows = () => {
-    const max = carousel.scrollWidth - carousel.clientWidth - 2;
-    if (prev) prev.classList.toggle('hidden', carousel.scrollLeft <= 2);
-    if (next) next.classList.toggle('hidden', carousel.scrollLeft >= max || max <= 0);
-  };
-  wrap.querySelectorAll('.carousel-btn').forEach((b) =>
-    b.addEventListener('click', () => {
-      carousel.scrollBy({ left: Number(b.dataset.dir) * carousel.clientWidth * 0.8, behavior: 'smooth' });
-    }));
-  carousel.addEventListener('scroll', updateArrows, { passive: true });
-  updateArrows();
+  rail.innerHTML = searchBox() + picksBox() + dealsBox();
+  /* 사용기가 없는 상품은 상세 대신 쿠팡으로 바로 보낸다 (카드 클릭과 동일 규칙) */
+  rail.querySelectorAll('.side-pick').forEach((el) =>
+    el.addEventListener('click', (e) => { e.preventDefault(); openProduct(byId(el.dataset.id)); }));
 }
 
 /* 가격 표시 — price가 null이면(알리 등 변동가) "가격 확인" */
@@ -492,7 +611,9 @@ function card(p) {
     <article class="card" data-id="${esc(p.id)}">
       <div class="card-thumb">
         ${p.platform === 'aliexpress' ? '<span class="badge-platform">AliExpress</span>' : ''}
-        ${p.wish ? '<span class="badge-wish">🛒 구매 희망</span>' : (p.sale ? '<span class="badge-sale">세일!</span>' : '')}
+        ${p.wish ? '<span class="badge-wish">🛒 구매 희망</span>'
+          : p.ordered ? '<span class="badge-ordered">📦 주문함</span>'
+            : (p.sale ? '<span class="badge-sale">세일!</span>' : '')}
         <img src="${esc(p.image || PLACEHOLDER)}" alt="${esc(p.name)}" referrerpolicy="no-referrer"
              onerror="this.onerror=null;this.src='${PLACEHOLDER}'">
       </div>
@@ -533,6 +654,31 @@ function photoFigures(photos) {
     </div>`;
 }
 
+/* 이 상품이 들어가는 할 일과, 거기에 같이 묶인 다른 상품들 */
+function relatedByTask(p) {
+  const tasks = TASKS.tasks.filter((t) =>
+    (t.groups || []).some((g) => (g.items || []).includes(p.id)));
+  if (!tasks.length) return '';
+  const seen = new Set([p.id]);
+  const items = [];
+  tasks.forEach((t) => taskProducts(t).forEach((q) => {
+    if (!seen.has(q.id)) { seen.add(q.id); items.push(q); }
+  }));
+  if (!items.length) return '';
+  return `
+    <section class="detail-related">
+      <h3>같이 쓰는 것</h3>
+      <p class="task-note">${esc(tasks.map((t) => `${t.emoji || ''} ${t.title}`).join(' · '))}에 함께 쓰는 상품이에요.</p>
+      <div class="task-chips">
+        ${tasks.map((t) => `
+          <a class="task-chip" href="#/t/${encodeURIComponent(t.id)}">
+            <span class="task-chip-emoji">${esc(t.emoji || '')}</span>${esc(t.title)} 전체 보기
+          </a>`).join('')}
+      </div>
+      <div class="grid">${items.map(card).join('')}</div>
+    </section>`;
+}
+
 function renderDetail(p) {
   $app.innerHTML = `
     <div class="detail container">
@@ -543,6 +689,7 @@ function renderDetail(p) {
         <div class="detail-img">
           ${p.platform === 'aliexpress' ? '<span class="badge-platform">AliExpress</span>' : ''}
           ${p.wish ? '<span class="badge-wish">🛒 구매 희망</span>' : ''}
+          ${p.ordered ? '<span class="badge-ordered">📦 주문함</span>' : ''}
           <img src="${esc(p.image || PLACEHOLDER)}" alt="${esc(p.name)}" referrerpolicy="no-referrer"
                onerror="this.onerror=null;this.src='${PLACEHOLDER}'">
         </div>
@@ -562,10 +709,13 @@ function renderDetail(p) {
         ${photoFigures(p.photos)}
         ${p.blog ? `<p class="detail-blog">📝 <a href="${esc(p.blog)}" target="_blank" rel="noopener">${esc(p.blogLabel || '관련 블로그 글 보기')}</a></p>` : ''}
       </div>` : ''}
+      ${relatedByTask(p)}
     </div>`;
   track('view', { id: p.id, cat: p.category });
   const cta = $app.querySelector('.cta');
   if (cta) cta.addEventListener('click', () => track('cta', { id: p.id, cat: p.category }));
+  $app.querySelectorAll('.detail-related [data-id]').forEach((el) =>
+    el.addEventListener('click', () => openProduct(byId(el.dataset.id))));
   window.scrollTo({ top: 0 });
 }
 
@@ -579,6 +729,49 @@ document.addEventListener('click', (e) => {
   const href = a.getAttribute('href');
   if (location.hash === href || (href === '#/' && !location.hash)) render();
   else location.hash = href;
+});
+
+/* ---------- 헤더 검색 ---------- */
+if ($search) {
+  $search.addEventListener('input', (e) => {
+    searchQuery = e.target.value;
+    /* 상세·할 일 화면에서 입력하면 목록으로 나가야 결과를 볼 수 있다 */
+    /* 켜둔 상태라면 검색을 시작하는 지금 불러온다 (새로고침 때마다가 아니라) */
+    if (aiEnabled && aiState === 'off' && searchQuery.trim().length >= 2) loadAI();
+    if (parseHash().view !== 'list') { location.hash = '#/'; return; }
+    if (onSearchInput) onSearchInput();
+  });
+}
+
+/* AI 의미검색 토글 — 검색창 옆, 부팅 시 한 번만 배선 */
+const $aiToggle = document.getElementById('aiToggle');
+if ($aiToggle) {
+  $aiToggle.addEventListener('click', () => {
+    if (aiState === 'loading') return;
+    if (aiEnabled) {                       // 다시 누르면 끈다
+      aiEnabled = false;
+      aiState = 'off';
+      try { localStorage.removeItem(AI_FLAG); } catch (e) {}
+      setAiStatus('');
+      if (typeof aiOnReady === 'function') aiOnReady();
+      return;
+    }
+    aiEnabled = true;
+    try { localStorage.setItem(AI_FLAG, '1'); } catch (e) {}
+    loadAI();                              // 직접 켰으니 바로 준비시킨다
+  });
+  setAiUI();
+}
+
+/* "/" 로 검색창에 바로 포커스 */
+document.addEventListener('keydown', (e) => {
+  if (e.key !== '/' || e.metaKey || e.ctrlKey || e.altKey || e.isComposing) return;
+  const t = e.target;
+  if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+  if (!$search) return;
+  e.preventDefault();
+  $search.focus();
+  $search.select();
 });
 
 /* ---------- Mobile nav toggle ---------- */
@@ -600,11 +793,15 @@ Promise.all([
   fetch('data/deals.json', { cache: 'no-cache' })
     .then((res) => (res.ok ? res.json() : null))
     .catch(() => null),
+  fetch('data/tasks.json', { cache: 'no-cache' })
+    .then((res) => (res.ok ? res.json() : null))
+    .catch(() => null),
 ])
-  .then(([products, deals]) => {
+  .then(([products, deals, tasks]) => {
     DATA = products;
     if (!DATA.categories.includes('전체')) DATA.categories.unshift('전체');
     if (deals && Array.isArray(deals.deals)) DEALS = deals;
+    if (tasks && Array.isArray(tasks.tasks)) TASKS = tasks;
     render();
   })
   .catch((err) => {
