@@ -188,26 +188,26 @@ img { display: block; max-width: 100%; }
 /* sticky 헤더에 제목이 가리지 않도록 */
 #products { scroll-margin-top: 76px; }
 
-.rail { flex: 0 0 var(--rail-w); padding-top: 44px; position: sticky; top: 84px; }
+.rail { flex: 0 0 var(--rail-w); padding-top: 8px; position: sticky; top: 84px; }
 
 .side-box {
   background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
-  box-shadow: var(--shadow); padding: 18px 18px 20px; margin-bottom: 22px;
+  box-shadow: var(--shadow); padding: 16px 16px 18px; margin-bottom: 16px;
 }
 .side-box h3 { margin: 0 0 4px; font-size: 1.05rem; font-weight: 800; }
 
 /* 핫딜 사이드박스 */
 .side-deals { background: linear-gradient(180deg, #fbf5ea, #fff 60%); border-color: #efe3cd; }
-.side-note { margin: 0 0 14px; font-size: .8rem; color: var(--muted); line-height: 1.5; }
+.side-note { margin: 0 0 11px; font-size: .78rem; color: var(--muted); line-height: 1.45; }
 .side-note strong { color: #a9762e; font-weight: 700; }
-.side-deal-list { display: flex; flex-direction: column; gap: 12px; }
+.side-deal-list { display: flex; flex-direction: column; gap: 9px; }
 .side-deal {
   display: flex; gap: 11px; align-items: center; text-decoration: none; color: inherit;
   border-radius: 8px; padding: 5px; margin: -5px; transition: background .12s;
 }
 .side-deal:hover { background: rgba(185,138,82,.09); }
 .side-deal-thumb {
-  flex: 0 0 56px; width: 56px; height: 56px; border-radius: 8px; overflow: hidden;
+  flex: 0 0 46px; width: 46px; height: 46px; border-radius: 7px; overflow: hidden;
   background: var(--bg-soft); border: 1px solid var(--line);
 }
 .side-deal-thumb img { width: 100%; height: 100%; object-fit: cover; }
@@ -218,7 +218,7 @@ img { display: block; max-width: 100%; }
 }
 .side-deal-price { margin: 3px 0 0; font-size: .92rem; font-weight: 800; color: #c0392b; }
 .side-deal-rocket { font-size: .8rem; }
-.side-time { margin: 14px 0 0; font-size: .72rem; color: var(--muted); text-align: right; }
+.side-time { margin: 10px 0 0; font-size: .7rem; color: var(--muted); text-align: right; }
 
 /* 🔖 나를 위한 추천 사이드박스 */
 .side-picks { background: linear-gradient(180deg, #f2f6fd, #fff 60%); border-color: #dfe7f5; }
@@ -228,9 +228,11 @@ img { display: block; max-width: 100%; }
 .side-pick-price .now.muted { color: var(--accent); }
 .side-pick:hover { background: rgba(31,111,235,.07); }
 
-/* 쿠팡 검색 사이드박스 */
-.side-search p { margin: 0 0 12px; font-size: .82rem; color: var(--muted); }
-.side-search iframe { max-width: 100%; }
+/* 쿠팡 검색 사이드박스 — 보조 기능이라 가장 작게 */
+.side-search { padding: 13px 14px 14px; }
+.side-search h3 { font-size: .95rem; margin-bottom: 2px; }
+.side-search p { margin: 0 0 8px; font-size: .78rem; color: var(--muted); }
+.side-search iframe { max-width: 100%; display: block; }
 
 @media (max-width: 900px) {
   .page,

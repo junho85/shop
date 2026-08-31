@@ -72,6 +72,7 @@ function afterLayout(fn) {
 
 function render() {
   const r = parseHash();
+  gaPageView();
   renderNav(r.view === 'list' ? r.cat : null);
   renderRail();
   if (r.view === 'detail') {
@@ -126,6 +127,39 @@ let onSearchInput = null;                 // renderList 가 자기 onQuery 로 �
 const $search = document.getElementById('globalSearch');
 let searchTimer = null;
 
+/* ---------- Google Analytics 4 ----------
+   측정 ID 를 채우면 켜진다. 비워두면 스크립트를 아예 불러오지 않는다.
+   analytics.google.com → 관리 → 데이터 스트림에서 'G-' 로 시작하는 값을 복사해 넣는다. */
+const GA_ID = 'G-QH32GHL4HG';   // 주멍가게 (shop.junho85.pe.kr) · GA4 속성 552190978
+
+function initGA() {
+  if (!GA_ID) return;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function gtag() { window.dataLayer.push(arguments); };
+  gtag('js', new Date());
+  /* 해시 라우팅이라 화면 전환을 자동으로 못 잡는다 → page_view 는 gaPageView 로 직접 보낸다 */
+  gtag('config', GA_ID, { send_page_view: false });
+  const sc = document.createElement('script');
+  sc.async = true;
+  sc.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_ID);
+  document.head.appendChild(sc);
+}
+const gaReady = () => Boolean(GA_ID && window.gtag);
+
+function gaEvent(name, params) {
+  if (!gaReady()) return;
+  try { window.gtag('event', name, params || {}); } catch (e) {}
+}
+function gaPageView() {
+  if (!gaReady()) return;
+  gaEvent('page_view', {
+    page_title: document.title,
+    page_location: location.href,
+    page_path: location.pathname + (location.hash || '#/'),
+  });
+}
+initGA();
+
 function loadInterest() {
   try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch (e) { return {}; }
 }
@@ -147,6 +181,38 @@ function track(kind, data) {
     (data.cats || []).forEach((c) => { d.categories[c] = (d.categories[c] || 0) + 1; });
   }
   saveInterest(d);
+  sendToGA(kind, data);
+}
+
+/* 개인화용 기록과 같은 지점에서 GA4 로도 보낸다 */
+function sendToGA(kind, data) {
+  if (!gaReady()) return;
+  const p = data.id ? byId(data.id) : null;
+  const item = p ? {
+    item_id: p.id,
+    item_name: p.name,
+    item_category: p.category,
+    price: p.price == null ? undefined : p.price,
+    currency: 'KRW',
+    platform: p.platform || 'coupang',
+  } : null;
+
+  if (kind === 'view' && item) {
+    gaEvent('view_item', { currency: 'KRW', value: item.price, items: [item] });
+  } else if (kind === 'cta' && item) {
+    /* 제휴 링크 클릭 — 이 사이트에서 가장 중요한 지표 */
+    gaEvent('affiliate_click', {
+      item_id: item.item_id, item_name: item.item_name,
+      item_category: item.item_category, platform: item.platform,
+      value: item.price, currency: 'KRW',
+    });
+    gaEvent('select_item', { items: [item] });
+  } else if (kind === 'search' && data.q) {
+    gaEvent('search', { search_term: data.q, categories: (data.cats || []).join(',') });
+  } else if (kind === 'task' && data.id) {
+    const t = taskById(data.id);
+    gaEvent('task_view', { task_id: data.id, task_title: t ? t.title : '' });
+  }
 }
 
 function interestScore(p, d) {
@@ -530,7 +596,7 @@ function renderList(cat) {
 
 /* ---------- 🔥 오늘의 핫딜 (쿠팡 골드박스, 자동 수집) ---------- */
 /* 사이드바에 세로 리스트로 표시. 직접 써본 추천과 분리, 쿠팡으로 바로 이동. */
-const SIDE_DEAL_LIMIT = 6;
+const SIDE_DEAL_LIMIT = 5;
 
 function sideDealItem(d) {
   return `
@@ -552,14 +618,14 @@ function dealsBox() {
   return `
     <section class="side-box side-deals">
       <h3>🔥 오늘의 핫딜</h3>
-      <p class="side-note">쿠팡 골드박스 실시간 특가예요. <strong>직접 써본 추천이 아니라</strong> 쿠팡이 매일 갱신하는 인기 특가입니다.</p>
+      <p class="side-note">쿠팡 골드박스 실시간 특가 — <strong>직접 써본 추천은 아닙니다.</strong></p>
       <div class="side-deal-list">${list.map(sideDealItem).join('')}</div>
       ${DEALS.fetchedAt ? `<p class="side-time">${esc(DEALS.fetchedAt)} 기준</p>` : ''}
     </section>`;
 }
 
 /* 🔖 나를 위한 추천 — 핫딜과 같은 사이드 리스트 형식 */
-const SIDE_PICK_LIMIT = 6;
+const SIDE_PICK_LIMIT = 3;
 
 function sidePickItem(p) {
   const badge = p.wish ? '🛒' : (p.ordered ? '📦' : '');
@@ -582,7 +648,7 @@ function picksBox() {
   return `
     <section class="side-box side-picks">
       <h3>🔖 나를 위한 추천</h3>
-      <p class="side-note">자주 보고 클릭·검색한 상품을 바탕으로 골랐어요.</p>
+      <p class="side-note">자주 보고 클릭한 상품 기준</p>
       <div class="side-deal-list">${list.map(sidePickItem).join('')}</div>
     </section>`;
 }
@@ -591,7 +657,7 @@ function searchBox() {
   return `
     <section class="side-box side-search">
       <h3>🔎 쿠팡에서 검색</h3>
-      <p>주멍가게에 없는 상품도 쿠팡에서 바로 찾아보세요.</p>
+      <p>여기 없는 상품도 바로 찾기</p>
       <iframe src="https://ads-partners.coupang.com/iframe/search-bar?id=1905271823563450211004594-f2&type=f2&trackingCode=AF7634218"
               width="100%" height="36" frameborder="0" scrolling="no" title="쿠팡 검색"></iframe>
     </section>`;
