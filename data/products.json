@@ -567,6 +567,13 @@
       "priceOriginal": null,
       "price": 12790,
       "sale": false,
+      "keywords": [
+        "말발굽",
+        "문 고정",
+        "문받침",
+        "도어스톱퍼",
+        "문 열림 방지"
+      ],
       "note": "다용도실·현관문에 계속 쓰고 있는 페달식 도어스토퍼. 발로 툭 눌러 문을 고정합니다.",
       "description": "다용도실 문과 현관문에 달아 꾸준히 쓰고 있는 페달식 도어스토퍼입니다. 발로 페달을 툭 눌러 내리면 고무 패드가 바닥을 눌러 문이 고정되고, 다시 발로 올리면 풀립니다. 손을 쓰지 않아도 돼서 빨래 바구니나 짐을 들고 드나들 때 특히 편합니다.\n\n오늘 다용도실 쪽 것을 새로 교체했는데, 쟁여 둔 여분을 다 써서 다시 주문하려고 담아 뒀습니다. 그동안 여러 번 재구매한 제품입니다.\n\n크롬 도금이라 무광 플라스틱 제품보다 보기 좋고, 스프링과 페달이 헐거워지지 않고 오래 버팁니다. 2개들이라 다용도실·현관 두 곳에 한 번에 달기 좋습니다. 문 아래 바닥과의 간격이 큰 곳이면 고정이 잘 되는지 확인하고 다시는 편이 좋습니다.",
       "link": "https://link.coupang.com/a/gAvQXXCYDI",
@@ -714,6 +721,89 @@
         {
           "date": "2026-08-31",
           "price": 16500
+        }
+      ]
+    },
+    {
+      "id": "gomgom-sundubu-350-4",
+      "name": "곰곰 부드럽고 고소한 순두부 (350g, 4개)",
+      "category": "식품",
+      "image": "https://image9.coupangcdn.com/image/retail/images/57074214794679-d11a3e01-dd92-4f8b-982e-42dd8516d54e.jpg",
+      "priceOriginal": null,
+      "price": 2980,
+      "sale": false,
+      "note": "순두부찌개용 순두부 4봉. 100g당 213원이면 싼 편이에요.",
+      "description": "순두부찌개 끓일 때 쓰는 순두부입니다. 350g 4봉에 2,980원, 100g당 213원이면 싼 편입니다.\n\n대두 100%로 만든 제품이고, 봉지째 짜 넣으면 되니 손이 거의 안 갑니다. 4봉이라 한 번에 다 쓰지 않고 냉장에 두고 필요할 때 하나씩 씁니다. 로켓프레시라 주문하면 다음 날 옵니다.",
+      "link": "https://link.coupang.com/a/gFnflGfsJg",
+      "addedAt": "2026-08-31",
+      "priceHistory": [
+        {
+          "date": "2026-08-31",
+          "price": 2980
+        }
+      ]
+    },
+    {
+      "id": "pulmuone-sundubu-sauce-140-6",
+      "name": "풀무원 정통순두부 찌개양념 (140g, 6개)",
+      "category": "식품",
+      "image": "https://img4c.coupangcdn.com/image/retail/images/266087919236763-4f291193-c9b6-42c6-ae2b-42886dace766.jpg",
+      "priceOriginal": 14880,
+      "price": 7560,
+      "sale": true,
+      "note": "순두부찌개 양념 6봉. 이것만 넣으면 간이 맞아서 편해요.",
+      "description": "순두부찌개를 끓일 때 쓰는 양념입니다. 한 봉이 140g에 3~4인분이라, 순두부와 애호박만 있으면 간을 따로 맞추지 않아도 됩니다.\n\n6봉 묶음이 7,560원으로 원가 14,880원에서 49% 할인가입니다. 1봉씩 사면 1,980원이니 묶음이 훨씬 낫습니다. 냉장 보관이고 로켓프레시로 옵니다.",
+      "link": "https://link.coupang.com/a/gFnflKn4yy",
+      "addedAt": "2026-08-31",
+      "priceHistory": [
+        {
+          "date": "2026-08-31",
+          "price": 7560
+        }
+      ]
+    },
+    {
+      "id": "korean-zucchini-1ea",
+      "name": "국내산 애호박 (1개)",
+      "category": "식품",
+      "image": "https://image13.coupangcdn.com/image/retail/images/438319943630087-5f42d558-1a49-4634-8dcc-cfe7ba66a482.jpg",
+      "priceOriginal": null,
+      "price": 1750,
+      "sale": false,
+      "note": "순두부찌개·된장찌개에 넣는 애호박 1개. 낱개로 사기 좋아요.",
+      "description": "찌개에 넣는 애호박입니다. 1개 1,750원으로 낱개로 살 수 있어서, 한 번 쓸 만큼만 주문하기 좋습니다.\n\n순두부찌개나 된장찌개에 반달로 썰어 넣고, 남으면 채 썰어 전을 부치거나 볶아 먹습니다. 로켓프레시라 주문한 다음 날 받습니다.",
+      "link": "https://link.coupang.com/a/gFnijifiDI",
+      "addedAt": "2026-08-31",
+      "priceHistory": [
+        {
+          "date": "2026-08-31",
+          "price": 1750
+        }
+      ]
+    },
+    {
+      "id": "during-leg-relaxer-board",
+      "name": "during 레그 릴렉서 종아리 스트레칭 보드 (퍼플)",
+      "category": "기타",
+      "image": "https://img3a.coupangcdn.com/image/vendor_inventory/476d/04dc8067f4d403b587f931fdf04ac8c8f7dcc513d9a595d6f6be996e3e5e.png",
+      "priceOriginal": 68900,
+      "price": 36960,
+      "sale": true,
+      "keywords": [
+        "평발",
+        "종아리",
+        "스트레칭",
+        "발 스트레칭",
+        "족저근막"
+      ],
+      "note": "아이 평발 운동 하며 산 스트레칭 보드. 올라서 있기만 해도 스트레칭이 됩니다.",
+      "description": "아이가 평발 운동을 배울 때 선생님이 추천해줘서 구입했는데, 잘 쓰고 있습니다. 올라서 있기만 해도 종아리가 늘어나는 느낌이 듭니다.\n\n경사면에 발을 올려두는 형태라 따로 동작을 익힐 필요가 없고, 각도 조절이 되니 처음엔 낮게 두고 익숙해지면 올리면 됩니다. 아이 운동용으로 샀지만 어른이 서서 쓰기에도 괜찮습니다.\n\n68,900원에서 46% 할인된 36,960원에 샀습니다(판매자 쿠폰 800원이 적용된 가격이라, 쿠폰이 없으면 조금 더 나올 수 있습니다). 무료배송·무료반품입니다.",
+      "link": "https://link.coupang.com/a/gFnprvvh2i",
+      "addedAt": "2026-08-31",
+      "priceHistory": [
+        {
+          "date": "2026-08-31",
+          "price": 36960
         }
       ]
     }

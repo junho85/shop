@@ -135,6 +135,49 @@
       ]
     },
     {
+      "id": "sundubu-jjigae",
+      "emoji": "🍜",
+      "title": "순두부찌개 끓이기",
+      "summary": "순두부·양념·애호박이면 간 볼 것 없이 끝",
+      "groups": [
+        {
+          "label": "주재료",
+          "note": "순두부는 봉지째 짜 넣으면 되고, 양념 한 봉이 3~4인분입니다. 간을 따로 맞출 필요가 없습니다.",
+          "items": [
+            "gomgom-sundubu-350-4",
+            "pulmuone-sundubu-sauce-140-6"
+          ]
+        },
+        {
+          "label": "넣을 채소",
+          "note": "애호박은 반달로 썰어 넣습니다.",
+          "items": [
+            "korean-zucchini-1ea"
+          ]
+        },
+        {
+          "label": "같이 올리면",
+          "note": "두부를 더 넣어 양을 늘리거나, 우삼겹을 조금 넣으면 국물이 진해집니다.",
+          "items": [
+            "gomgom-tofu-500-2",
+            "daepaeking-woosamgyeop-1kg"
+          ]
+        },
+        {
+          "label": "끓일 도구",
+          "items": [
+            "samsung-induction-1burner"
+          ]
+        }
+      ],
+      "extras": [
+        {
+          "name": "양파",
+          "link": "https://link.coupang.com/a/gEy66DuSdM"
+        }
+      ]
+    },
+    {
       "id": "simple-breakfast",
       "emoji": "🥣",
       "title": "간단한 아침",

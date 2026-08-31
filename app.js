@@ -209,10 +209,19 @@ function ruleScores(q) {
         DATA.products.filter((p) => p.category === cat).forEach((p) => add(p.id, 3)));
     }
   });
+  /* 이름·별칭에 그대로 들어간 상품이 의도 사전(5점)에 밀리지 않게 가중치를 둔다.
+     예: '순두부'는 사전의 '두부' 규칙에도 걸리는데, 이름이 순두부인 상품이 먼저 와야 한다 */
   const toks = q.split(/\s+/).filter((t) => t.length >= 2);
   DATA.products.forEach((p) => {
-    const hay = [p.name, p.note, p.description, p.category].join(' ').toLowerCase();
-    toks.forEach((t) => { if (hay.includes(t)) add(p.id, 2); });
+    const name = (p.name || '').toLowerCase();
+    const kw = (p.keywords || []).join(' ').toLowerCase();
+    const rest = [p.note, p.description, p.category].filter(Boolean).join(' ').toLowerCase();
+    if (q.length >= 2 && name.includes(q)) add(p.id, 8);       // 검색어 전체가 이름에
+    if (q.length >= 2 && kw.includes(q)) add(p.id, 7);         // 별칭 정확히 ('말발굽')
+    toks.forEach((t) => {
+      if (name.includes(t) || kw.includes(t)) add(p.id, 4);
+      else if (rest.includes(t)) add(p.id, 2);
+    });
   });
   return { score, label };
 }
@@ -275,7 +284,8 @@ const AI_CACHE = 'jumeong_ai_emb_v1';
 function productsSignature() {
   let h = 5381;
   for (const p of DATA.products) {
-    const t = p.id + '|' + (p.name || '') + '|' + (p.note || '') + '|' + (p.description || '') + '|' + (p.category || '');
+    const t = p.id + '|' + (p.name || '') + '|' + (p.note || '') + '|' + (p.description || '')
+      + '|' + (p.category || '') + '|' + (p.keywords || []).join(',');
     for (let i = 0; i < t.length; i++) h = ((h * 33) ^ t.charCodeAt(i)) >>> 0;
   }
   return `${AI_MODEL}:${DATA.products.length}:${h}`;
@@ -334,7 +344,8 @@ async function loadAI() {
       aiProductEmb = [];
       let done = 0;
       for (const p of DATA.products) {
-        const text = 'passage: ' + [p.name, p.note, p.description, p.category].filter(Boolean).join('. ');
+        const text = 'passage: ' + [p.name, p.note, p.description, p.category, (p.keywords || []).join(', ')]
+          .filter(Boolean).join('. ');
         const out = await aiExtractor(text, { pooling: 'mean', normalize: true });
         aiProductEmb.push({ id: p.id, vec: new Float32Array(out.data) });
         setAiStatus(`상품을 분석하는 중… ${++done}/${DATA.products.length}`);
