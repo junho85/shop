@@ -15,6 +15,25 @@
   ],
   "products": [
     {
+      "id": "oceanlive-stick-shower-ball",
+      "name": "오션리브 부드러운 스틱 샤워볼 핑크 2개",
+      "category": "생필품",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/rs_quotation_api/v9bkai4f/7f46ccc40fa9456db949898f2b377aea.jpg",
+      "priceOriginal": 11810,
+      "price": 3890,
+      "sale": true,
+      "note": "손 닿기 힘든 등까지 편하게 닦는 스틱 샤워볼. 이마트에서 사다 요즘은 쿠팡 주문.",
+      "description": "예전에 주로 이마트에서 사서 쓰던 스틱 샤워볼인데, 요즘은 이마트 매장에서 찾기 어려워 쿠팡에서 주문했습니다.\n\n손잡이가 달린 스틱형이라 손이 닿지 않는 등 뒤까지 구석구석 닦기 편합니다. 샤워볼 부분이 부드럽고 거품이 잘 일어나 피부 자극 없이 시원하게 씻을 수 있습니다. 핑크 2개입 구성이라 여유 있게 두고 쓰기 좋습니다.",
+      "link": "https://link.coupang.com/a/hcgFsUtYES",
+      "addedAt": "2026-09-19",
+      "priceHistory": [
+        {
+          "date": "2026-09-19",
+          "price": 3890
+        }
+      ]
+    },
+    {
       "id": "mowi-salmon-sashimi",
       "name": "[로켓프레시] 모위 노르웨이산 프리미엄 생연어 횟감용 (냉장)",
       "category": "식품",
@@ -804,6 +823,35 @@
         {
           "date": "2026-08-31",
           "price": 36960
+        }
+      ]
+    },
+    {
+      "id": "seagate-ironwolf-12tb-4pack",
+      "name": "씨게이트 IronWolf NAS HDD 12TB 4개 패키지 (ST12000VN0008)",
+      "category": "디지털",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/640x640ex/image/vendor_inventory/c938/e8f7ff13da1042717504a976a7681aac331cb7806197c02b13a3be7d887d.jpg",
+      "priceOriginal": null,
+      "price": 1979320,
+      "sale": false,
+      "ordered": true,
+      "keywords": [
+        "NAS",
+        "하드디스크",
+        "아이언울프",
+        "시놀로지",
+        "DS920+",
+        "저장장치",
+        "HDD"
+      ],
+      "note": "DS920+의 4TB 4개를 12TB로 교체하려고 주문. 평소 360만원대인데 특가로 잡았습니다.",
+      "description": "집에서 쓰는 시놀로지 DS920+에 아이언울프 4TB 4개를 RAID 5로 넣어 쓰고 있었는데, 용량이 점점 부족해져서 12TB 4개로 통째로 교체하려고 주문했습니다. DS920+가 4베이라 이 4개들이 패키지가 그대로 맞습니다. RAID 5 기준 실사용 용량은 12TB에서 36TB로 세 배가 됩니다.\n\n씨게이트 IronWolf는 24시간 연속 가동과 여러 개를 묶어 쓰는 NAS 환경을 위해 나온 제품군입니다. 모델명은 ST12000VN0008입니다.\n\n💰 가격 조사 (2026-09-25~26 기준)\n- 이 링크(쿠팡 특가): 1,979,320원 — TB당 41,235원\n- 같은 제품(ST12000VN0008 4p) 쿠팡 다른 판매자: 3,605,000원 — TB당 75,104원\n- 12TB 단품 시세: 90만원대 (ST12000VN0007 929,000원, 서버용 12TB 916,000원)\n\n보통 360만원대인 제품인데 쿠팡에서 종종 특가가 풀립니다. 이번엔 같은 상품 다른 판매자보다 162만원가량 쌌습니다. 국내 공식 유통사는 에스씨지솔루션즈이고 네이버 공식 스토어 (smartstore.naver.com/scgsmall)도 운영합니다. 공식 스토어 가격은 확인하지 못해 여기 적지 못했으니, 특가인지 판단할 때 함께 비교해 보시면 좋겠습니다.\n\n같은 IronWolf 4p 라인업의 다른 용량도 같은 날 함께 봤습니다. 10TB 1,843,610원(TB당 46,090원), 8TB 2,441,000원(TB당 76,281원), 6TB 1,975,000원(TB당 82,291원). 용량 대비로는 12TB 특가가 가장 쌌습니다.\n\n다만 2026-09-25 기준으로는 일시품절이라, 재입고 알림을 걸어두고 특가가 다시 뜨는지 지켜보는 편이 좋습니다.",
+      "link": "https://link.coupang.com/a/hjprMpMqTA",
+      "addedAt": "2026-09-25",
+      "priceHistory": [
+        {
+          "date": "2026-09-25",
+          "price": 1979320
         }
       ]
     }
