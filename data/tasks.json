@@ -352,6 +352,30 @@
         }
       ],
       "extras": []
+    },
+    {
+      "id": "nas-upkeep",
+      "emoji": "🗄️",
+      "title": "NAS 용량 늘리고 점검하기",
+      "summary": "5년 넘게 쓴 시놀로지 DS920+의 디스크를 바꾸면서 닳는 부품도 같이 본다",
+      "groups": [
+        {
+          "label": "교체할 디스크",
+          "note": "4TB 4개(RAID 5, 실사용 12TB)를 12TB 4개로 바꾸면 실사용 36TB가 됩니다.",
+          "items": [
+            "seagate-ironwolf-12tb-4pack"
+          ]
+        },
+        {
+          "label": "점검 후 교체 검토",
+          "note": "오래 쓰면 팬과 전원 어댑터가 먼저 닳습니다. 아직 사지 않고 상태를 보고 정할 부품입니다.",
+          "items": [
+            "synology-fan-92x92x25",
+            "synology-adapter-12v-833a"
+          ]
+        }
+      ],
+      "extras": []
     }
   ]
 }
