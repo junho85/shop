@@ -329,6 +329,26 @@ img { display: block; max-width: 100%; }
 .task-chip.active { background: var(--text); border-color: var(--text); color: #fff; }
 .task-chip-emoji { font-size: 1.05rem; }
 
+/* 모바일 — 할 일 칩이 여러 줄로 접히면 첫 화면을 다 먹는다. 한 줄 가로 스크롤로 바꾼다 */
+@media (max-width: 760px) {
+  .tasks-section { padding: 16px 0 2px; }
+  .tasks-section .section-title h2 { font-size: 1.05rem; }
+  .tasks-section .section-title .rule { display: none; }
+  .tasks-sub { display: none; }
+  .task-chips {
+    flex-wrap: nowrap; justify-content: flex-start; gap: 8px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    /* 화면 가장자리까지 스크롤되게 컨테이너 여백만큼 밖으로 뺀다 */
+    margin-left: -20px; margin-right: -20px; padding: 10px 20px 6px;
+    /* 오른쪽이 흐려져 더 있다는 걸 알 수 있게 */
+    -webkit-mask-image: linear-gradient(to right, #000 85%, transparent);
+            mask-image: linear-gradient(to right, #000 85%, transparent);
+  }
+  .task-chips::-webkit-scrollbar { display: none; }
+  .task-chip { flex: 0 0 auto; padding: 7px 13px; font-size: .84rem; white-space: nowrap; }
+  .task-chip:hover { transform: none; }
+}
+
 .task-view { padding-bottom: 64px; }
 .task-head { text-align: center; margin: 22px 0 20px; }
 .task-head h1 { margin: 0 0 8px; font-size: 1.9rem; font-weight: 800; letter-spacing: -.01em; }
