@@ -912,6 +912,59 @@
           "price": 32000
         }
       ]
+    },
+    {
+      "id": "ulanzi-ma67-magnetic-trifold-stand",
+      "name": "울란지 MA67 마그네틱 3단 접이식 폰 스탠드 (셀카봉, 삼각대 겸용)",
+      "category": "디지털",
+      "platform": "aliexpress",
+      "image": "https://ae01.alicdn.com/kf/Sf85e1813e64a4e298dd3dccf657c6fa0F.jpg",
+      "priceOriginal": null,
+      "price": null,
+      "sale": false,
+      "keywords": [
+        "맥세이프",
+        "마그네틱",
+        "폰 스탠드",
+        "거치대",
+        "셀카봉",
+        "삼각대",
+        "울란지",
+        "Ulanzi",
+        "아이폰"
+      ],
+      "note": "한 달 넘게 쓰는 마그네틱 폰 스탠드. 자력이 괜찮고 접었다 펴서 바로 세워 쓰기 좋아요.",
+      "description": "한 달 넘게 쓰고 있는 울란지 MA67 마그네틱 스탠드입니다. 아이폰 17 Pro Max에 신지모루 맥세이프 케이스를 끼운 채로 붙여 쓰는데, 자력이 괜찮아서 폰이 쉽게 떨어지지 않고 접었다 펴서 간단히 세워 쓰기 좋습니다.\n\n판매 페이지 정보 (Ulanzi Official Store 판매 페이지와 해외 판매처 표기 기준)\n- 3단 접이식 구조로 셀카봉 손잡이와 삼각대를 겸합니다\n- 접었을 때 11.1 × 5.7 × 1.8cm, 삼각대로 펼치면 최대 높이 24.4cm\n- 안전 하중 400g\n- 알루미늄 합금과 실리콘 재질, 무게 약 138g (판매처에 따라 165g으로 적힌 곳도 있습니다)\n- 색상은 블랙과 실버\n\n울란지 공식 사이트에는 MA67 사양서가 올라와 있지 않아서, 위 수치는 판매처 표기를 모은 것입니다. 해외직구(AliExpress) 상품이라 배송에 시간이 걸릴 수 있습니다.",
+      "link": "https://s.click.aliexpress.com/e/_c4rlbiiz",
+      "addedAt": "2026-10-20",
+      "priceHistory": []
+    },
+    {
+      "id": "sinjimoru-magsafe-bumper-case-17promax",
+      "name": "신지모루 맥세이프 충격보호 360도 하드 범퍼 케이스 (아이폰 17 Pro Max, 매트클리어)",
+      "category": "디지털",
+      "image": "https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/35251230925242-ea452af5-889a-4897-9fe5-f174a80ef6c1.jpg",
+      "priceOriginal": 31800,
+      "price": 14900,
+      "sale": true,
+      "keywords": [
+        "맥세이프",
+        "케이스",
+        "아이폰 17 프로맥스",
+        "아이폰17",
+        "범퍼",
+        "신지모루"
+      ],
+      "note": "아이폰 17 Pro Max에 두 달째 쓰는 맥세이프 케이스. 마그네틱 스탠드와 같이 씁니다.",
+      "description": "두 달 정도 쓰고 있는 신지모루 맥세이프 케이스입니다. 아이폰 17 Pro Max용 매트클리어 옵션입니다. 맥세이프 자석이 들어 있어서 울란지 MA67 마그네틱 스탠드에 붙여 쓰고 있습니다.\n\n판매 페이지 기준으로 하드 재질의 360도 충격보호 범퍼 케이스이고, 로켓배송입니다. 2026-10-20 기준 14,900원(정가 31,800원, 53% 할인)이었습니다. 기종과 색상 옵션이 여러 가지라 주문 전에 내 폰 기종이 맞는지 확인하세요.",
+      "link": "https://link.coupang.com/a/h0id6apTYO",
+      "addedAt": "2026-10-20",
+      "priceHistory": [
+        {
+          "date": "2026-10-20",
+          "price": 14900
+        }
+      ]
     }
   ]
 }
