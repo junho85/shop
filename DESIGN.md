@@ -1,6 +1,6 @@
 # 주멍가게 — 설계 문서
 
-> 정적(Vanilla HTML+CSS+JS) 쿠팡 파트너스 추천 상품 페이지. GitHub Pages 호스팅(`shop.junho85.pe.kr`).
+> 정적(Vanilla HTML+CSS+JS) 쿠팡 파트너스 추천 상품 페이지. NAS(Synology DS920+ Web Station) 호스팅(`shop.junho85.pe.kr`).
 
 ## 컨셉
 예전 워드프레스(WooCommerce)로 운영하던 **주멍가게**를 정적 사이트로 재구축. 직접 써보고 추천하는 제품을 쿠팡 파트너스 딥링크로 연결한다.
@@ -13,7 +13,6 @@ shop/
 ├── app.js            # products.json fetch → 해시 라우팅(목록/필터/상세) 렌더
 ├── data/products.json# 상품 데이터 (유일한 관리 지점)
 ├── assets/           # 로컬 이미지·placeholder
-├── CNAME             # shop.junho85.pe.kr
 └── README.md         # 상품 추가 방법
 ```
 

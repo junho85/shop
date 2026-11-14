@@ -38,4 +38,4 @@ jobs:
           fi
 
       - name: 사이트 폴더에 반영
-        run: rsync -a --delete --exclude '.git/' --exclude '.github/' ./ /srv/shop/
+        run: rsync -a --delete --delete-excluded --exclude '.git/' --exclude '.github/' --exclude 'scripts/' --exclude '/*.md' ./ /srv/shop/

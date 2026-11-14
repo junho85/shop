@@ -21,8 +21,9 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      # 사이트에 필요 없는 파일(문서, 수집 스크립트)은 올리지 않는다. --delete-excluded 로 이미 올라간 것도 지운다
       - name: 사이트 폴더에 반영
-        run: rsync -a --delete --exclude '.git/' --exclude '.github/' ./ /srv/shop/
+        run: rsync -a --delete --delete-excluded --exclude '.git/' --exclude '.github/' --exclude 'scripts/' --exclude '/*.md' ./ /srv/shop/
 
       - name: 반영 확인
         run: |

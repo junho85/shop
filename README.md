@@ -1,7 +1,7 @@
 # 주멍가게 (shop.junho85.pe.kr)
 
 직접 써보고 좋았던 제품을 쿠팡 파트너스 링크로 추천하는 정적 사이트.
-빌드 도구·백엔드 없이 **순수 HTML+CSS+JS**로 동작하며 GitHub Pages로 호스팅한다.
+빌드 도구·백엔드 없이 **순수 HTML+CSS+JS**로 동작하며 집 NAS(Synology DS920+, Web Station)에서 호스팅한다.
 
 ## 상품 추가/수정하는 법
 

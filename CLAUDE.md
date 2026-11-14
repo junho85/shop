@@ -1,7 +1,7 @@
 # 주멍가게 (shop.junho85.pe.kr) — AI 운영 규칙
 
 직접 써본 제품을 쿠팡 파트너스·알리익스프레스 제휴 링크로 추천하는 정적 사이트.
-GitHub Pages 호스팅, 빌드 도구 없음(순수 HTML+CSS+JS). 데이터 단일 소스 = `data/products.json`.
+NAS(Synology DS920+ Web Station) 호스팅, 빌드 도구 없음(순수 HTML+CSS+JS). 데이터 단일 소스 = `data/products.json`.
 
 ## 커밋·푸시 (중요)
 - **git commit·push는 자동으로 하지 않는다. 항상 사용자에게 먼저 확인받는다.**
@@ -42,4 +42,8 @@ GitHub Pages 호스팅, 빌드 도구 없음(순수 HTML+CSS+JS). 데이터 단�
 - `app.js`/`style.css`를 바꾸면 `index.html`의 `?v=N`을 올려 캐시를 무효화한다. (`products.json`은 `fetch(cache:no-cache)`라 버전 불필요)
 
 ## 배포
-- `main` 푸시 → GitHub Pages 자동 빌드. 빌드 트리거/상태: `gh api -X POST repos/junho85/shop/pages/builds`, `gh api repos/junho85/shop/pages/builds --jq '.[0].status'`.
+- `main` push → `.github/workflows/deploy.yml`이 NAS의 self-hosted 러너(`nas-ds920-shop`, 컨테이너 `gh-runner-shop`)에서 돌아 `rsync`로 NAS `/volume1/web/shop`에 반영한다. 2026-11-14까지는 GitHub Pages였다.
+- 핫딜(`deals.yml`)도 같은 러너에서 돈다. 봇 커밋(GITHUB_TOKEN)은 `deploy.yml`을 깨우지 못하므로 `deals.yml` 끝에서 직접 rsync 한다. 두 워크플로 모두 rsync 줄(제외 목록 포함)을 같이 고친다.
+- 문서(`/*.md`)와 `scripts/`는 사이트에 올리지 않는다.
+- 수동 배포/상태: `gh workflow run deploy.yml`, `gh run list --workflow deploy.yml -L 3`.
+- 웹 서버, 인증서(Let's Encrypt, DSM 자동 갱신), DNS(가비아 `shop` CNAME → `junho85.synology.me`)는 DSM과 가비아에서 관리한다.
