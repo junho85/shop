@@ -8,9 +8,14 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: shop-site-sync
+  cancel-in-progress: false
+
 jobs:
   refresh:
-    runs-on: ubuntu-latest
+    # NAS 러너에서 돌아 커밋 직후 사이트 폴더까지 바로 반영한다
+    runs-on: [self-hosted, nas, shop]
     steps:
       - uses: actions/checkout@v5
 
@@ -31,3 +36,6 @@ jobs:
           else
             echo "변경 없음 — 스킵"
           fi
+
+      - name: 사이트 폴더에 반영
+        run: rsync -a --delete --exclude '.git/' --exclude '.github/' ./ /srv/shop/

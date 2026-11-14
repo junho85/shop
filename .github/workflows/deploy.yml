@@ -1,0 +1,31 @@
+name: NAS 배포
+
+# main 에 push 하면 NAS 러너가 받아 사이트 폴더(/srv/shop = NAS /volume1/web/shop)에 반영한다.
+# 핫딜 봇 커밋은 GITHUB_TOKEN 으로 올라가 이 워크플로를 깨우지 못하므로 deals.yml 이 직접 반영한다.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# deals.yml 과 같은 그룹 — 두 작업이 사이트 폴더를 동시에 덮어쓰지 않게 한다
+concurrency:
+  group: shop-site-sync
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, nas, shop]
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: 사이트 폴더에 반영
+        run: rsync -a --delete --exclude '.git/' --exclude '.github/' ./ /srv/shop/
+
+      - name: 반영 확인
+        run: |
+          test -f /srv/shop/index.html
+          python3 -c "import json; d=json.load(open('/srv/shop/data/products.json')); print('상품', len(d['products']), '개')"
+          git log -1 --format='반영한 커밋 %h %s'
